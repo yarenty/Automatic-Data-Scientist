@@ -1,0 +1,219 @@
+apply plugin: 'scala'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'play'
+apply plugin: 'scalaStyle'
+apply plugin: 'application'
+
+
+group = "com.yarenty.ml"
+mainClassName = 'com.yarenty.ml.toolbox.App'
+
+
+ext {
+    sparkVersion = "2.2.1"
+    spWaterVersion = "2.2.6" //2.2.10 doesnt work!!
+    scalaBinaryVersion = '2.11'
+    scalaVersion = '2.11.8'
+    playVersion = '2.6.13'
+    junitVersion = '4.12'
+}
+
+
+buildscript {
+    repositories {
+        maven {
+            url "http://repo1.maven.org/maven2/"
+        }
+        jcenter {
+            url "http://jcenter.bintray.com/"
+        }
+        maven {
+            url "http://plugins.gradle.org/m2/"
+        }
+        maven {
+            name "lightbend-maven-releases"
+            url "https://repo.lightbend.com/lightbend/maven-release"
+        }
+        ivy {
+            name "lightbend-ivy-release"
+            url "https://repo.lightbend.com/lightbend/ivy-releases"
+            layout "ivy"
+        }
+    }
+
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+        classpath 'org.github.ngbinh.scalastyle:gradle-scalastyle-plugin_2.10:0.9.0'
+    }
+}
+
+
+repositories {
+    maven {
+        url "http://repo1.maven.org/maven2/"
+    }
+    maven {
+        url "http://repository.cloudera.com/artifactory/cloudera-repos/"
+    }
+    maven {
+        url "http://repo.hortonworks.com/content/repositories/releases/"
+    }
+    maven {
+        url "http://oss.sonatype.org/content/repositories/releases/"
+    }
+    maven {
+        url "http://repository.apache.org/content/groups/snapshots"
+    }
+    maven {
+        name "lightbend-maven-releases"
+        url "https://repo.lightbend.com/lightbend/maven-release"
+    }
+    ivy {
+        name "lightbend-ivy-release"
+        url "https://repo.lightbend.com/lightbend/ivy-releases"
+        layout "ivy"
+    }
+}
+
+
+model {
+    components {
+        play {
+            platform play: playVersion, scala: scalaBinaryVersion, java: '1.8'
+            injectedRoutesGenerator = true
+
+            sources {
+                twirlTemplates {
+                    defaultImports = TwirlImports.SCALA
+                }
+                scala {
+                    source.srcDir "src/main/scala"
+                }
+            }
+        }
+    }
+}
+dependencies {
+    compile group: 'org.scala-lang', name: 'scala-library', version: "$scalaVersion"
+
+    def withoutServlet = { exclude group: 'javax.servlet', module: 'servlet-api' }
+    compile group: 'ai.h2o', name: 'sparkling-water-core_'+scalaBinaryVersion , version: "$spWaterVersion" , withoutServlet
+    compile("ai.h2o:sparkling-water-examples_" + scalaBinaryVersion + ":" + spWaterVersion)  //optional
+    compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
+
+    compile group: 'org.joda', name: 'joda-convert', version: '1.8.1'
+    compile group: 'org.scalanlp', name: "breeze_$scalaBinaryVersion", version: '0.13.2'
+
+    compile group: 'com.typesafe.akka', name: "akka-actor_$scalaBinaryVersion", version: '2.3.16'
+    compile group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+    compile group: 'io.argonaut', name: 'argonaut_2.10', version: '6.1'
+
+    compile "com.typesafe.play:play-guice_$scalaBinaryVersion:$playVersion"
+    compile "com.typesafe.play:play-logback_$scalaBinaryVersion:$playVersion"
+    compile "com.typesafe.play:filters-helpers_$scalaBinaryVersion:$playVersion"
+
+    play "com.typesafe.play:play-guice_$scalaBinaryVersion:$playVersion"
+    play "com.typesafe.play:play-logback_$scalaBinaryVersion:$playVersion"
+    play "com.typesafe.play:filters-helpers_$scalaBinaryVersion:$playVersion"
+    play "ai.h2o:sparkling-water-core_$scalaBinaryVersion:$spWaterVersion"
+    play "ai.h2o:sparkling-water-examples_$scalaBinaryVersion:$spWaterVersion"
+
+    playTest "org.scalatestplus.play:scalatestplus-play_$scalaBinaryVersion:3.1.2"
+
+    testCompile group: 'org.scalatest', name: "scalatest_$scalaBinaryVersion", version: '3.0.4'
+    testCompile group: 'org.scalanlp', name: "breeze-viz_$scalaBinaryVersion", version: '0.13.2'
+    testCompile "junit:junit:${junitVersion}"
+    testCompile group: 'ai.h2o', name: 'h2o-core', version: "$h2oVersion"
+
+}
+
+tasks.withType(ScalaCompile) {
+    ScalaCompileOptions.metaClass.daemonServer = true
+    ScalaCompileOptions.metaClass.fork = true
+    ScalaCompileOptions.metaClass.useAnt = false
+    ScalaCompileOptions.metaClass.useCompileDaemon = false
+}
+
+jar {
+    baseName = "${project.name}_${scalaBinaryVersion}"
+    manifest {
+        attributes(
+                "Class-Path": configurations.compile.collect { it.getName() }.join(' ')
+        )
+    }
+}
+
+scalaStyle {
+    configLocation = "$rootDir/scalastyle-config.xml"
+    includeTestSourceDirectory = true
+    source = "src/main/scala"
+    testSource = "src/test/scala"
+    outputFile = "$buildDir/checkstyle-result.xml"
+}
+
+run {
+    jvmArgs = [ "-Xmx$G", "-Xms2G"]
+    if (project.hasProperty("appArgs")) {
+        args Eval.me(appArgs)
+    }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+shadowJar {
+    appendix = 'app'
+    archiveName = "toolbox.${extension}"
+    mergeServiceFiles()
+
+    dependencies {
+        include(dependency("org.scala-lang:scala-library"))
+        include(dependency("org.scala-lang:scala-reflect"))
+
+        include(dependency("ai.h2o:sparkling-water-core_" + scalaBinaryVersion))
+        include(dependency("ai.h2o:sparkling-water-examples_" + scalaBinaryVersion))
+        include(dependency("ai.h2o:sparkling-water-repl_" + scalaBinaryVersion))
+        include(dependency("ai.h2o:sparkling-water-ml_" + scalaBinaryVersion))
+
+        include(dependency("ai.h2o:h2o-core"))
+        include(dependency("ai.h2o:h2o-scala_" + scalaBinaryVersion))
+        include(dependency("ai.h2o:h2o-app"))
+        include(dependency("ai.h2o:h2o-web"))
+        include(dependency("ai.h2o:h2o-algos"))
+        include(dependency("ai.h2o:h2o-persist-hdfs"))
+        include(dependency("ai.h2o:h2o-genmodel"))
+        include(dependency("ai.h2o:h2o-avro-parser"))
+        include(dependency("ai.h2o:reflections"))
+        include(dependency("ai.h2o:google-analytics-java"))
+
+        include(dependency("no.priv.garshol.duke:duke:1.2"))
+
+        include(dependency("com.typesafe.akka:akka-actor_$scalaBinaryVersion"))
+
+        include(dependency("joda-time:joda-time"))
+        include(dependency("org.joda:joda-convert"))
+
+        include(dependency("log4j:log4j"))
+        include(dependency("commons-io:commons-io"))
+        include(dependency("org.javassist:javassist"))
+        include(dependency("com.google.code.gson:gson"))
+        include(dependency("com.google.guava:guava"))
+
+        include(dependency("org.apache.httpcomponents:httpclient"))
+        include(dependency("org.apache.httpcomponents:httpcore"))
+        include(dependency("org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016"))
+
+        include(dependency("org.eclipse.jetty.aggregate:jetty-servlet"))
+        include(dependency("org.eclipse.jetty:jetty-server"))
+        include(dependency("org.eclipse.jetty:jetty-plus:8.1.17.v20150415"))
+
+        include(dependency("org.apache.commons:commons-math3"))
+
+        include(dependency("io.argonaut:argonaut_${scalaBinaryVersion}"))
+        include(dependency("com.github.julien-truffaut:monocle-core_${scalaBinaryVersion}"))
+        include(dependency("com.github.julien-truffaut:monocle-macro_${scalaBinaryVersion}"))
+
+        include(dependency("com.typesafe:config"))
+        include(dependency("com.typesafe.scala-logging:scala-logging"))
+    }
+}
