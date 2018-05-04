@@ -1,0 +1,25 @@
+@(name:String,description:Html,pic:String,histogram: Html)
+
+@cont = {
+<div class="content=">
+<h2>Distribution: <b>@name</b></h2>
+<br/>
+
+<div class="row" width="100%">
+   <div class="col-md-8 col-sm-8">@description</div>
+   <div class="col-md-4 col-sm-4"><img  src="@routes.Assets.versioned("images/dist/"+pic)" width="300px"/></div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+    @histogram
+    </div>
+</div>
+
+<a href="/dist" class=" btn btn-info" role="button"><span class="glyphicon glyphicon-backward"></span> Back</a>
+    <br/>
+    <br/>
+</div>
+}
+
+@main("Distribution:"+name){ @cont}

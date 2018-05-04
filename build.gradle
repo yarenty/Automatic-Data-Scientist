@@ -1,5 +1,4 @@
 apply plugin: 'scala'
-apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'play'
 apply plugin: 'scalaStyle'
@@ -13,6 +12,7 @@ mainClassName = 'com.yarenty.ml.toolbox.App'
 ext {
     sparkVersion = "2.2.1"
     spWaterVersion = "2.2.6" //2.2.10 doesnt work!!
+    h2oVersion = '3.14.0.7'
     scalaBinaryVersion = '2.11'
     scalaVersion = '2.11.8'
     playVersion = '2.6.13'
@@ -153,7 +153,7 @@ scalaStyle {
 }
 
 run {
-    jvmArgs = [ "-Xmx$G", "-Xms2G"]
+    jvmArgs = [ "-Xmx6G", "-Xms2G"]
     if (project.hasProperty("appArgs")) {
         args Eval.me(appArgs)
     }
