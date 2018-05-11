@@ -4,6 +4,12 @@ canvas {
    -ms-user-select: none;
 }
 
+#footer {
+  clear:both;
+  padding-top:10px;
+}
+
+
 .sidebar .sidebar-nav.navbar-collapse {
     padding-left: 0;
     padding-right: 0;
