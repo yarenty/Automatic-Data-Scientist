@@ -1,0 +1,11 @@
+apply plugin: 'scala'
+apply plugin: 'scalaStyle'
+
+dependencies {
+    compile group: 'org.scala-lang', name: 'scala-library', version: "$scalaVersion"
+    compile group: 'org.scalanlp', name: "breeze_$scalaBinaryVersion", version: '0.13.2'
+
+    testCompile "junit:junit:${junitVersion}"
+
+}
+

@@ -1,2 +1,10 @@
-rootProject.name = 'ML_Toolbox'
+rootProject.name = 'Automatic Data Scientist'
+
+include 'docs'
+include 'shared'
+include 'api'
+include 'ml_yarenty'
+include 'ml_h2o'
+include 'ml_tensorflow'
+include 'web'
 

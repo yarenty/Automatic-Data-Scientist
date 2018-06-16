@@ -1,0 +1,13 @@
+apply plugin: 'org.asciidoctor.convert'
+
+
+asciidoctor {
+//    sourceDir = file('docs')
+//    sources {
+//        include 'toplevel.adoc', 'another.adoc', 'third.adoc'
+//    }
+    outputDir = file('html')
+    separateOutputDirs = false
+}
+
+build.dependsOn 'asciidoctor'

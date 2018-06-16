@@ -1,0 +1,46 @@
+apply plugin: 'scala'
+apply plugin: 'play'
+apply plugin: 'scalaStyle'
+apply plugin: 'application'
+
+
+model {
+    components {
+        play {
+            platform play: playVersion, scala: scalaBinaryVersion, java: '1.8'
+            injectedRoutesGenerator = true
+
+            sources {
+                twirlTemplates {
+                    defaultImports = TwirlImports.SCALA
+                }
+                scala {
+                    source.srcDir "src/main/scala"
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    compile group: 'org.scala-lang', name: 'scala-library', version: "$scalaVersion"
+
+    def withoutServlet = { exclude group: 'javax.servlet', module: 'servlet-api' }
+    compile group: 'org.scalanlp', name: "breeze_$scalaBinaryVersion", version: '0.13.2'
+
+    compile "com.typesafe.play:play-guice_$scalaBinaryVersion:$playVersion"
+    compile "com.typesafe.play:play-logback_$scalaBinaryVersion:$playVersion"
+    compile "com.typesafe.play:filters-helpers_$scalaBinaryVersion:$playVersion"
+
+    play "com.typesafe.play:play-guice_$scalaBinaryVersion:$playVersion"
+    play "com.typesafe.play:play-logback_$scalaBinaryVersion:$playVersion"
+    play "com.typesafe.play:filters-helpers_$scalaBinaryVersion:$playVersion"
+    play "ai.h2o:sparkling-water-core_$scalaBinaryVersion:$spWaterVersion"
+    play "ai.h2o:sparkling-water-examples_$scalaBinaryVersion:$spWaterVersion"
+
+    playTest "org.scalatestplus.play:scalatestplus-play_$scalaBinaryVersion:3.1.2"
+
+    testCompile "junit:junit:${junitVersion}"
+
+}
+

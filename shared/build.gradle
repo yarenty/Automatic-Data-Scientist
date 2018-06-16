@@ -1,0 +1,34 @@
+apply plugin: 'scala'
+apply plugin: 'scalaStyle'
+
+
+dependencies {
+    compile group: 'org.scala-lang', name: 'scala-library', version: "$scalaVersion"
+    compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
+    compile group: 'org.joda', name: 'joda-convert', version: '1.8.1'
+    compile group: 'org.scalanlp', name: "breeze_$scalaBinaryVersion", version: '0.13.2'
+
+    compile group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+    compile group: 'io.argonaut', name: 'argonaut_2.10', version: '6.1'
+
+    testCompile "junit:junit:${junitVersion}"
+
+}
+
+jar {
+    baseName = "${project.name}_${scalaBinaryVersion}"
+    manifest {
+        attributes(
+                "Class-Path": configurations.compile.collect { it.getName() }.join(' ')
+        )
+    }
+}
+
+scalaStyle {
+    configLocation = "$rootDir/../scalastyle-config.xml"
+    includeTestSourceDirectory = true
+    source = "src/main/scala"
+    testSource = "src/test/scala"
+    outputFile = "$buildDir/checkstyle-result.xml"
+}
+

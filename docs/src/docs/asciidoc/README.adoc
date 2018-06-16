@@ -1,0 +1,65 @@
+:toc2:
+:toc-title: Investigation
+
+= Investigation 
+
+
+
+== Data description
+
+Input data.
+20122 =  ~6 months of data
+
+
+=== Facts
+
+
+*  we collect (example):
+|===
+|Cell |GBM MSE |GBM RMSE |KPI min |KPI mean |KPI max |KPI sigma |KPI length |KPI NAN |KPI not_zeros
+
+|EHA236C1 |5.41E-07 |7.35E-04 |0 |5.13E-04 |0.011465 |8.21E-04 |3282 |0 |1528
+|EHA257C3 |1.03E-07 |3.22E-04 |0 |1.75E-04 |0.004932 |3.56E-04 |3278 |0 |1031
+|EMK010A1 |4.53E-07 |6.73E-04 |0 |4.42E-04 |0.008946 |7.12E-04 |3283 |0 |1595
+|EHA316B1 |1.09E-06 |0.001041735 |0 |5.83E-04 |0.022959 |0.001145513 |3280 |2 |1205
+|EHA239C5 |2.17E-08 |1.47E-04 |0 |1.08E-04 |9.63E-04 |1.67E-04 |522 |17 |187
+|EAJ032C3 |1.71E-07 |4.14E-04 |0 |2.58E-04 |0.004024 |4.37E-04 |3277 |0 |1105
+|===
+
+== KPI1
+
+=== summary of readings looks like:
+
+image::images/sdar_paper1.png?[Paper,300,200]
+
+
+
+== Timing
+
+=== Initial run
+
+Processed: 20122 objects with 2 KPIs. +
+DATA: 56814793 rows.  +
+
+Load into memory: 19.962870577sec; +
+Inspecting 20122 objects: 7511.092807322sec; +
+Anomaly Detection: 216083.943483755sec; +
+FULL TIME PROCESSING: 223614.999318775. 
+
+=== Last run ( full concurrency support)
+
+Processed: 20122 objects with 2 KPIs.
+DATA: 56814793 rows. 
+
+Load into memory: 7.834985165sec;
+Inspecting 20122 objects: 4874.260749197sec;
+Anomaly Detection: 43916.50909958sec;
+FULL TIME PROCESSING: 48798.604878108. 
+
+=== Speedup:
+
+_This is currently from single run - to have more scientific results
+need to proceed several times and average results_ +
+Processing objects: 1,5* +
+Anomaly detection: 4.9* +
+Whole process:4.6*.footnote:[single run] +
