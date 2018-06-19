@@ -1,5 +1,6 @@
 package com.yarenty.math.correlation
 
+import com.yarenty.Log
 import com.yarenty.math.Histogram
 import org.apache.commons.math3.stat.inference.ChiSquareTest
 
@@ -38,7 +39,7 @@ case object ChiSquareCorrelation extends Correlation {
       !new ChiSquareTest().chiSquareTest(exp.map(_.toDouble), obs.map(_.toLong), 0.1)
     } catch {
       case e: Exception =>
-//        Log.warn(e)
+        Log.warn(e)
         false
     }
   }

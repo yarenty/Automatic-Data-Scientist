@@ -1,7 +1,6 @@
 package com.yarenty.math.correlation
 
 import scala.collection.mutable.ListBuffer
-//import water.util.Log
 
 /**
   * (C)2018 by yarenty

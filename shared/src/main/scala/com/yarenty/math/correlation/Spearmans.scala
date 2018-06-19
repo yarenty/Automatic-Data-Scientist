@@ -1,5 +1,6 @@
 package com.yarenty.math.correlation
 
+import com.yarenty.Log
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation
 
 case object Spearmans extends Correlation {
@@ -9,7 +10,7 @@ case object Spearmans extends Correlation {
       new SpearmansCorrelation().correlation(expected, observed)
     } catch {
       case e: Exception =>
-//        Log.warn(e)
+        Log.warn(e)
         Double.NaN
     }
   }

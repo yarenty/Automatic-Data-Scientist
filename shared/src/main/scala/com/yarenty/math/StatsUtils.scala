@@ -177,6 +177,17 @@ object StatsUtils {
     (chi2s, ps)
   }
 
+  
+  def mean(data: Array[Double]): Double = org.apache.commons.math3.stat.StatUtils.mean(data)
+  def median(data: Array[Double]): Double = org.apache.commons.math3.stat.StatUtils.percentile(data, 50.0)
+  
+  def naCnt(data: Array[Double]): Double = {
+    var n = 0 
+    for (d <- data) if (d == null || d.isNaN) n = n+1
+    n
+  }
+  
+  def variance3(data: Array[Double]): Double = org.apache.commons.math3.stat.StatUtils.variance(data)
 
   def standardDeviation(data: List[Double]): Double = Math.sqrt(variance(data))
 
@@ -189,6 +200,7 @@ object StatsUtils {
     data.sum / data.length
   }
 
+  
   def getMinimumIndex(data: List[Double]): Int = data.indexOf(data.min)
 
   def getMaximumIndex(data: List[Double]): Int = data.indexOf(data.max)

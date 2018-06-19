@@ -3,6 +3,20 @@ description = "ADS Shared lib [basic math + utils] (Scala version ${scalaVersion
 
 dependencies {
     compile group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+
+    compile "commons-io:commons-io:2.4"
+
+    compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
+
+    compile group: 'org.joda', name: 'joda-convert', version: '1.8.1'
+    
+    compile("log4j:log4j:1.2.17") {
+        exclude module: "activation"
+        exclude module: "jms"
+        exclude module: "jmxri"
+        exclude module: "jmxtools"
+        exclude module: "mail"
+    }
 }
 
 
