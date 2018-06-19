@@ -1,8 +1,5 @@
-apply plugin: 'scala'
 apply plugin: 'play'
-apply plugin: 'scalaStyle'
 apply plugin: 'application'
-
 
 model {
     components {
@@ -23,8 +20,6 @@ model {
 }
 
 dependencies {
-    compile group: 'org.scala-lang', name: 'scala-library', version: "$scalaVersion"
-
     def withoutServlet = { exclude group: 'javax.servlet', module: 'servlet-api' }
     compile group: 'org.scalanlp', name: "breeze_$scalaBinaryVersion", version: '0.13.2'
 
@@ -39,8 +34,5 @@ dependencies {
     play "ai.h2o:sparkling-water-examples_$scalaBinaryVersion:$spWaterVersion"
 
     playTest "org.scalatestplus.play:scalatestplus-play_$scalaBinaryVersion:3.1.2"
-
-    testCompile "junit:junit:${junitVersion}"
-
 }
 
