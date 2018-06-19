@@ -32,6 +32,11 @@ dependencies {
     play "com.typesafe.play:filters-helpers_$scalaBinaryVersion:$playVersion"
     play "ai.h2o:sparkling-water-core_$scalaBinaryVersion:$spWaterVersion"
     play "ai.h2o:sparkling-water-examples_$scalaBinaryVersion:$spWaterVersion"
+    
+    play project(':shared')
+    play project(':api')
+    play project(':ml_yarenty')
+    play project(':ml_h2o')
 
     playTest "org.scalatestplus.play:scalatestplus-play_$scalaBinaryVersion:3.1.2"
 }

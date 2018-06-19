@@ -18,6 +18,8 @@ dependencies {
     testCompile group: 'org.scalanlp', name: "breeze-viz_$scalaBinaryVersion", version: '0.13.2'
     testCompile group: 'ai.h2o', name: 'h2o-core', version: "$h2oVersion"
 
+    testCompile project(':shared').sourceSets.test.output
+
 }
 
 

@@ -17,6 +17,8 @@ case object ChiSquareCorrelation extends Correlation {
   def correlate(expected: Array[Double], observed: Array[Double], secure: Boolean = true): Double = {
     checks(expected, observed)
     val (exp, obs) = calculateBins(expected, observed)
+    Log.debug("EXPECTED:" + exp.mkString(", "))
+    Log.debug("OBSERVED:" + obs.mkString(", "))
     val out = if (secure) {
       new ChiSquareTest().chiSquareTest(exp.map(x => (x + 1).toDouble), obs.map(x => (x + 1).toLong))
     } else {

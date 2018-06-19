@@ -129,15 +129,41 @@ subprojects {
 project(':api') {
     dependencies {
         compile project(':shared')
+        testCompile project(':shared')
     }
 }
 
 project(':ml_yarenty') {
     dependencies {
         compile project(':shared'), project(':api')
+        testCompile project(':shared'), project(':api')
     }
 }
 
+
+
+project(':ml_h2o') {
+    dependencies {
+        compile project(':ml_yarenty'), project(':shared'), project(':api')
+        testCompile project(':shared'), project(':api')
+    }
+}
+
+
+project(':ml_tensorflow') {
+    dependencies {
+        compile project(':ml_yarenty'), project(':shared'), project(':api')
+        testCompile project(':shared'), project(':api')
+    }
+}
+
+
+project(':web') {
+    dependencies {
+        compile project(':ml_h2o'), project(':ml_yarenty'), project(':shared'), project(':api')
+        testCompile project(':shared'), project(':api')
+    }
+}
 
 tasks.withType(ScalaCompile) {
     ScalaCompileOptions.metaClass.daemonServer = true
