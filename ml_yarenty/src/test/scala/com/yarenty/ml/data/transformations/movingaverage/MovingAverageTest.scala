@@ -1,6 +1,6 @@
 package com.yarenty.ml.data.transformations.movingaverage
 
-import com.yarenty.ml.visualisation.html.TwoPeriodicCharts
+//import com.yarenty.ml.visualisation.html.TwoPeriodicCharts
 import com.yarenty.testhelpers.{TestHelper, TimeSeriesData}
 import org.junit.Assert.assertArrayEquals
 import org.junit.Test
@@ -47,66 +47,66 @@ class MovingAverageTest {
   }
 
 }
-
-object MovingAverageTest {
-
-  //scalastyle:off
-  //just to create charts for documentation
-  def main(args: Array[String]): Unit = {
-
-    val t = new MovingAverageTest()
-    val timestamp = TestHelper.dummyTimestamp(TimeSeriesData.data)
-
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/CMA"), timestamp,
-      TimeSeriesData.data, "input data",
-      new CumulativeMovingAverage().average(TimeSeriesData.data), "Cumulative averaging")
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/CMAScalled"), timestamp,
-      TimeSeriesData.data, "input data",
-      new CumulativeMovingAverage().average(TimeSeriesData.data), "Cumulative averaging", true)
-
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Exp"), timestamp,
-      TimeSeriesData.data, "input data",
-      new ExponentialMovingAverage(0.2).average(TimeSeriesData.data), " Exponential averaging (alpha=0.2)")
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/ExpScalled"), timestamp,
-      TimeSeriesData.data, "input data",
-      new ExponentialMovingAverage(0.2).average(TimeSeriesData.data), " Exponential averaging (alpha=0.2)", true)
-
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Exp1"), timestamp,
-      TimeSeriesData.data, "input data",
-      new ExponentialMovingAverage(0.5).average(TimeSeriesData.data), " Exponential averaging (alpha=0.5)")
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Exp1Scalled"), timestamp,
-      TimeSeriesData.data, "input data",
-      new ExponentialMovingAverage(0.5).average(TimeSeriesData.data), " Exponential averaging (alpha=0.5)", true)
-
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Exp2"), timestamp,
-      TimeSeriesData.data, "input data",
-      new ExponentialMovingAverage(1.2).average(TimeSeriesData.data), " Exponential averaging (alpha=1.2)")
-
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Exp3"), timestamp,
-      TimeSeriesData.data, "input data",
-      new ExponentialMovingAverage(1.6).average(TimeSeriesData.data), " Exponential averaging (alpha=1.6)")
-
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Exp4"), timestamp,
-      TimeSeriesData.data, "input data",
-      new ExponentialMovingAverage(2.4).average(TimeSeriesData.data), " Exponential averaging (alpha=2.4)")
-
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Sim"), timestamp,
-      TimeSeriesData.data, "input data",
-      new SimpleMovingAverage(2).average(TimeSeriesData.data), " Simple averaging (period=2)")
-
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Sim1"), timestamp,
-      TimeSeriesData.data, "input data",
-      new SimpleMovingAverage(8).average(TimeSeriesData.data), " Simple averaging (period=8)")
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Sim1Scalled"), timestamp,
-      TimeSeriesData.data, "input data",
-      new SimpleMovingAverage(8).average(TimeSeriesData.data), " Simple averaging (period=8)", true)
-
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Sim2"), timestamp,
-      TimeSeriesData.data, "input data",
-      new SimpleMovingAverage(24).average(TimeSeriesData.data), " Simple averaging (period=24)")
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Sim2Scalled"), timestamp,
-      TimeSeriesData.data, "input data",
-      new SimpleMovingAverage(24).average(TimeSeriesData.data), " Simple averaging (period=24)", true)
-  }
- //scalastyle:on
-}
+//
+//object MovingAverageTest {
+//
+//  //scalastyle:off
+//  //just to create charts for documentation
+//  def main(args: Array[String]): Unit = {
+//
+//    val t = new MovingAverageTest()
+//    val timestamp = TestHelper.dummyTimestamp(TimeSeriesData.data)
+//
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/CMA"), timestamp,
+//      TimeSeriesData.data, "input data",
+//      new CumulativeMovingAverage().average(TimeSeriesData.data), "Cumulative averaging")
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/CMAScalled"), timestamp,
+//      TimeSeriesData.data, "input data",
+//      new CumulativeMovingAverage().average(TimeSeriesData.data), "Cumulative averaging", true)
+//
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Exp"), timestamp,
+//      TimeSeriesData.data, "input data",
+//      new ExponentialMovingAverage(0.2).average(TimeSeriesData.data), " Exponential averaging (alpha=0.2)")
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/ExpScalled"), timestamp,
+//      TimeSeriesData.data, "input data",
+//      new ExponentialMovingAverage(0.2).average(TimeSeriesData.data), " Exponential averaging (alpha=0.2)", true)
+//
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Exp1"), timestamp,
+//      TimeSeriesData.data, "input data",
+//      new ExponentialMovingAverage(0.5).average(TimeSeriesData.data), " Exponential averaging (alpha=0.5)")
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Exp1Scalled"), timestamp,
+//      TimeSeriesData.data, "input data",
+//      new ExponentialMovingAverage(0.5).average(TimeSeriesData.data), " Exponential averaging (alpha=0.5)", true)
+//
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Exp2"), timestamp,
+//      TimeSeriesData.data, "input data",
+//      new ExponentialMovingAverage(1.2).average(TimeSeriesData.data), " Exponential averaging (alpha=1.2)")
+//
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Exp3"), timestamp,
+//      TimeSeriesData.data, "input data",
+//      new ExponentialMovingAverage(1.6).average(TimeSeriesData.data), " Exponential averaging (alpha=1.6)")
+//
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Exp4"), timestamp,
+//      TimeSeriesData.data, "input data",
+//      new ExponentialMovingAverage(2.4).average(TimeSeriesData.data), " Exponential averaging (alpha=2.4)")
+//
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Sim"), timestamp,
+//      TimeSeriesData.data, "input data",
+//      new SimpleMovingAverage(2).average(TimeSeriesData.data), " Simple averaging (period=2)")
+//
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Sim1"), timestamp,
+//      TimeSeriesData.data, "input data",
+//      new SimpleMovingAverage(8).average(TimeSeriesData.data), " Simple averaging (period=8)")
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Sim1Scalled"), timestamp,
+//      TimeSeriesData.data, "input data",
+//      new SimpleMovingAverage(8).average(TimeSeriesData.data), " Simple averaging (period=8)", true)
+//
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Sim2"), timestamp,
+//      TimeSeriesData.data, "input data",
+//      new SimpleMovingAverage(24).average(TimeSeriesData.data), " Simple averaging (period=24)")
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("movingaverages/Sim2Scalled"), timestamp,
+//      TimeSeriesData.data, "input data",
+//      new SimpleMovingAverage(24).average(TimeSeriesData.data), " Simple averaging (period=24)", true)
+//  }
+// //scalastyle:on
+//}

@@ -8,7 +8,7 @@ dependencies {
     compile group: 'io.argonaut', name: 'argonaut_2.10', version: '6.1'
 
 
-    testCompile project(':shared')
+    testCompile project(':shared').sourceSets.test.output
     testCompile group: 'org.scalatest', name: "scalatest_$scalaBinaryVersion", version: '3.0.4'
     testCompile group: 'org.scalanlp', name: "breeze-viz_$scalaBinaryVersion", version: '0.13.2'
 }

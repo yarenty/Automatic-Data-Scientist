@@ -1,7 +1,6 @@
 package com.yarenty.ml.data.transformations
 
 import com.yarenty.testhelpers.{TestHelper, TimeSeriesData}
-import com.yarenty.ml.visualisation.html.TwoPeriodicCharts
 import org.junit.Assert.{assertArrayEquals, assertEquals}
 import org.junit.Test
 
@@ -29,21 +28,21 @@ class BoxCoxTest {
   }
 }
 
-
-object BoxCoxTest {
-
-  //just to create charts for documentation
-  def main(args: Array[String]): Unit = {
-
-    val timestamp = TestHelper.dummyTimestamp(TimeSeriesData.data)
-
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("transformations/BoxCoxAuto"), timestamp,
-      TimeSeriesData.data.toArray, "input data",
-      BoxCox.transform(TimeSeriesData.data.toList).toArray, "BoxCox with auto Lambda search")
-
-    TwoPeriodicCharts.plot(TestHelper.generateFileName("transformations/BoxCox"), timestamp,
-      TimeSeriesData.data.toArray, "input data",
-      BoxCox.transform(TimeSeriesData.data.toList, 1.4).toArray, "BoxCox (lambda=1.4)")
-
-  }
-}
+//
+//object BoxCoxTest {
+//
+//  //just to create charts for documentation
+//  def main(args: Array[String]): Unit = {
+//
+//    val timestamp = TestHelper.dummyTimestamp(TimeSeriesData.data)
+//
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("transformations/BoxCoxAuto"), timestamp,
+//      TimeSeriesData.data.toArray, "input data",
+//      BoxCox.transform(TimeSeriesData.data.toList).toArray, "BoxCox with auto Lambda search")
+//
+//    TwoPeriodicCharts.plot(TestHelper.generateFileName("transformations/BoxCox"), timestamp,
+//      TimeSeriesData.data.toArray, "input data",
+//      BoxCox.transform(TimeSeriesData.data.toList, 1.4).toArray, "BoxCox (lambda=1.4)")
+//
+//  }
+//}
