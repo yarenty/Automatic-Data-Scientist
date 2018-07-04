@@ -3,6 +3,7 @@ package html
 import com.yarenty.ml.data.distribution._
 import org.apache.commons.math3.stat.descriptive.rank.Percentile
 import org.junit.Test
+import com.yarenty.testhelpers._
 
 class QQChartTest {
 

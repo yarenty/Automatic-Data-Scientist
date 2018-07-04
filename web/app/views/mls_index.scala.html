@@ -1,0 +1,56 @@
+@()
+
+@mls("Welcome to Machine Learning Service") {
+<center>
+<h1>Welcome to Machine Learning Service</h1>
+<hr/>
+<div class="content-fluid">
+    <div class="row">
+        <div class="col-md-9" style="text-align: left;">
+            <h2>Scala Machine Learning Toolbox</h2>
+            Build and store thousands of models. Managed and promote them in Model Manager.<br/>
+            Run A/B testing of Models<br/>
+            Models can be built in R, Python and Java<br/>
+            Easy specification of model management rules for model promotion either via GUI or programming language<br/>
+            Bulk scoring of events in files increasing efficiency<br/>
+            RESTful endpoints to operationalize scoring<br/>
+            In-App Scoring for scoring within an app – js (app eng), Java (sys/Java app eng), python/R (data scientists)<br/>
+            Deploy to real time streaming applications like Kafka, Spark Streaming etc.<br/>
+
+        </div>
+        <div class="col-md-3"><img src="@routes.Assets.versioned("images/mls.png")"/></div>
+    </div>
+    
+            <div class="row">
+                <div class="col-md-3" style="display: flex;flex-direction: column;justify-content: center;"><a href="/mls/repo"><img src="@routes.Assets.versioned("images/mls_repos.png")" width="200px" /></a></div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3" style="display: flex;flex-direction: column;justify-content: center;"><a href="/mls/predict"><img src="@routes.Assets.versioned("images/mls_prediction.png")" width="200px" /></a></div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3" style="display: flex;flex-direction: column;justify-content: center;"><a href="/mls/harvest"><img src="@routes.Assets.versioned("images/mls_harvester.png")" width="200px" /></a></div>
+            </div>
+    
+            <div class="row">
+                <div class="col-md-3" style="text-align:justify">
+                    Model repository – model database extended with specific model descriptions -> keeps all models 
+                    (including historical version) with information on how model was trained, what is input/output data, 
+                    what is characteristic of data (distribution), how model should behave, etc
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3" style="text-align:justify">
+                    Prediction service – each model from repository could be instantiated on specific port and then
+                    – depending on model input/output structure could be called to make predictions, 
+                    or in case anomaly detection – to indicate anomalies
+
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3" style="text-align:justify">
+                    Data harvester / collector – this is another storage – where each data used during online service phase,
+                    will be stored and can be used ie: for periodic model update / re-train phase in ADS.
+
+
+                </div>
+            </div>
+    
+</div>
+</center>
+}

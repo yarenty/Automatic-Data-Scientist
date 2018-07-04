@@ -1,0 +1,65 @@
+@()
+
+@ads("Welcome to Automatic Data Scientist") {
+<h1>Welcome to Automatic Data Scientist</h1>
+<hr/>
+<div class="content-fluid">
+    <div class="row">
+        <div class="col-md-9">
+            <h2>Scala Machine Learning Toolbox</h2>
+            ADS – is “Machine Learning Studio” but with all extended functionalities to make data science process as easy and intuitive as possible.
+        </div>
+        <div class="col-md-3"><img src="@routes.Assets.versioned("images/data-scientist.jpg")"/></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2" >
+            <a href="/ads/data">
+            <img src="@routes.Assets.versioned("images/ds_data.png")" width="200px" /><br/>
+            <img src="@routes.Assets.versioned("images/ds_visualisation.png")" width="200px" />
+            </a>
+        </div>
+        <div class="col-md-1" style="display: flex;flex-direction: column;justify-content: center;"><img src="@routes.Assets.versioned("images/arrow.png")" width="50px"/></div>
+        <div class="col-md-2" style="display: flex;flex-direction: column;justify-content: center;">
+            <a href="/ads/afe"><img src="@routes.Assets.versioned("images/ds_afe.png")" width="200px" /></a>
+        </div>
+        <div class="col-md-1" style="display: flex;flex-direction: column;justify-content: center;"><img src="@routes.Assets.versioned("images/arrow.png")" width="50px"/></div>
+        <div class="col-md-2" style="display: flex;flex-direction: column;justify-content: center;">
+            <a href="/ads/algo"><img src="@routes.Assets.versioned("images/ds_algorithms.png")" width="200px" /></a>
+        </div>
+        <div class="col-md-1" style="display: flex;flex-direction: column;justify-content: center;"><img src="@routes.Assets.versioned("images/arrow.png")" width="50px"/></div>
+        <div class="col-md-2" style="display: flex;flex-direction: column;justify-content: center;">
+            <a href="/ads/lime"><img src="@routes.Assets.versioned("images/ds_interpretation.png")" width="200px" /></a><br/>
+            <a href="/ads/loco"><img src="@routes.Assets.versioned("images/ds_fittness.png")" width="200px" /></a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2" style="text-align:justify">
+            Visualization – in other projects is usually considered as “side” functionality, but in ML world is extremely 
+            important – every time we create/update some model we need to properly present them. 
+            This is quite crucial task to visualize them and describe “why is so good”
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-2" style="text-align:justify">
+            Automatic Feature Engineering / data processing – ie: data normalization, transformations, extraction,
+            - goal: to make input data distributed in way that makes ML works as close to 100% as possible
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-2" style="text-align:justify">
+            Algorithms discovery/ Algorithm selection – different types of data behaves differently - goal: use proper model for proper data
+            
+            Anomaly detection – in scenarios outside our domain, prediction is most desired functionality from ML, however specifics of our domain is usually to find and react to anomalies  – goal: adjust “border parameters” to predict and identify anomaly – using automatic and manual inputs
+
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-2" style="text-align:justify">
+            Model interpretation /Model fitness – to interpret model/ describe and proof that model is working as expected !
+            (see LOCO/LIME algorithms) – tis is very hot trend in ML community now – since this is algorithm 
+            that automatically can tell that model build by data scientist is really working.
+
+        </div>
+    </div>
+    
+</div>
+}

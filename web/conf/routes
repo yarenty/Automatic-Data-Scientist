@@ -7,6 +7,20 @@
 GET     /                           controllers.HomeController.index
 GET     /files                      controllers.HomeController.files
 
+GET     /ads                      controllers.ADSController.index
+GET     /ads/data                      controllers.ADSController.data
+GET     /ads/afe                      controllers.ADSController.afe
+GET     /ads/algo                      controllers.ADSController.algo
+GET     /ads/lime                      controllers.ADSController.lime
+GET     /ads/loco                      controllers.ADSController.loco
+
+
+GET     /mls                      controllers.MLSController.index
+GET     /mls/repo                      controllers.MLSController.repo
+GET     /mls/predict                      controllers.MLSController.predict
+GET     /mls/harvest                      controllers.MLSController.harvest
+
+
 GET     /import                     controllers.ImportController.index
 GET     /dist                       controllers.DistributionController.index
 

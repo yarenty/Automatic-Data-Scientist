@@ -1,5 +1,5 @@
 apply plugin: 'play'
-apply plugin: 'application'
+//apply plugin: 'application'
 
 model {
     components {
@@ -26,7 +26,8 @@ dependencies {
     compile "com.typesafe.play:play-guice_$scalaBinaryVersion:$playVersion"
     compile "com.typesafe.play:play-logback_$scalaBinaryVersion:$playVersion"
     compile "com.typesafe.play:filters-helpers_$scalaBinaryVersion:$playVersion"
-
+    
+    
     play "com.typesafe.play:play-guice_$scalaBinaryVersion:$playVersion"
     play "com.typesafe.play:play-logback_$scalaBinaryVersion:$playVersion"
     play "com.typesafe.play:filters-helpers_$scalaBinaryVersion:$playVersion"
@@ -38,6 +39,8 @@ dependencies {
     play project(':ml_yarenty')
     play project(':ml_h2o')
 
+    playRun project(':shared')
+    
     playTest "org.scalatestplus.play:scalatestplus-play_$scalaBinaryVersion:3.1.2"
 }
 

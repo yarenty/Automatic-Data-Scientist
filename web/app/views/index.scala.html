@@ -1,15 +1,55 @@
 @()
 
-@main("Welcome to Automatic Data Scientist") {
-<h1>Welcome to Automatic Data Scientist</h1>
-<h2>Scala Machine Learning Toolbox</h2>
+@main("Welcome to Machine Learning as a Service") {
+<center>
+    <h1>Welcome to Machine Learning as a Service</h1>
 <hr/>
 <div class="content-fluid">
     <div class="row">
-        <div class="col-md-9">
-            TODO: description here!!!
+        <div class="col-md-4" ><img src="@routes.Assets.versioned("images/mlaas.png")" width="300px" /></div>
+        <div class="col-md-1" style="display: flex;flex-direction: column;justify-content: center;"><img src="@routes.Assets.versioned("images/equal.png")" width="50px"/></div>
+        <div class="col-md-3" style="display: flex;flex-direction: column;justify-content: center;"><a href="/ads"><img src="@routes.Assets.versioned("images/data-scientist.jpg")" width="200px" /></a></div>
+        <div class="col-md-1" style="display: flex;flex-direction: column;justify-content: center;"><img src="@routes.Assets.versioned("images/plus.png")" width="50px"/></div>
+        <div class="col-md-3" style="display: flex;flex-direction: column;justify-content: center;"><a href="/mls"><img src="@routes.Assets.versioned("images/mls.png")" width="200px" /></a></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4"><h2>Machine Learnind as a Service</h2></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3"><h2><a href="/ads">Automatic Data Scientist</a></h2></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3"><h2><a href="/mls">Machine Learning Service</a></h2></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4" style="text-align:justify">
+            The MLaaS is an end-to-end platform that streamlines the entire process of building, deploying, and exposing ML models.<br/>
+            <br/>
+            Data scientists and developers can launch turnkey compute environments for collaboratively training and deploying
+            predictive models and integrate those models into real-time smart applications.<br/>
         </div>
-        <div class="col-md-3"><img src="@routes.Assets.versioned("images/data-scientist.jpg")"/></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3" style="text-align:justify">
+            Easy use of collected data to answer questions, make links, find patterns and relationships.
+            Dashboard analytics, data visualization, knowledge graphs and real time alerts!<br/>
+            <br/>
+            Initial focus is on time series data – since it is widely used in our domain.<br/>
+            <br/>
+            Data intelligence platform to help people to understand data. There are a huge amount of technologies out there
+            to help you gather, store and cleanse data, but not a lot of intuitive technologies to allow you to understand it 
+            and ultimately investigate on that.<br/>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3" style="text-align:justify">
+            Companies often build hundreds of models a day (e.g., churn, recommendation, credit default).
+            However, there is no practical way to manage all the models that are built over time. 
+            This lack of tooling leads to insights being lost, resources wasted on re-generating old results, and difficulty collaborating.<br/>
+            <br/>
+            MLaaS is an end-to-end system that tracks models as they are built, extracts and stores relevant metadata 
+            (e.g., hyperparameters, data sources) for models, and makes this data available for easy querying and visualization.<br/>
+
+        </div>
     </div>
 </div>
+</center>
 }
