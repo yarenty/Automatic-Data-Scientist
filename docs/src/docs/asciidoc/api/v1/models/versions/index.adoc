@@ -1,0 +1,468 @@
+:toc2:
+:toc-title: API
+
+
+= REST Resource: v1.models.versions
+
+link:../../../index.html[back <<] 
+
+== Resource: Version
+
+Represents a version of the model.
+
+Each version is a trained model deployed in the cloud, ready to handle prediction requests. 
+A model can have multiple versions. You can get information about all of the versions of a given model by 
+calling `v1.models.versions.list`.
+
+.JSON representation
+----
+{
+  "name": string,
+  "description": string,
+  "isDefault": boolean,
+  "deploymentUri": string,
+  "createTime": string,
+  "lastUseTime": string,
+  "runtimeVersion": string,
+  "state": enum(State),
+  "errorMessage": string,
+  "framework": enum(Framework),
+  "pythonVersion": string,
+
+  // Union field scaling can be only one of the following:
+  "autoScaling": {
+    object(AutoScaling)
+  },
+  "manualScaling": {
+    object(ManualScaling)
+  }
+  // End of list of possible types for union field scaling.
+}
+----
+
+.Fields
+[cols="1,1,5a"]
+|===
+|name	
+|string
+|Required.The name specified for the version when it was created.
+
+The version name must be unique within the model it is created in.
+|description	
+|string
+|Optional. The description specified for the version when it was created.
+
+|isDefault	
+|boolean
+|Output only. If true, this version will be used to handle prediction requests that do not specify a version.
+
+You can change the default version by calling v1.methods.versions.setDefault.
+|deploymentUri	
+|string
+|Required. The location of the trained model used to create the version. 
+See the guide to model deployment for more information.
+
+When passing Version to v1.models.versions.create the model service uses the specified location as the source of the model.
+ Once deployed, the model version is hosted by the prediction service, so this location is useful only as a historical 
+ record. The total number of model files can't exceed 1000.
+
+|createTime	
+|string (Timestamp format)
+|Output only. The time the version was created.
+
+A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".
+
+|lastUseTime	
+|string (Timestamp format)
+|Output only. The time the version was last used for prediction.
+
+A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".
+
+|runtimeVersion	
+|string
+|Optional. The Google Cloud ML runtime version to use for this deployment. If not set, Google Cloud ML will choose a version.
+
+|state	
+|enum(State)
+|Output only. The state of a version.
+
+|errorMessage	
+|string
+|Output only. The details of a failure or a cancellation.
+
+|framework	
+|enum(Framework)
+|Optional. The machine learning framework uses to train this version of the model. 
+Valid values are TENSORFLOW, H2O, MLLib and XGBOOST. If you do not specify a framework H2O will be used.
+ If you choose  XGBOOST, you must also set the runtime version of the model to 1.4 or greater.
+
+|pythonVersion	
+|string
+|Optional. The version of Python used in prediction. If not set, the default version is '2.7'. 
+Python '3.5' is available when runtimeVersion is set to '1.4' and above. Python '2.7' works with all supported runtime versions.
+
+
+|autoScaling	
+|object(AutoScaling)
+|Automatically scale the number of nodes used to serve the model in response to increases and decreases in traffic. Care should be taken to ramp up traffic according to the model's ability to scale or you will start seeing increases in latency and 429 response codes.
+
+|manualScaling	
+|object(ManualScaling)
+| Manually select the number of nodes to use for serving the model. You should generally use autoScaling with an appropriate minNodes instead, but this option is available if you want more predictable billing. Beware that latency and error rates will increase if the traffic exceeds that capability of the system to serve it based on the selected number of nodes.
+
+|===
+
+Union field scaling. Optional. Sets the options for scaling. If not specified, defaults to auto_scaling with min_nodes of 0 (see doc for AutoScaling.min_nodes) scaling can be only one of the: autoScaling or manualScaling
+
+
+=== AutoScaling
+Options for automatically scaling a model.
+
+.JSON representation
+----
+{
+  "minNodes": number
+}
+----
+
+.Fields
+[cols="1,1,5a"]
+|===
+|minNodes	
+|number
+|Optional. The minimum number of nodes to allocate for this model. These nodes are always up, starting from the time the model is deployed. Therefore, the cost of operating this model will be at least rate * minNodes * number of hours since last billing cycle, where rate is the cost per node-hour as documented in the pricing guide, even if no predictions are performed. There is additional cost for each prediction performed.
+
+Unlike manual scaling, if the load gets too heavy for the nodes that are up, the service will automatically add nodes to handle the increased load as well as scale back as traffic drops, always maintaining at least minNodes. You will be charged for the time in which additional nodes are used.
+
+If not specified, minNodes defaults to 0, in which case, when traffic to a model stops (and after a cool-down period), nodes will be shut down and no charges will be incurred until traffic to the model resumes.
+
+You can set minNodes when creating the model version, and you can also update minNodes for an existing version:
+
+update_body.json:
+----
+{
+  'autoScaling': {
+    'minNodes': 5
+  }
+}
+----
+
+HTTP request:
+
+`PATCH https://{site}/v1/{models/*/versions/*}?updateMask=autoScaling.minNodes -d @./update_body.json`
+|===
+
+=== ManualScaling
+Options for manually scaling a model.
+
+.JSON representation
+----
+{
+  "nodes": number
+}
+----
+
+.Fields
+[cols="1,1,5a"]
+|===
+|nodes	
+|number
+|The number of nodes to allocate for this model. These nodes are always up, starting from the time the model is deployed, so the cost of operating this model will be proportional to nodes * number of hours since last billing cycle plus the cost for each prediction performed.
+|===
+
+=== State
+Describes the version state.
+
+.Enums
+[cols="1,5a"]
+|===
+|UNKNOWN	|The version state is unspecified.
+|READY	|The version is ready for prediction.
+|CREATING	|The version is being created. New versions.patch and versions.delete requests will fail if a version is in the CREATING state.
+|FAILED	|The version failed to be created, possibly cancelled. errorMessage should contain the details of the failure.
+|DELETING	|The version is being deleted. New versions.patch and versions.delete requests will fail if a version is in the DELETING state.
+|UPDATING	|The version is being updated. New versions.patch and versions.delete requests will fail if a version is in the UPDATING state.
+|===
+
+=== Framework
+Available frameworks for prediction.
+
+.Enums
+|===
+|FRAMEWORK_UNSPECIFIED	
+|TENSORFLOW	
+|H2O	
+|XGBOOST
+|MLLIB
+|===
+	
+== Methods
+[cols="1,5a"]
+|===
+|create
+|Creates a new version of a model from a trained TensorFlow model.
+|delete
+|Deletes a model version.
+|get
+|Gets information about a model version.
+|list
+|Gets basic information about all the versions of a model.
+|patch
+|Updates the specified Version resource.
+|setDefault
+|Designates a version to be the default for the model.
+|===
+
+
+
+
+
+
+
+
+
+
+
+== Method: v1.models.versions.create
+Creates a new version of a model from a trained TensorFlow model.
+
+If the version created in the cloud by this call is the first deployed version of the specified model, it will be made the default version of the model. When you add a version to a model that already has one or more versions, the default version does not automatically change. If you want a new version to be the default, you must call projects.models.versions.setDefault.
+
+=== HTTP request
+`POST https://{site}/v1/{models/*}/versions`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+None 
+
+=== Request body
+The request body contains an instance of Version.
+
+=== Response body
+If successful, the response body contains a newly created instance of Operation.
+
+
+
+
+
+== Method: v1.models.versions.delete
+Deletes a model version.
+
+Each model can have multiple versions deployed and in use at any given time. 
+Use this method to remove a single version.
+
+Note: You cannot delete the version that is set as the default version of the model
+ unless it is the only remaining version.
+
+=== HTTP request
+`DELETE https://{site}v1/{models/*/versions/*}`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+[cols="1,1,5a"]
+|===
+|name	
+|string
+|Required. The name of the version. You can get the names of all the versions of a model by calling projects.models.versions.list.
+|===
+
+=== Request body
+The request body must be empty.
+
+=== Response body
+If successful, the response body contains an instance of Operation.
+
+
+
+
+
+
+
+== Method: v1.models.versions.get
+Gets information about a model version.
+
+Models can have multiple versions.
+ You can call `v1.models.versions.list` to get the same information that this method returns for all of 
+ the versions of a model.
+
+=== HTTP request
+`GET https://{site}/v1/{models/*/versions/*}`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+[cols="1,1,5a"]
+|===
+|name	
+|string
+|Required. The name of the version.
+|===
+
+=== Request body
+The request body must be empty.
+
+=== Response body
+If successful, the response body contains an instance of Version.
+
+
+
+
+
+
+
+== Method: v1.models.versions.list
+Gets basic information about all the versions of a model.
+
+If you expect that a model has many versions, or if you need to handle only a limited number of results at a time,
+ you can request that the list be retrieved in batches (called pages).
+
+If there are no versions that match the request parameters, the list request returns an empty response body: {}.
+
+=== HTTP request
+`GET https://{site}/v1/{models/*}/versions`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+[cols="1,1,5a"]
+|===
+|parent	
+|string
+|Required. The name of the model for which to list the version.
+|===
+
+=== Query parameters
+[cols="1,1,5a"]
+|===
+|filter	
+|string
+|Optional. Specifies the subset of versions to retrieve.
+
+|pageToken	
+|string
+|Optional. A page token to request the next page of results.
+
+You get the token from the nextPageToken field of the response from the previous call.
+
+|pageSize	
+|number
+|Optional. The number of versions to retrieve per "page" of results. If there are more remaining results than this number, the response message will contain a valid value in the nextPageToken field.
+
+The default value is 20, and the maximum page size is 100.
+|===
+
+=== Request body
+The request body must be empty.
+
+=== Response body
+If successful, the response body contains data with the following structure:
+
+Response message for the versions.list method.
+
+.JSON representation
+----
+{
+  "versions": [
+    {
+      object(Version)
+    }
+  ],
+  "nextPageToken": string
+}
+----
+
+.Fields
+[cols="1,1,5a"]
+|===
+|versions[]	
+|object(Version)
+|The list of versions.
+|nextPageToken	
+|string
+|Optional. Pass this token as the pageToken field of the request for a subsequent call.
+|===
+
+
+
+
+== Method: v1.models.versions.patch
+Updates the specified Version resource.
+
+
+=== HTTP request
+`PATCH https:/{site}/v1/{models/*/versions/*}`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+[cols="1,1,5a"]
+|===
+|name	
+|string
+|Required. The name of the model.
+|===
+
+=== Query parameters
+[cols="1,1,5a"]
+|===
+|updateMask	
+|string (FieldMask format)
+|Required. Specifies the path, relative to Version, of the field to update. Must be present and non-empty. +
+For example, to change the description of a version to "foo", the updateMask parameter would be specified as description, 
+and the PATCH request body would specify the new value, as follows: `+{ "description": "foo" }+`
+
+Currently the only supported update mask isdescription.
+
+A comma-separated list of fully qualified names of fields. Example: "user.displayName,photo".
+|===
+
+=== Request body
+The request body contains an instance of Version.
+
+=== Response body
+If successful, the response body contains an instance of Operation.
+
+
+
+
+
+
+
+
+
+
+== Method: V1.models.versions.setDefault
+Designates a version to be the default for the model.
+
+The default version is used for prediction requests made against the model that don't specify a version.
+
+The first version to be created for a model is automatically set as the default. You must make any subsequent changes to the default version setting manually using this method.
+
+=== HTTP request
+`POST https://ml.googleapis.com/v1/{models/*/versions/*}:setDefault`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+[cols="1,1,5a"]
+|===
+|name	
+|string
+|Required. The name of the version to make the default for the model. You can get the names of all the versions of a model by calling projects.models.versions.list.
+|===
+
+=== Request body
+The request body must be empty.
+
+=== Response body
+If successful, the response body contains an instance of Version.
+
+
+
+
+
+
+
+

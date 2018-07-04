@@ -1,0 +1,123 @@
+:toc2:
+:toc-title: API
+
+= MLaaS - Machine Learning API
+
+An API to enable creating and using machine learning models.
+
+
+The URL uses link:https://github.com/googleapis/googleapis/blob/master/google/api/http.proto?[Google API HTTP annotation] syntax.
+
+This service provides the following discovery document:
+**https://{site}/$discovery/rest?version=v1**
+
+
+link:v1/datasets/index.html[v1/datasets] +
+link:v1/ads/index.html[v1/ads] +
+link:v1/models/index.html[v1/models] +
+link:v1/models/versions/index.html[v1/models/versions] +
+link:v1/operations/index.html[v1/operations] +
+link:v1/services/index.html[v1/services] +
+TYPES: + 
+link:v1/policy.html[v1/policy] +
+link:v1/predict.html[v1/predict] +
+
+
+== REST Resource: v1.data
+
+Methods
+|===
+|spec |GET | v1/data/{name=dataset/*}:spec | Returns data specification
+|slice |POST | v1/data/{name=dataset/*}:slice | slice data set into temporary slices    
+| slice | 
+|===
+
+
+Example JSON:
+[source,json]
+----
+   {
+        slices: [0.8, 0.1, 0.1],
+        names: [train, test, valid],
+        type: random,
+        random : 888666888L
+    }
+----
+
+Methods
+|===
+| getConfig	| GET | /v1/{name=projects/*}:getConfig | Get the service account information associated with your project.
+| predict	| POST | /v1/{name=projects/**}:predict | Performs prediction on the data in the request.
+|===
+
+
+== REST Resource: v1.projects.jobs
+Methods
+cancel	POST /v1/{name=projects/*/jobs/*}:cancel 
+Cancels a running job.
+create	POST /v1/{parent=projects/*}/jobs 
+Creates a training or a batch prediction job.
+get	GET /v1/{name=projects/*/jobs/*} 
+Describes a job.
+getIamPolicy	GET /v1/{resource=projects/*/jobs/*}:getIamPolicy 
+Gets the access control policy for a resource.
+list	GET /v1/{parent=projects/*}/jobs 
+Lists the jobs in the project.
+setIamPolicy	POST /v1/{resource=projects/*/jobs/*}:setIamPolicy 
+Sets the access control policy on the specified resource.
+testIamPermissions	POST /v1/{resource=projects/*/jobs/*}:testIamPermissions 
+Returns permissions that a caller has on the specified resource.
+REST Resource: v1.projects.locations
+Methods
+get	GET /v1/{name=projects/*/locations/*} 
+Get the complete list of CMLE capabilities in a location, along with their location-specific properties.
+list	GET /v1/{parent=projects/*}/locations 
+List all locations that provides at least one type of CMLE capability.
+
+
+
+== REST Resource: v1.projects.models
+Methods
+create	POST /v1/{parent=projects/*}/models 
+Creates a model which will later contain one or more versions.
+delete	DELETE /v1/{name=projects/*/models/*} 
+Deletes a model.
+get	GET /v1/{name=projects/*/models/*} 
+Gets information about a model, including its name, the description (if set), and the default version (if at least one version of the model has been deployed).
+getIamPolicy	GET /v1/{resource=projects/*/models/*}:getIamPolicy 
+Gets the access control policy for a resource.
+list	GET /v1/{parent=projects/*}/models 
+Lists the models in a project.
+patch	PATCH /v1/{name=projects/*/models/*} 
+Updates a specific model resource.
+setIamPolicy	POST /v1/{resource=projects/*/models/*}:setIamPolicy 
+Sets the access control policy on the specified resource.
+testIamPermissions	POST /v1/{resource=projects/*/models/*}:testIamPermissions 
+Returns permissions that a caller has on the specified resource.
+
+== REST Resource: v1.projects.models.versions
+Methods
+create	POST /v1/{parent=projects/*/models/*}/versions 
+Creates a new version of a model from a trained TensorFlow model.
+delete	DELETE /v1/{name=projects/*/models/*/versions/*} 
+Deletes a model version.
+get	GET /v1/{name=projects/*/models/*/versions/*} 
+Gets information about a model version.
+list	GET /v1/{parent=projects/*/models/*}/versions 
+Gets basic information about all the versions of a model.
+patch	PATCH /v1/{name=projects/*/models/*/versions/*} 
+Updates the specified Version resource.
+setDefault	POST /v1/{name=projects/*/models/*/versions/*}:setDefault 
+Designates a version to be the default for the model.
+
+
+== REST Resource: v1.projects.operations
+Methods
+cancel	POST /v1/{name=projects/*/operations/*}:cancel 
+Starts asynchronous cancellation on a long-running operation.
+delete	DELETE /v1/{name=projects/*/operations/*} 
+Deletes a long-running operation.
+get	GET /v1/{name=projects/*/operations/*} 
+Gets the latest state of a long-running operation.
+list	GET /v1/{name=projects/*}/operations 
+Lists operations that match the specified filter in the request.

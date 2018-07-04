@@ -1,8 +1,60 @@
 :toc2:
-:toc-title: Investigation
+:toc-title: toc
 
-= Investigation 
 
+
+= Machine Learning as a Service
+
+image:images/mlaas.png?[MLaaS,300,200] image:images/equal.png?[,50,50] image:images/data-scientist.jpg?[ADS,200,200] image:images/equal.png?[,50,50] image:images/mls.png?[MLS,200,200]
+    
+    
+**Machine Learnind as a Service  = Automatic Data Scientist + Machine Learning Service**
+
+
+
+== Machine Learnind as a Service 
+
+image:images/mlaas.png?[MLaaS,200,200]
+
+The MLaaS is an end-to-end platform that streamlines the entire process of building, deploying, and exposing ML models.  +
+Data scientists and developers can launch turnkey compute environments for collaboratively training and deploying
+predictive models and integrate those models into real-time smart applications. +
+
+
+
+== Automatic Data Scientist
+
+image:images/data-scientist.jpg?[ADS,200,200]
+
+Easy use of collected data to answer questions, make links, find patterns and relationships. +
+Dashboard analytics, data visualization, knowledge graphs and real time alerts! +
+Initial focus is on time series data – since it is widely used in our domain. +
+
+Data intelligence platform to help people to understand data. There are a huge amount of technologies out there
+to help you gather, store and cleanse data, but not a lot of intuitive technologies to allow you to understand it 
+and ultimately investigate on that. +
+ 
+ 
+
+ 
+== Machine Learning Service
+
+image:images/mls.png?[MLS,200,200]
+
+Companies often build hundreds of models a day (e.g., churn, recommendation, credit default).
+However, there is no practical way to manage all the models that are built over time. 
+This lack of tooling leads to insights being lost, resources wasted on re-generating old results, and difficulty collaborating. +
+ +
+
+MLaaS is an end-to-end system that tracks models as they are built, extracts and stores relevant metadata 
+(e.g., hyperparameters, data sources) for models, and makes this data available for easy querying and visualization. +
+
+
+== API
+
+link:api/index.html[REST API]
+
+<<api/index.adoc,REST API>>
 
 
 == Data description

@@ -1,0 +1,383 @@
+:toc2:
+:toc-title: API
+
+
+= REST Resource: v1.models
+
+link:../../index.html[back <<] 
+
+
+== Resource: Model
+Represents a machine learning solution.
+
+A model can have multiple versions, each of which is a deployed, trained model ready to receive prediction requests.
+ The model itself is just a container.
+
+.JSON representation
+----
+{
+  "name": string,
+  "description": string,
+  "defaultVersion": {
+    object(Version)
+  },
+  "onlinePredictionLogging": boolean
+}
+----
+
+=== Fields
+[cols="1,1,5a"]
+|===
+|name	
+|string
+|Required. The name specified for the model when it was created. +
+The model name must be unique within the project it is created in.
+|description	
+|string
+|Optional. The description specified for the model when it was created.
+|defaultVersion	
+|object(Version)
+| Output only. The default version of the model. 
+This version will be used to handle prediction requests that do not specify a version. +
+You can change the default version by calling projects.methods.versions.setDefault.
+|onlinePredictionLogging	
+|boolean
+| Optional. If true, enables Logging for online prediction. Default is false.
+|===
+
+
+=== Methods
+[cols="1,5a"]
+|===
+|create
+|Creates a model which will later contain one or more versions.
+|delete
+|Deletes a model.
+|get
+|Gets information about a model, including its name, the description (if set), and the default version (if at least one version of the model has been deployed).
+|getIamPolicy
+|Gets the access control policy for a resource.
+|list
+|Lists the models in a project.
+|patch
+|Updates a specific model resource.
+|setIamPolicy
+|Sets the access control policy on the specified resource.
+|testIamPermissions
+|Returns permissions that a caller has on the specified resource.
+|===
+
+
+
+
+
+
+== Method: v1.models.create
+Creates a model which will later contain one or more versions.
+
+You must add at least one version before you can request predictions from the model. 
+Add versions by calling v1.models.versions.create.
+
+=== HTTP request
+`POST https://{site}/models`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+None 
+
+=== Request body
+The request body contains an instance of Model.
+
+=== Response body
+If successful, the response body contains a newly created instance of Model.
+
+
+
+== Method: v1.models.delete
+Deletes a model.
+
+You can only delete a model if there are no versions in it. 
+You can delete versions by calling v1.models.versions.delete.
+
+=== HTTP request
+`DELETE https://{site}/v1/models/{name=model/*}`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+[cols="1,1,5a"]
+|===
+|name	
+|string
+|Required. The name of the model.
+|===
+
+=== Request body
+The request body must be empty.
+
+=== Response body
+If successful, the response body contains an instance of Operation.
+
+
+
+
+
+
+== Method: v1.models.get
+Gets information about a model, including its name, the description (if set),
+ and the default version (if at least one version of the model has been deployed).
+
+=== HTTP request
+`GET https://{site|}/v1/models/{name=model/*}`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+[cols="1,1,5a"]
+|===
+|name	
+|string
+|Required. The name of the model.
+|===
+
+=== Request body
+The request body must be empty.
+
+=== Response body
+If successful, the response body contains an instance of Model.
+
+
+
+
+
+
+== Method: v1.models.getIamPolicy
+Gets the access control policy for a resource. 
+Returns an empty policy if the resource exists and does not have a policy set.
+
+=== HTTP request
+`GET https://{site}/v1/models/{name=model/*}:getIamPolicy`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+[cols="1,1,5a"]
+|===
+|resource	
+|string
+|REQUIRED: The resource for which the policy is being requested.
+|===
+
+=== Request body
+The request body must be empty.
+
+=== Response body
+If successful, the response body contains an instance of Policy.
+
+
+
+
+== Method: v1.models.list
+Lists the models in a project.
+
+Each project can contain multiple models, and each model can have multiple versions.
+
+If there are no models that match the request parameters, the list request returns an empty response body: {}.
+
+=== HTTP request
+`GET https://{site}/v1/models`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+Noen
+
+=== Query parameters
+[cols="1,1,5a"]
+|===
+|filter	
+|string
+|Optional. Specifies the subset of models to retrieve.
+
+|pageToken	
+|string
+|Optional. A page token to request the next page of results. +
+You get the token from the nextPageToken field of the response from the previous call.
+|pageSize	
+|number
+|Optional. The number of models to retrieve per "page" of results. If there are more remaining results than this number, the response message will contain a valid value in the nextPageToken field. +
+The default value is 20, and the maximum page size is 100.
+|===
+
+=== Request body
+The request body must be empty.
+
+=== Response body
+If successful, the response body contains data with the following structure:
+
+Response message for the models.list method.
+
+.JSON representation
+----
+{
+  "models": [
+    {
+      object(Model)
+    }
+  ],
+  "nextPageToken": string
+}
+----
+
+.Fields
+[cols="1,1,5a"]
+|===
+|models[]	
+|object(Model)
+|The list of models.
+
+|nextPageToken	
+|string
+|Optional. Pass this token as the pageToken field of the request for a subsequent call.
+|===
+
+
+
+
+== Method: v1.models.patch
+Updates a specific model resource.
+
+
+=== HTTP request
+`PATCH https://{site}/v1/models/{name=model/*}`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+None
+
+=== Query parameters
+[cols="1,1,5a"]
+|===
+|updateMask	
+|string (FieldMask format)
+|Required. Specifies the path, relative to Model, of the field to update. +
+ 
+For example, to change the description of a model to "foo" and set its default version to "version_1", 
+the updateMask parameter would be specified as description, defaultVersion.name, 
+and the PATCH request body would specify the new value, as follows:
+`+{ "description": "foo", "defaultVersion": { "name":"version_1" } }+`
+
+A comma-separated list of fully qualified names of fields. Example: "user.displayName,photo".
+|===
+
+=== Request body
+The request body contains an instance of Model.
+
+=== Response body
+If successful, the response body contains an instance of Operation.
+
+
+
+
+== Method: v1.models.setIamPolicy
+Sets the access control policy on the specified resource. Replaces any existing policy.
+
+=== HTTP request
+POST https://{site}/v1/{models/*}:setIamPolicy
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+[cols="1,1,5a"]
+|===
+|resource	
+|string
+|REQUIRED: The resource for which the policy is being specified. 
+|===
+
+=== Request body
+The request body contains data with the following structure:
+
+.JSON representation
+----
+{
+  "policy": {
+    object(Policy)
+  },
+  "updateMask": string
+}
+----
+
+.Fields
+[cols="1,1,5a"]
+|===
+|policy	
+|object(Policy)
+|REQUIRED: The complete policy to be applied to the resource. 
+
+|updateMask	
+|string (FieldMask format)
+|OPTIONAL: A FieldMask specifying which fields of the policy to modify. 
+Only the fields in the mask will be modified. 
+If no mask is provided, the following default mask is used: paths: "bindings, etag" 
+
+A comma-separated list of fully qualified names of fields. Example: "user.displayName,photo".
+|===
+
+=== Response body
+If successful, the response body contains an instance of Policy.
+
+
+
+
+
+== Method: v1.models.testIamPermissions
+Returns permissions that a caller has on the specified resource. 
+If the resource does not exist, this will return an empty set of permissions, not a NOT_FOUND error.
+
+Note: This operation is designed to be used for building permission-aware UIs and command-line tools, 
+not for authorization checking. This operation may "fail open" without warning.
+
+=== HTTP request
+`POST https://ml.googleapis.com/v1/{models/*}:testIamPermissions`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+[cols="1,1,5a"]
+|===
+|resource	
+|string
+|REQUIRED: The resource for which the policy detail is being requested. See the operation documentation for the appropriate value for this field.
+|===
+
+=== Request body
+The request body contains data with the following structure:
+
+.JSON representation
+----
+{
+  "permissions": [
+    string
+  ]
+}
+----
+
+.Fields
+[cols="1,1,5a"]
+|===
+|permissions[]	
+|string
+|The set of permissions to check for the resource. 
+|===
+
+=== Response body
+If successful, the response body contains an instance of TestIamPermissionsResponse.
+
+
+
+
+
+
