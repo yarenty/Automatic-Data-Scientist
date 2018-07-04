@@ -20,10 +20,10 @@ Represents a machine learning solution.
 A model can have multiple versions, each of which is a deployed, trained model ready to receive prediction requests.
  The model itself is just a container.
 
-Full API:  link:v1/models/index.html[v1/models]
+Full API  link:v1/models/index.html[v1/models]
 
 === Methods
-[cols="1,1,2,5a"]
+[cols="1,1,2,5"]
 |===
 |name |type |url |description
 |create
@@ -71,17 +71,17 @@ calling `v1.models.versions.list`.
 Full API: link:v1/models/versions/index.html[v1/models/versions] 
 
 === Methods
-[cols="1,1,2,5a"]
+[cols="1,1,2,5"]
 |===
 |name |type |url |description
 |create
 |POST |/v1/{models/*}/versions
 |Creates a new version of a model from a trained TensorFlow model.
 |delete
-|DELETE |/v1/{models/*/versions/*}
+|DELETE | `+/v1/{models/*/versions/*}+`
 |Deletes a model version.
 |get
-|GET |/v1/{models/*/versions/*}
+|GET |`+/v1/{models/*/versions/*}+`
 |Gets information about a model version.
 |list
 |GET |/v1/{models/*}/versions
@@ -107,7 +107,7 @@ Full API: link:v1/datasets/index.html[v1/datasets]
 
 
 === Methods
-[cols="1,1,2,5a"]
+[cols="1,1,2,5"]
 |===
 |name |type |url |description
 |create
@@ -173,7 +173,7 @@ Full API: link:v1/operations/index.html[v1/operations]
 
 === Methods
 
-[cols="1,1,2,4"]
+[cols="1,1,2,5"]
 |===
 |name |type |url |description
 |cancel
