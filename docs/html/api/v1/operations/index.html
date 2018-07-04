@@ -675,24 +675,40 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h3 id="_methods">Methods</h3>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 20%;">
-<col style="width: 80%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
 </colgroup>
 <tbody>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">url</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">description</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">cancel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/operations/{name=operation/*}:cancel</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Starts asynchronous cancellation on a long-running operation.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DELETE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/operations/{name=operation/*}</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Deletes a long-running operation.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">get</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/operations/{name=operation/*}</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Gets the latest state of a long-running operation.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/operations</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Lists operations that match the specified filter in the request.</p></td>
 </tr>
 </tbody>
@@ -704,7 +720,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_method_v1_operations_cancel">Method: v1.operations.cancel</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Starts asynchronous cancellation on a long-running operation. The server makes a best effort to cancel the operation, but success is not guaranteed. If the server doesn&#8217;t support this method, it returns google.rpc.Code.UNIMPLEMENTED. Clients can use Operations.GetOperation or other methods to check whether the cancellation succeeded or whether the operation completed despite cancellation. On successful cancellation, the operation is not deleted; instead, it becomes an operation with an Operation.error value with a google.rpc.Status.code of 1, corresponding to Code.CANCELLED.</p>
+<p>Starts asynchronous cancellation on a long-running operation.
+The server makes a best effort to cancel the operation,
+but success is not guaranteed. If the server doesn&#8217;t support this method,
+it returns Code.UNIMPLEMENTED.
+Clients can use Operations.GetOperation or other methods to check whether
+the cancellation succeeded or whether the operation completed despite cancellation.
+On successful cancellation, the operation is not deleted; instead, i
+t becomes an operation with an Operation.error value with a Status.code of 1,
+corresponding to Code.CANCELLED.</p>
 </div>
 <div class="sect2">
 <h3 id="_http_request">HTTP request</h3>
@@ -752,7 +776,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_method_v1_operations_delete">Method: v1.operations.delete</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Deletes a long-running operation. This method indicates that the client is no longer interested in the operation result. It does not cancel the operation. If the server doesn&#8217;t support this method, it returns google.rpc.Code.UNIMPLEMENTED.</p>
+<p>Deletes a long-running operation. This method indicates that the client is no longer
+interested in the operation result. It does not cancel the operation.
+If the server doesn&#8217;t support this method, it returns Code.UNIMPLEMENTED.</p>
 </div>
 <div class="sect2">
 <h3 id="_http_request_2">HTTP request</h3>
@@ -800,7 +826,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_method_v1_operations_get">Method: v1.operations.get</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Gets the latest state of a long-running operation. Clients can use this method to poll the operation result at intervals as recommended by the API service.</p>
+<p>Gets the latest state of a long-running operation. Clients can use this method
+to poll the operation result at intervals as recommended by the API service.</p>
 </div>
 <div class="sect2">
 <h3 id="_http_request_3">HTTP request</h3>
@@ -858,8 +885,8 @@ If the server doesn&#8217;t support this method, it returns UNIMPLEMENTED.</p>
 <div class="title">Note</div>
 </td>
 <td class="content">
-the name binding allows API services to override the binding to use different resource name schemes,
- such as users/<strong>/operations.
+the name binding allows API services to override the binding to use
+different resource name schemes,  such as users/<strong>/operations.
  To override the binding, API services can add a binding such as <code>"/v1/{name=users/</strong>}/operations"</code>
   to their service configuration. For backwards compatibility, the default name includes the operations collection id,
   however overriding users must ensure the name binding is the parent resource, without the operations collection id.
@@ -985,7 +1012,7 @@ the name binding allows API services to override the binding to use different re
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-07-03 16:20:17 IST
+Last updated 2018-07-04 15:44:09 IST
 </div>
 </div>
 </body>

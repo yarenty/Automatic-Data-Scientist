@@ -431,20 +431,62 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">API</div>
 <ul class="sectlevel1">
-<li><a href="#_resource_dataset">Resource: Dataset</a></li>
-<li><a href="#_methods">Methods</a></li>
-<li><a href="#_method_v1_datasets_list">Method: v1.datasets.list</a>
+<li><a href="#_resource_dataset">Resource: Dataset</a>
 <ul class="sectlevel2">
-<li><a href="#_http_request_br">HTTP request<br></a></li>
-<li><a href="#_path_parameters">Path parameters</a></li>
-<li><a href="#_query_parameters">Query parameters</a></li>
-<li><a href="#_request_body">Request body</a></li>
-<li><a href="#_response_body">Response body</a></li>
 <li><a href="#_fields">Fields</a></li>
+<li><a href="#_methods">Methods</a></li>
 </ul>
 </li>
-<li><a href="#_method_v1_data_spec">Method: v1.data.spec</a></li>
-<li><a href="#_method_v1_data_slice">Method v1.data.slice</a></li>
+<li><a href="#_method_v1_datasets_create">Method: v1.datasets.create</a>
+<ul class="sectlevel2">
+<li><a href="#_http_request">HTTP request</a></li>
+<li><a href="#_path_parameters">Path parameters</a></li>
+<li><a href="#_request_body">Request body</a></li>
+<li><a href="#_response_body">Response body</a></li>
+</ul>
+</li>
+<li><a href="#_method_v1_datasets_delete">Method: v1.datasets.delete</a>
+<ul class="sectlevel2">
+<li><a href="#_http_request_2">HTTP request</a></li>
+<li><a href="#_path_parameters_2">Path parameters</a></li>
+<li><a href="#_request_body_2">Request body</a></li>
+<li><a href="#_response_body_2">Response body</a></li>
+</ul>
+</li>
+<li><a href="#_method_v1_datasets_get">Method: v1.datasets.get</a>
+<ul class="sectlevel2">
+<li><a href="#_http_request_3">HTTP request</a></li>
+<li><a href="#_path_parameters_3">Path parameters</a></li>
+<li><a href="#_request_body_3">Request body</a></li>
+<li><a href="#_response_body_3">Response body</a></li>
+</ul>
+</li>
+<li><a href="#_method_v1_datasets_list">Method: v1.datasets.list</a>
+<ul class="sectlevel2">
+<li><a href="#_http_request_4">HTTP request</a></li>
+<li><a href="#_path_parameters_4">Path parameters</a></li>
+<li><a href="#_query_parameters">Query parameters</a></li>
+<li><a href="#_request_body_4">Request body</a></li>
+<li><a href="#_response_body_4">Response body</a></li>
+</ul>
+</li>
+<li><a href="#_method_v1_datasets_patch">Method: v1.datasets.patch</a>
+<ul class="sectlevel2">
+<li><a href="#_http_request_5">HTTP request</a></li>
+<li><a href="#_path_parameters_5">Path parameters</a></li>
+<li><a href="#_query_parameters_2">Query parameters</a></li>
+<li><a href="#_request_body_5">Request body</a></li>
+<li><a href="#_response_body_5">Response body</a></li>
+</ul>
+</li>
+<li><a href="#_method_v1_datasets_getslices">Method: v1.datasets.getSlices</a>
+<ul class="sectlevel2">
+<li><a href="#_http_request_6">HTTP request</a></li>
+<li><a href="#_path_parameters_6">Path parameters</a></li>
+<li><a href="#_request_body_6">Request body</a></li>
+<li><a href="#_response_body_6">Response body</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -460,223 +502,22 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_resource_dataset">Resource: Dataset</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Represents a dataset</p>
+<p>Represents a dataset.</p>
 </div>
 <div class="paragraph">
-<p>A model can have multiple versions, each of which is a deployed, trained model ready to receive prediction requests.
- The model itself is just a container.</p>
-</div>
-<div class="paragraph">
-<p>JSON representation
-{
-  "name": string,
-  "description": string,
-  "defaultVersion": {
-    object(Version)
-  },
-  "regions": [
-    string
-  ],
-  "onlinePredictionLogging": boolean
-}
-Fields
-name
-string</p>
-</div>
-<div class="paragraph">
-<p>Required. The name specified for the model when it was created.</p>
-</div>
-<div class="paragraph">
-<p>The model name must be unique within the project it is created in.</p>
-</div>
-<div class="paragraph">
-<p>description
-string</p>
-</div>
-<div class="paragraph">
-<p>Optional. The description specified for the model when it was created.</p>
-</div>
-<div class="paragraph">
-<p>defaultVersion
-object(Version)</p>
-</div>
-<div class="paragraph">
-<p>Output only. The default version of the model. This version will be used to handle prediction requests that do not specify a version.</p>
-</div>
-<div class="paragraph">
-<p>You can change the default version by calling projects.methods.versions.setDefault.</p>
-</div>
-<div class="paragraph">
-<p>regions[]
-string</p>
-</div>
-<div class="paragraph">
-<p>Optional. The list of regions where the model is going to be deployed. Currently only one region per model is supported. Defaults to 'us-central1' if nothing is set. See the available regions for ML Engine services. Note: * No matter where a model is deployed, it can always be accessed by users from anywhere, both for online and batch prediction. * The region for a batch prediction job is set by the region field when submitting the batch prediction job and does not take its value from this field.</p>
-</div>
-<div class="paragraph">
-<p>onlinePredictionLogging
-boolean</p>
-</div>
-<div class="paragraph">
-<p>Optional. If true, enables StackDriver Logging for online prediction. Default is false.</p>
-</div>
-<div class="paragraph">
-<p>Methods
-create
-Creates a model which will later contain one or more versions.
-delete
-Deletes a model.
-get
-Gets information about a model, including its name, the description (if set), and the default version (if at least one version of the model has been deployed).
-getIamPolicy
-Gets the access control policy for a resource.
-list
-Lists the models in a project.
-patch
-Updates a specific model resource.
-setIamPolicy
-Sets the access control policy on the specified resource.
-testIamPermissions
-Returns permissions that a caller has on the specified resource.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_methods">Methods</h2>
-<div class="sectionbody">
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 22.2222%;">
-<col style="width: 55.5556%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">v1/datasets/</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Returns list ov datasets</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">v1/datasets/{name=dataset/*)</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Returns specific dataset</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">spec</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">v1/datasets/{name=dataset/*}:spec</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Returns dataset specification</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">slice</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">v1/datasets/{name=dataset/*}:slice</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>slice data set into temporary slices</p>
-</div></div></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_method_v1_datasets_list">Method: v1.datasets.list</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>List all datasets.</p>
-</div>
-<div class="sect2">
-<h3 id="_http_request_br">HTTP request<br></h3>
-<div class="paragraph">
-<p><code>GET <a href="https://{site}/v1/datasets" class="bare">https://{site}/v1/datasets</a></code></p>
-</div>
-<div class="paragraph">
-<p>The URL uses <a href="https://github.com/googleapis/googleapis/blob/master/google/api/http.proto?">Google API HTTP annotation</a> syntax.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_path_parameters">Path parameters</h3>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 71.4286%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">parent</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Required. The name of the project for which available locations are to be listed (since some locations might be whitelisted for specific projects).</p>
-</div></div></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_query_parameters">Query parameters</h3>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 71.4286%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pageToken</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Optional. A page token to request the next page of results.</p>
-</div>
-<div class="paragraph">
-<p>You get the token from the nextPageToken field of the response from the previous call.</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pageSize</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Optional. The number of locations to retrieve per "page" of results. If there are more remaining results than this number, the response message will contain a valid value in the nextPageToken field.</p>
-</div>
-<div class="paragraph">
-<p>The default value is 20, and the maximum page size is 100.</p>
-</div></div></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_request_body">Request body</h3>
-<div class="paragraph">
-<p>The request body must be empty.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_response_body">Response body</h3>
-<div class="paragraph">
-<p>If successful, the response body contains data with the following structure:</p>
+<p>A dataset can have multiple versions/increases, usually with time.</p>
 </div>
 <div class="listingblock">
 <div class="title">JSON representation</div>
 <div class="content">
 <pre>{
-  "locations": [
-    {
-      object(Location)
-    }
-  ],
-  "nextPageToken": string
+  "name": string,
+  "description": string,
+  "defaultVersion": {
+    object(Version)
+  },
+  "isTimeSerie": boolean
 }</pre>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -689,10 +530,356 @@ Returns permissions that a caller has on the specified resource.</p>
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">locations[]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">object(Location)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Locations where at least one type of CMLE capability is available.</p>
+<p>Required. The name specified for the dataset when it was created.<br>
+The dataset name must be unique.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. The description specified for the dataset when it was created.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">defaultVersion</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object(Version)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Output only. The default version of the data.
+This version will be used to handle prediction requests that do not specify a version.<br>
+You can change the default version by calling v1.datasets.updateData.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">isTimeSerie</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. If true, it specifies data is time serie type. Default is false.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_methods">Methods</h3>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 22.2222%;">
+<col style="width: 55.5556%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">url</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>description</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/datasets</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Creates a new dataset.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DELETE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/datasets/{name=dataset/*}</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Deletes a dataset.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">get</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/datasets/{name=dataset/*}</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Gets information about a dataset, including its name, the description (if set),
+and the default version specification.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/datasets</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Lists the datasets in a project.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">patch</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PATCH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/datasets/{name=dataset/*}</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Updates a specific dataset with new cached data.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">getSlices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/datasets/{name=dataset/*}:getSlices</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Gets a dataset, with train/test/validation slices.
+Slicing is depending on dataset and JSON parameters.
+Default is:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>if dataset is time series: continuous, 60/20/20%</p>
+</li>
+<li>
+<p>if dataset is not times eries: random sampling, 80/10/10%.</p>
+</li>
+</ul>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_method_v1_datasets_create">Method: v1.datasets.create</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Creates a dataset.</p>
+</div>
+<div class="sect2">
+<h3 id="_http_request">HTTP request</h3>
+<div class="paragraph">
+<p><code>POST <a href="https://{site}/datasets" class="bare">https://{site}/datasets</a></code></p>
+</div>
+<div class="paragraph">
+<p>The URL uses Google API HTTP annotation syntax.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_path_parameters">Path parameters</h3>
+<div class="paragraph">
+<p>None</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_request_body">Request body</h3>
+<div class="paragraph">
+<p>The request body contains an dataset body.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_body">Response body</h3>
+<div class="paragraph">
+<p>If successful, the response body contains a newly created instance of Dataset.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_method_v1_datasets_delete">Method: v1.datasets.delete</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Deletes a dataset.</p>
+</div>
+<div class="sect2">
+<h3 id="_http_request_2">HTTP request</h3>
+<div class="paragraph">
+<p><code>DELETE <a href="https://{site}/v1/datasets/{name=dataset/*}" class="bare">https://{site}/v1/datasets/{name=dataset/*}</a></code></p>
+</div>
+<div class="paragraph">
+<p>The URL uses Google API HTTP annotation syntax.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_path_parameters_2">Path parameters</h3>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Required. The name of the dataset.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_request_body_2">Request body</h3>
+<div class="paragraph">
+<p>The request body must be empty.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_body_2">Response body</h3>
+<div class="paragraph">
+<p>If successful, the response body contains an instance of Operation.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_method_v1_datasets_get">Method: v1.datasets.get</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Gets information about a dataset, including its name, the description (if set),
+ list of the versions/increases.</p>
+</div>
+<div class="sect2">
+<h3 id="_http_request_3">HTTP request</h3>
+<div class="paragraph">
+<p><code>GET <a href="https://{site|}/v1/datasets/{name=dataset/*}" class="bare">https://{site|}/v1/datasets/{name=dataset/*}</a></code></p>
+</div>
+<div class="paragraph">
+<p>The URL uses Google API HTTP annotation syntax.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_path_parameters_3">Path parameters</h3>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Required. The name of the dataset.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_request_body_3">Request body</h3>
+<div class="paragraph">
+<p>The request body must be empty.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_body_3">Response body</h3>
+<div class="paragraph">
+<p>If successful, the response body contains an instance of Dataset.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_method_v1_datasets_list">Method: v1.datasets.list</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Lists the datasets in a project.</p>
+</div>
+<div class="paragraph">
+<p>If there are no datasets that match the request parameters, the list request returns an empty response body: {}.</p>
+</div>
+<div class="sect2">
+<h3 id="_http_request_4">HTTP request</h3>
+<div class="paragraph">
+<p><code>GET <a href="https://{site}/v1/datasets" class="bare">https://{site}/v1/datasets</a></code></p>
+</div>
+<div class="paragraph">
+<p>The URL uses Google API HTTP annotation syntax.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_path_parameters_4">Path parameters</h3>
+<div class="paragraph">
+<p>None</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_query_parameters">Query parameters</h3>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">filter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. Specifies the subset of datasets to retrieve.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pageToken</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. A page token to request the next page of results.<br>
+You get the token from the nextPageToken field of the response from the previous call.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pageSize</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. The number of datasets to retrieve per "page" of results.
+If there are more remaining results than this number, the response message will contain a valid value
+in the nextPageToken field.<br>
+The default value is 20, and the maximum page size is 100.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_request_body_4">Request body</h3>
+<div class="paragraph">
+<p>The request body must be empty.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_body_4">Response body</h3>
+<div class="paragraph">
+<p>If successful, the response body contains data with the following structure:</p>
+</div>
+<div class="paragraph">
+<p>Response message for the datasets.list method.</p>
+</div>
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
+  "datasets": [
+    {
+      object(Dataset)
+    }
+  ],
+  "nextPageToken": string
+}</pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Fields</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">models[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object(Dataset)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>The list of datasets.</p>
 </div></div></td>
 </tr>
 <tr>
@@ -708,107 +895,157 @@ Returns permissions that a caller has on the specified resource.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_method_v1_data_spec">Method: v1.data.spec</h2>
+<h2 id="_method_v1_datasets_patch">Method: v1.datasets.patch</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Get the service account information associated with your project. You need this information in order to grant the service account permissions for the Google Cloud Storage location where you put your model training code for training the model with Google Cloud Machine Learning.</p>
+<p>Updates a specific dataset with increased data.</p>
 </div>
+<div class="sect2">
+<h3 id="_http_request_5">HTTP request</h3>
 <div class="paragraph">
-<p>HTTP request
-GET <a href="https://ml.googleapis.com/v1/{name=projects/*}:getConfig" class="bare">https://ml.googleapis.com/v1/{name=projects/*}:getConfig</a></p>
+<p><code>PATCH <a href="https://{site}/v1/datasets/{name=dataset/*}" class="bare">https://{site}/v1/datasets/{name=dataset/*}</a></code></p>
 </div>
 <div class="paragraph">
 <p>The URL uses Google API HTTP annotation syntax.</p>
 </div>
-<div class="paragraph">
-<p>Path parameters
-Parameters
-name
-string</p>
+</div>
+<div class="sect2">
+<h3 id="_path_parameters_5">Path parameters</h3>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>name of the dataset to be increased</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_query_parameters_2">Query parameters</h3>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">update</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Required. Specifies the new branch of data.<br></p>
 </div>
 <div class="paragraph">
-<p>Required. The project name.</p>
+<p>For example, if data is time serie type new branch could be new 1 week of data between 01/06/2018 and 08/06/2018:
+<code>{ "description": "1 week od data between...", "defaultVersion": { "name":"version_1" } }</code></p>
 </div>
 <div class="paragraph">
-<p>Authorization requires the following Google IAM permission on the specified resource name:</p>
+<p>A comma-separated list of fully qualified names of fields. Example: "user.displayName,photo".</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
+<div class="sect2">
+<h3 id="_request_body_5">Request body</h3>
 <div class="paragraph">
-<p>ml.projects.getConfig
-Request body
-The request body must be empty.</p>
+<p>The request body contains an instance of Dataset.</p>
 </div>
-<div class="paragraph">
-<p>Response body
-If successful, the response body contains data with the following structure:</p>
 </div>
+<div class="sect2">
+<h3 id="_response_body_5">Response body</h3>
 <div class="paragraph">
-<p>Returns service account information associated with a project.</p>
+<p>If successful, the response body contains an instance of Operation.</p>
 </div>
-<div class="paragraph">
-<p>JSON representation
-{
-  "serviceAccount": string,
-  "serviceAccountProject": string,
-  "config": {
-    object(Config)
-  }
-}
-Fields
-serviceAccount
-string</p>
-</div>
-<div class="paragraph">
-<p>The service account Cloud ML uses to access resources in the project.</p>
-</div>
-<div class="paragraph">
-<p>serviceAccountProject
-string (int64 format)</p>
-</div>
-<div class="paragraph">
-<p>The project number for serviceAccount.</p>
-</div>
-<div class="paragraph">
-<p>config
-object(Config)</p>
-</div>
-<div class="paragraph">
-<p>Authorization Scopes
-Requires the following OAuth scope:</p>
-</div>
-<div class="paragraph">
-<p><a href="https://www.googleapis.com/auth/cloud-platform" class="bare">https://www.googleapis.com/auth/cloud-platform</a>
-For more information, see the Auth Guide.</p>
-</div>
-<div class="paragraph">
-<p>Config
-JSON representation
-{
-  "tpuServiceAccount": string
-}
-Fields
-tpuServiceAccount
-string</p>
-</div>
-<div class="paragraph">
-<p>The service account Cloud ML uses to run on TPU node.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_method_v1_data_slice">Method v1.data.slice</h2>
+<h2 id="_method_v1_datasets_getslices">Method: v1.datasets.getSlices</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Returns data specification</p>
+<p>Gets a dataset, with train/test/validation slices.
+Slicing is depending on dataset and JSON parameters.
+Default is:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>if dataset is time series: continuous, 60/20/20%</p>
+</li>
+<li>
+<p>if dataset is not times eries: random sampling, 80/10/10%.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_http_request_6">HTTP request</h3>
+<div class="paragraph">
+<p><code>GET <a href="https://{site}/v1/datasets/{name=dataset/*}:getSlices" class="bare">https://{site}/v1/datasets/{name=dataset/*}:getSlices</a></code></p>
+</div>
+<div class="paragraph">
+<p>The URL uses Google API HTTP annotation syntax.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_path_parameters_6">Path parameters</h3>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Required. The name of the dataset.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_request_body_6">Request body</h3>
+<div class="paragraph">
+<p>Optional:</p>
 </div>
 <div class="listingblock">
-<div class="title">Example JSON:</div>
+<div class="title">JSON body</div>
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">   {
-        slices: [0.8, 0.1, 0.1],
-        names: [train, test, valid],
-        type: random,
-        random : 888666888L
-    }</code></pre>
+<pre>{
+    sampling: "random",
+    slices: {80,10,10}
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Default is:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>if dataset is time series: continuous, 60/20/20%</p>
+</li>
+<li>
+<p>if dataset is not times eries: random sampling, 80/10/10%.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_body_6">Response body</h3>
+<div class="paragraph">
+<p>If successful, the response body contains an array of Datasets.</p>
 </div>
 </div>
 </div>
@@ -816,7 +1053,7 @@ string</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-07-03 14:02:46 IST
+Last updated 2018-07-04 15:44:09 IST
 </div>
 </div>
 </body>

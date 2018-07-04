@@ -461,28 +461,28 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_response_body_3">Response body</a></li>
 </ul>
 </li>
-<li><a href="#_method_v1_models_getiampolicy">Method: v1.models.getIamPolicy</a>
+<li><a href="#_method_v1_models_list">Method: v1.models.list</a>
 <ul class="sectlevel2">
 <li><a href="#_http_request_4">HTTP request</a></li>
 <li><a href="#_path_parameters_4">Path parameters</a></li>
+<li><a href="#_query_parameters">Query parameters</a></li>
 <li><a href="#_request_body_4">Request body</a></li>
 <li><a href="#_response_body_4">Response body</a></li>
 </ul>
 </li>
-<li><a href="#_method_v1_models_list">Method: v1.models.list</a>
+<li><a href="#_method_v1_models_patch">Method: v1.models.patch</a>
 <ul class="sectlevel2">
 <li><a href="#_http_request_5">HTTP request</a></li>
 <li><a href="#_path_parameters_5">Path parameters</a></li>
-<li><a href="#_query_parameters">Query parameters</a></li>
+<li><a href="#_query_parameters_2">Query parameters</a></li>
 <li><a href="#_request_body_5">Request body</a></li>
 <li><a href="#_response_body_5">Response body</a></li>
 </ul>
 </li>
-<li><a href="#_method_v1_models_patch">Method: v1.models.patch</a>
+<li><a href="#_method_v1_models_getiampolicy">Method: v1.models.getIamPolicy</a>
 <ul class="sectlevel2">
 <li><a href="#_http_request_6">HTTP request</a></li>
 <li><a href="#_path_parameters_6">Path parameters</a></li>
-<li><a href="#_query_parameters_2">Query parameters</a></li>
 <li><a href="#_request_body_6">Request body</a></li>
 <li><a href="#_response_body_6">Response body</a></li>
 </ul>
@@ -584,56 +584,83 @@ You can change the default version by calling projects.methods.versions.setDefau
 <h3 id="_methods">Methods</h3>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 16.6666%;">
-<col style="width: 83.3334%;">
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 22.2222%;">
+<col style="width: 55.5556%;">
 </colgroup>
 <tbody>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">url</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>description</p>
+</div></div></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/models</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Creates a model which will later contain one or more versions.</p>
 </div></div></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DELETE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/models/{name=model/*}</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Deletes a model.</p>
 </div></div></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">get</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/models/{name=model/*}</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Gets information about a model, including its name, the description (if set), and the default version (if at least one version of the model has been deployed).</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">getIamPolicy</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Gets the access control policy for a resource.</p>
+<p>Gets information about a model, including its name, the description (if set),
+ and the default version (if at least one version of the model has been deployed).</p>
 </div></div></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/models</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Lists the models in a project.</p>
 </div></div></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">patch</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PATCH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/models/{name=model/*}</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Updates a specific model resource.</p>
 </div></div></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">setIamPolicy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">getIamPolicy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">v1/models/{name=model/*}:getIamPolicy</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Sets the access control policy on the specified resource.</p>
+<p>Experimental. Gets the access control policy for a resource.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">setIamPolicy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">v1/models/{name=model/*}:setIamPolicy</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Experimental. Sets the access control policy on the specified resource.</p>
 </div></div></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">testIamPermissions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/model/{sname=model/*}:testIamPermissions</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Returns permissions that a caller has on the specified resource.</p>
+<p>Experimental. Returns permissions that a caller has on the specified resource.</p>
 </div></div></td>
 </tr>
 </tbody>
@@ -654,7 +681,7 @@ Add versions by calling v1.models.versions.create.</p>
 <div class="sect2">
 <h3 id="_http_request">HTTP request</h3>
 <div class="paragraph">
-<p><code>POST <a href="https://{site}/models" class="bare">https://{site}/models</a></code></p>
+<p><code>POST <a href="https://{site}/v1/models" class="bare">https://{site}/v1/models</a></code></p>
 </div>
 <div class="paragraph">
 <p>The URL uses Google API HTTP annotation syntax.</p>
@@ -782,55 +809,6 @@ You can delete versions by calling v1.models.versions.delete.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_method_v1_models_getiampolicy">Method: v1.models.getIamPolicy</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Gets the access control policy for a resource.
-Returns an empty policy if the resource exists and does not have a policy set.</p>
-</div>
-<div class="sect2">
-<h3 id="_http_request_4">HTTP request</h3>
-<div class="paragraph">
-<p><code>GET <a href="https://{site}/v1/models/{name=model/*}:getIamPolicy" class="bare">https://{site}/v1/models/{name=model/*}:getIamPolicy</a></code></p>
-</div>
-<div class="paragraph">
-<p>The URL uses Google API HTTP annotation syntax.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_path_parameters_4">Path parameters</h3>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 71.4286%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">resource</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>REQUIRED: The resource for which the policy is being requested.</p>
-</div></div></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_request_body_4">Request body</h3>
-<div class="paragraph">
-<p>The request body must be empty.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_response_body_4">Response body</h3>
-<div class="paragraph">
-<p>If successful, the response body contains an instance of Policy.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
 <h2 id="_method_v1_models_list">Method: v1.models.list</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -843,7 +821,7 @@ Returns an empty policy if the resource exists and does not have a policy set.</
 <p>If there are no models that match the request parameters, the list request returns an empty response body: {}.</p>
 </div>
 <div class="sect2">
-<h3 id="_http_request_5">HTTP request</h3>
+<h3 id="_http_request_4">HTTP request</h3>
 <div class="paragraph">
 <p><code>GET <a href="https://{site}/v1/models" class="bare">https://{site}/v1/models</a></code></p>
 </div>
@@ -852,7 +830,7 @@ Returns an empty policy if the resource exists and does not have a policy set.</
 </div>
 </div>
 <div class="sect2">
-<h3 id="_path_parameters_5">Path parameters</h3>
+<h3 id="_path_parameters_4">Path parameters</h3>
 <div class="paragraph">
 <p>Noen</p>
 </div>
@@ -893,13 +871,13 @@ The default value is 20, and the maximum page size is 100.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_request_body_5">Request body</h3>
+<h3 id="_request_body_4">Request body</h3>
 <div class="paragraph">
 <p>The request body must be empty.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_response_body_5">Response body</h3>
+<h3 id="_response_body_4">Response body</h3>
 <div class="paragraph">
 <p>If successful, the response body contains data with the following structure:</p>
 </div>
@@ -953,7 +931,7 @@ The default value is 20, and the maximum page size is 100.</p>
 <p>Updates a specific model resource.</p>
 </div>
 <div class="sect2">
-<h3 id="_http_request_6">HTTP request</h3>
+<h3 id="_http_request_5">HTTP request</h3>
 <div class="paragraph">
 <p><code>PATCH <a href="https://{site}/v1/models/{name=model/*}" class="bare">https://{site}/v1/models/{name=model/*}</a></code></p>
 </div>
@@ -962,7 +940,7 @@ The default value is 20, and the maximum page size is 100.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_path_parameters_6">Path parameters</h3>
+<h3 id="_path_parameters_5">Path parameters</h3>
 <div class="paragraph">
 <p>None</p>
 </div>
@@ -996,15 +974,67 @@ and the PATCH request body would specify the new value, as follows:
 </table>
 </div>
 <div class="sect2">
-<h3 id="_request_body_6">Request body</h3>
+<h3 id="_request_body_5">Request body</h3>
 <div class="paragraph">
 <p>The request body contains an instance of Model.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_response_body_6">Response body</h3>
+<h3 id="_response_body_5">Response body</h3>
 <div class="paragraph">
 <p>If successful, the response body contains an instance of Operation.</p>
+</div>
+<div class="paragraph">
+<p><strong>EXPERIMENTAL</strong></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_method_v1_models_getiampolicy">Method: v1.models.getIamPolicy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Gets the access control policy for a resource.
+Returns an empty policy if the resource exists and does not have a policy set.</p>
+</div>
+<div class="sect2">
+<h3 id="_http_request_6">HTTP request</h3>
+<div class="paragraph">
+<p><code>GET <a href="https://{site}/v1/models/{name=model/*}:getIamPolicy" class="bare">https://{site}/v1/models/{name=model/*}:getIamPolicy</a></code></p>
+</div>
+<div class="paragraph">
+<p>The URL uses Google API HTTP annotation syntax.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_path_parameters_6">Path parameters</h3>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">resource</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>REQUIRED: The resource for which the policy is being requested.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_request_body_6">Request body</h3>
+<div class="paragraph">
+<p>The request body must be empty.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_body_6">Response body</h3>
+<div class="paragraph">
+<p>If successful, the response body contains an instance of Policy.</p>
 </div>
 </div>
 </div>
@@ -1018,7 +1048,7 @@ and the PATCH request body would specify the new value, as follows:
 <div class="sect2">
 <h3 id="_http_request_7">HTTP request</h3>
 <div class="paragraph">
-<p>POST <a href="https://{site}/v1/{models/*}:setIamPolicy" class="bare">https://{site}/v1/{models/*}:setIamPolicy</a></p>
+<p>POST <a href="https://{site}/v1/models/{name=model/*}:setIamPolicy" class="bare">https://{site}/v1/models/{name=model/*}:setIamPolicy</a></p>
 </div>
 <div class="paragraph">
 <p>The URL uses Google API HTTP annotation syntax.</p>
@@ -1111,7 +1141,7 @@ not for authorization checking. This operation may "fail open" without warning.<
 <div class="sect2">
 <h3 id="_http_request_8">HTTP request</h3>
 <div class="paragraph">
-<p><code>POST <a href="https://ml.googleapis.com/v1/{models/*}:testIamPermissions" class="bare">https://ml.googleapis.com/v1/{models/*}:testIamPermissions</a></code></p>
+<p><code>POST <a href="https://{site}/v1/model/{sname=model/*}:testIamPermissions" class="bare">https://{site}/v1/model/{sname=model/*}:testIamPermissions</a></code></p>
 </div>
 <div class="paragraph">
 <p>The URL uses Google API HTTP annotation syntax.</p>
@@ -1130,7 +1160,7 @@ not for authorization checking. This operation may "fail open" without warning.<
 <td class="tableblock halign-left valign-top"><p class="tableblock">resource</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>REQUIRED: The resource for which the policy detail is being requested. See the operation documentation for the appropriate value for this field.</p>
+<p>REQUIRED: The resource for which the policy detail is being requested.</p>
 </div></div></td>
 </tr>
 </tbody>
@@ -1180,7 +1210,7 @@ not for authorization checking. This operation may "fail open" without warning.<
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-07-03 16:23:51 IST
+Last updated 2018-07-04 15:18:18 IST
 </div>
 </div>
 </body>

@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.6.1">
-<title>REST Resource: v1.models.versions</title>
+<title>REST Resource: v1.services.anomalies</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -427,20 +427,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>REST Resource: v1.models.versions</h1>
+<h1>REST Resource: v1.services.anomalies</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">API</div>
 <ul class="sectlevel1">
-<li><a href="#_resource_version">Resource: Version</a>
+<li><a href="#_resource_anomaly">Resource: Anomaly</a>
 <ul class="sectlevel2">
-<li><a href="#_autoscaling">AutoScaling</a></li>
-<li><a href="#_manualscaling">ManualScaling</a></li>
+<li><a href="#_anomalyinput">AnomalyInput</a></li>
+<li><a href="#_dataformat">DataFormat</a></li>
 <li><a href="#_state">State</a></li>
-<li><a href="#_framework">Framework</a></li>
+<li><a href="#_anomalyoutput">AnomalyOutput</a></li>
+<li><a href="#_methods">Methods</a></li>
 </ul>
 </li>
-<li><a href="#_methods">Methods</a></li>
-<li><a href="#_method_v1_models_versions_create">Method: v1.models.versions.create</a>
+<li><a href="#_method_v1_services_anomalies_cancel">Method: v1.services.anomalies.cancel</a>
 <ul class="sectlevel2">
 <li><a href="#_http_request">HTTP request</a></li>
 <li><a href="#_path_parameters">Path parameters</a></li>
@@ -448,7 +448,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_response_body">Response body</a></li>
 </ul>
 </li>
-<li><a href="#_method_v1_models_versions_delete">Method: v1.models.versions.delete</a>
+<li><a href="#_method_v1_services_anomalies_create">Method: v1.services.anomalies.create</a>
 <ul class="sectlevel2">
 <li><a href="#_http_request_2">HTTP request</a></li>
 <li><a href="#_path_parameters_2">Path parameters</a></li>
@@ -456,7 +456,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_response_body_2">Response body</a></li>
 </ul>
 </li>
-<li><a href="#_method_v1_models_versions_get">Method: v1.models.versions.get</a>
+<li><a href="#_method_v1_services_anomalies_get">Method: v1.services.anomalies.get</a>
 <ul class="sectlevel2">
 <li><a href="#_http_request_3">HTTP request</a></li>
 <li><a href="#_path_parameters_3">Path parameters</a></li>
@@ -464,30 +464,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_response_body_3">Response body</a></li>
 </ul>
 </li>
-<li><a href="#_method_v1_models_versions_list">Method: v1.models.versions.list</a>
+<li><a href="#_method_v1_services_anomalies_list">Method: v1.services.anomalies.list</a>
 <ul class="sectlevel2">
 <li><a href="#_http_request_4">HTTP request</a></li>
 <li><a href="#_path_parameters_4">Path parameters</a></li>
 <li><a href="#_query_parameters">Query parameters</a></li>
 <li><a href="#_request_body_4">Request body</a></li>
 <li><a href="#_response_body_4">Response body</a></li>
-</ul>
-</li>
-<li><a href="#_method_v1_models_versions_patch">Method: v1.models.versions.patch</a>
-<ul class="sectlevel2">
-<li><a href="#_http_request_5">HTTP request</a></li>
-<li><a href="#_path_parameters_5">Path parameters</a></li>
-<li><a href="#_query_parameters_2">Query parameters</a></li>
-<li><a href="#_request_body_5">Request body</a></li>
-<li><a href="#_response_body_5">Response body</a></li>
-</ul>
-</li>
-<li><a href="#_method_v1_models_versions_setdefault">Method: v1.models.versions.setDefault</a>
-<ul class="sectlevel2">
-<li><a href="#_http_request_6">HTTP request</a></li>
-<li><a href="#_path_parameters_6">Path parameters</a></li>
-<li><a href="#_request_body_6">Request body</a></li>
-<li><a href="#_response_body_6">Response body</a></li>
 </ul>
 </li>
 </ul>
@@ -502,40 +485,27 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_resource_version">Resource: Version</h2>
+<h2 id="_resource_anomaly">Resource: Anomaly</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Represents a version of the model.</p>
-</div>
-<div class="paragraph">
-<p>Each version is a trained model deployed in the cloud, ready to handle prediction requests.
-A model can have multiple versions. You can get information about all of the versions of a given model by
-calling <code>v1.models.versions.list</code>.</p>
+<p>Represents anomaly job, and metadata.</p>
 </div>
 <div class="listingblock">
 <div class="title">JSON representation</div>
 <div class="content">
 <pre>{
-  "name": string,
-  "description": string,
-  "isDefault": boolean,
-  "deploymentUri": string,
+  "jobId": string,
   "createTime": string,
-  "lastUseTime": string,
-  "runtimeVersion": string,
+  "startTime": string,
+  "endTime": string,
   "state": enum(State),
   "errorMessage": string,
-  "framework": enum(Framework),
-  "pythonVersion": string,
-
-  // Union field scaling can be only one of the following:
-  "autoScaling": {
-    object(AutoScaling)
-  },
-  "manualScaling": {
-    object(ManualScaling)
+  "anomalyInput": {
+    object(AnomalyInput)
   }
-  // End of list of possible types for union field scaling.
+  "anomalyOutput": {
+    object(AnomalyOutput)
+  }
 }</pre>
 </div>
 </div>
@@ -548,77 +518,44 @@ calling <code>v1.models.versions.list</code>.</p>
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">jobId</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Required.The name specified for the version when it was created.</p>
-</div>
-<div class="paragraph">
-<p>The version name must be unique within the model it is created in.</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">description</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Optional. The description specified for the version when it was created.</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">isDefault</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Output only. If true, this version will be used to handle prediction requests that do not specify a version.</p>
-</div>
-<div class="paragraph">
-<p>You can change the default version by calling v1.methods.versions.setDefault.</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">deploymentUri</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Required. The location of the trained model used to create the version.
-See the guide to model deployment for more information.</p>
-</div>
-<div class="paragraph">
-<p>When passing Version to v1.models.versions.create the model service uses the specified location as the source of the model.
- Once deployed, the model version is hosted by the prediction service, so this location is useful only as a historical
- record. The total number of model files can&#8217;t exceed 1000.</p>
+<p>Required. The user-specified id of the job.</p>
 </div></div></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">createTime</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string (Timestamp format)</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Output only. The time the version was created.</p>
-</div>
-<div class="paragraph">
-<p>A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".</p>
+<p>Output only. When the job was created.<br>
+A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds.
+Example: "2014-10-02T15:01:23.045123456Z".</p>
 </div></div></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">lastUseTime</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">startTime</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string (Timestamp format)</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Output only. The time the version was last used for prediction.</p>
-</div>
-<div class="paragraph">
-<p>A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".</p>
+<p>Output only. When the job processing was started.<br>
+A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds.
+Example: "2014-10-02T15:01:23.045123456Z".</p>
 </div></div></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">runtimeVersion</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">endTime</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string (Timestamp format)</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Optional. The Google Cloud ML runtime version to use for this deployment. If not set, Google Cloud ML will choose a version.</p>
+<p>Output only. When the job processing was completed.<br>
+A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds.
+Example: "2014-10-02T15:01:23.045123456Z".</p>
 </div></div></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">state</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">enum(State)</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Output only. The state of a version.</p>
+<p>Output only. The detailed state of a job.</p>
 </div></div></td>
 </tr>
 <tr>
@@ -629,51 +566,46 @@ See the guide to model deployment for more information.</p>
 </div></div></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">framework</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">enum(Framework)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">anomalyInput</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object(AnomalyInput)</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Optional. The machine learning framework uses to train this version of the model.
-Valid values are TENSORFLOW, H2O, MLLib and XGBOOST. If you do not specify a framework H2O will be used.
- If you choose  XGBOOST, you must also set the runtime version of the model to 1.4 or greater.</p>
+<p>Input parameters to create a anomaly job.</p>
 </div></div></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pythonVersion</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">anomalyOutput</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object(AnomalyOutput)</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Optional. The version of Python used in prediction. If not set, the default version is '2.7'.
-Python '3.5' is available when runtimeVersion is set to '1.4' and above. Python '2.7' works with all supported runtime versions.</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">autoScaling</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">object(AutoScaling)</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Automatically scale the number of nodes used to serve the model in response to increases and decreases in traffic. Care should be taken to ramp up traffic according to the model&#8217;s ability to scale or you will start seeing increases in latency and 429 response codes.</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">manualScaling</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">object(ManualScaling)</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Manually select the number of nodes to use for serving the model. You should generally use autoScaling with an appropriate minNodes instead, but this option is available if you want more predictable billing. Beware that latency and error rates will increase if the traffic exceeds that capability of the system to serve it based on the selected number of nodes.</p>
+<p>The current anomaly job result.</p>
 </div></div></td>
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>Union field scaling. Optional. Sets the options for scaling. If not specified, defaults to auto_scaling with min_nodes of 0 (see doc for AutoScaling.min_nodes) scaling can be only one of the: autoScaling or manualScaling</p>
-</div>
 <div class="sect2">
-<h3 id="_autoscaling">AutoScaling</h3>
+<h3 id="_anomalyinput">AnomalyInput</h3>
 <div class="paragraph">
-<p>Options for automatically scaling a model.</p>
+<p>Represents input parameters for a anomaly job.</p>
 </div>
 <div class="listingblock">
 <div class="title">JSON representation</div>
 <div class="content">
 <pre>{
-  "minNodes": number
+  "dataFormat": enum(DataFormat),
+  "inputPaths": [
+    string
+  ],
+  "outputPath": string,
+  "maxWorkerCount": string,
+  "region": string,
+  "runtimeVersion": string,
+  "batchSize": string,
+  "signatureName": string,
+
+  // Union field model_version can be only one of the following:
+  "modelName": string,
+  "versionName": string,
+  "uri": string
+  // End of list of possible types for union field model_version.
 }</pre>
 </div>
 </div>
@@ -686,69 +618,136 @@ Python '3.5' is available when runtimeVersion is set to '1.4' and above. Python 
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">minNodes</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dataFormat</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enum(DataFormat)</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Optional. The minimum number of nodes to allocate for this model. These nodes are always up, starting from the time the model is deployed. Therefore, the cost of operating this model will be at least rate * minNodes * number of hours since last billing cycle, where rate is the cost per node-hour as documented in the pricing guide, even if no predictions are performed. There is additional cost for each prediction performed.</p>
+<p>Required. The format of the input data files.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">inputPaths[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Required. The location of the input data files. May contain wildcards.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">outputPath</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Required. The output Storage location.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">maxWorkerCount</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string (int64 format)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. The maximum number of workers to be used for parallel processing.
+ Defaults to 10 if not specified.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">runtimeVersion</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. The ML runtime version to use for this batch anomaly.
+ If not set,  ML will pick the runtime version used during the versions.create request
+ for this model version, or choose the latest stable version when model version information
+  is not available such as when the model is specified by uri.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">batchSize</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string (int64 format)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. Number of records per batch, defaults to 64.
+The service will buffer batchSize number of records in memory before invoking
+one ML anomaly call internally. So take the record size and memory available
+into consideration when setting this parameter.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">signatureName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. The name of the signature defined in the SavedModel to use for this job.</p>
 </div>
 <div class="paragraph">
-<p>Unlike manual scaling, if the load gets too heavy for the nodes that are up, the service will automatically add nodes to handle the increased load as well as scale back as traffic drops, always maintaining at least minNodes. You will be charged for the time in which additional nodes are used.</p>
+<p>Defaults to DEFAULT_SERVING_SIGNATURE_DEF_KEY , which is "serving_default".</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Union field model_version. Required. The model or the version to use for
+anomaly.model_version can be only one of the following:</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">modelName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Use this field if you want to use the default version for the specified model.
+The string must use the following format:</p>
 </div>
 <div class="paragraph">
-<p>If not specified, minNodes defaults to 0, in which case, when traffic to a model stops (and after a cool-down period), nodes will be shut down and no charges will be incurred until traffic to the model resumes.</p>
+<p>"/models/YOUR_MODEL"</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">versionName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Use this field if you want to specify a version of the model to use.
+The string is formatted the same way as model_version, with the addition of the
+version information:</p>
 </div>
 <div class="paragraph">
-<p>You can set minNodes when creating the model version, and you can also update minNodes for an existing version:</p>
-</div>
-<div class="paragraph">
-<p>update_body.json:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>{
-  'autoScaling': {
-    'minNodes': 5
-  }
-}</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>HTTP request:</p>
-</div>
-<div class="paragraph">
-<p><code>PATCH <a href="https://{site}/v1/{models/" class="bare">https://{site}/v1/{models/</a><strong>/versions/</strong>}?updateMask=autoScaling.minNodes -d @./update_body.json</code></p>
+<p>"/models/YOUR_MODEL/versions/YOUR_VERSION"</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uri</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Use this field if you want to specify a Storage path for the model to use.</p>
 </div></div></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_manualscaling">ManualScaling</h3>
+<h3 id="_dataformat">DataFormat</h3>
 <div class="paragraph">
-<p>Options for manually scaling a model.</p>
-</div>
-<div class="listingblock">
-<div class="title">JSON representation</div>
-<div class="content">
-<pre>{
-  "nodes": number
-}</pre>
-</div>
+<p>The format used to separate data instances in the source and destination files.</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 3. Fields</caption>
+<caption class="title">Table 3. Enums</caption>
 <colgroup>
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 71.4286%;">
+<col style="width: 16.6666%;">
+<col style="width: 83.3334%;">
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">nodes</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>The number of nodes to allocate for this model. These nodes are always up, starting from the time the model is deployed, so the cost of operating this model will be proportional to nodes * number of hours since last billing cycle plus the cost for each prediction performed.</p>
-</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNSPECIFIED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unspecified format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JSON</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Each line of the file is a JSON dictionary representing one record.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TEXT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Deprecated. Use JSON instead.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TF_RECORD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INPUT ONLY. The source file is a TFRecord file.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TF_RECORD_GZIP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INPUT ONLY. The source file is a GZIP-compressed TFRecord file.</p></td>
 </tr>
 </tbody>
 </table>
@@ -756,7 +755,7 @@ Python '3.5' is available when runtimeVersion is set to '1.4' and above. Python 
 <div class="sect2">
 <h3 id="_state">State</h3>
 <div class="paragraph">
-<p>Describes the version state.</p>
+<p>Describes the job state.</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <caption class="title">Table 4. Enums</caption>
@@ -766,78 +765,105 @@ Python '3.5' is available when runtimeVersion is set to '1.4' and above. Python 
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">UNKNOWN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STATE_UNSPECIFIED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The job state is unspecified.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">QUEUED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The job has been just created and processing has not yet begun.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PREPARING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The service is preparing to run the job.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RUNNING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The job is in progress.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SUCCEEDED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The job completed successfully.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FAILED	The</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">job failed. errorMessage should contain the details of the failure.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CANCELLING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The job is being cancelled. errorMessage should describe the reason for the cancellation.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CANCELLED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The job has been cancelled. errorMessage should describe the reason for the cancellation.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_anomalyoutput">AnomalyOutput</h3>
+<div class="paragraph">
+<p>Represents results of a anomaly job.</p>
+</div>
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
+  "outputPath": string,
+  "totalyCount": string,
+  "anomalyCount": string,
+  "errorCount": string,
+  "nodeHours": number
+}</pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 5. Fields</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">outputPath</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>The version state is unspecified.</p>
+<p>The output Storage location provided at the job creation time.</p>
 </div></div></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">READY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">totalCount</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string (int64 format)</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>The version is ready for prediction.</p>
+<p>The number of processed records.</p>
 </div></div></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CREATING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">anomalyCount</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string (int64 format)</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>The version is being created. New versions.patch and versions.delete requests will fail if a version is in the CREATING state.</p>
+<p>The number of found anomalies.</p>
 </div></div></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">FAILED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">errorCount</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string (int64 format)</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>The version failed to be created, possibly cancelled. errorMessage should contain the details of the failure.</p>
+<p>The number of data instances which resulted in errors.</p>
 </div></div></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DELETING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">nodeHours</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>The version is being deleted. New versions.patch and versions.delete requests will fail if a version is in the DELETING state.</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">UPDATING</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>The version is being updated. New versions.patch and versions.delete requests will fail if a version is in the UPDATING state.</p>
+<p>Node hours used by the batch anomaly job.</p>
 </div></div></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_framework">Framework</h3>
-<div class="paragraph">
-<p>Available frameworks for prediction.</p>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 5. Enums</caption>
-<colgroup>
-<col style="width: 100%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">FRAMEWORK_UNSPECIFIED</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TENSORFLOW</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">H2O</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">XGBOOST</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MLLIB</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_methods">Methods</h2>
-<div class="sectionbody">
+<h3 id="_methods">Methods</h3>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -847,78 +873,44 @@ Python '3.5' is available when runtimeVersion is set to '1.4' and above. Python 
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">type</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">url</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>description</p>
-</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cancel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/services/anomalies/{name=anomaly/*}:cancel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cancels a running anomaly job.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/{models/*}/versions</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Creates a new version of a model from a trained TensorFlow model.</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DELETE</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/{models/<strong>/versions/</strong>}</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Deletes a model version.</p>
-</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/serivces/anomalies/{name=anomaly/*}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Creates a batch anomaly job.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">get</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/{models/<strong>/versions/</strong>}</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Gets information about a model version.</p>
-</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/services/anomalies/{name=anomaly/*}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Describes a anomaly job.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/{models/*}/versions</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Gets basic information about all the versions of a model.</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">patch</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PATCH</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/{models/<strong>/versions/</strong>}</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Updates the specified Version resource.</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">setDefault</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">t/v1/{models/<strong>/versions/</strong>}:setDefault</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Designates a version to be the default for the model.</p>
-</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/services/anomalies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lists the anomaly jobs in the project.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="_method_v1_models_versions_create">Method: v1.models.versions.create</h2>
+<h2 id="_method_v1_services_anomalies_cancel">Method: v1.services.anomalies.cancel</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Creates a new version of a model from a trained TensorFlow model.</p>
-</div>
-<div class="paragraph">
-<p>If the version created in the cloud by this call is the first deployed version of the specified model, it will be made the default version of the model. When you add a version to a model that already has one or more versions, the default version does not automatically change. If you want a new version to be the default, you must call projects.models.versions.setDefault.</p>
+<p>Cancels a running job.</p>
 </div>
 <div class="sect2">
 <h3 id="_http_request">HTTP request</h3>
 <div class="paragraph">
-<p><code>POST <a href="https://{site}/v1/{models/*}/versions" class="bare">https://{site}/v1/{models/*}/versions</a></code></p>
+<p>POST <a href="https://{site}/v1/servicesanomalys/{name=anomaly/*}:cancel" class="bare">https://{site}/v1/servicesanomalys/{name=anomaly/*}:cancel</a></p>
 </div>
 <div class="paragraph">
 <p>The URL uses Google API HTTP annotation syntax.</p>
@@ -927,48 +919,8 @@ Python '3.5' is available when runtimeVersion is set to '1.4' and above. Python 
 <div class="sect2">
 <h3 id="_path_parameters">Path parameters</h3>
 <div class="paragraph">
-<p>None</p>
+<p>Parameters</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_request_body">Request body</h3>
-<div class="paragraph">
-<p>The request body contains an instance of Version.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_response_body">Response body</h3>
-<div class="paragraph">
-<p>If successful, the response body contains a newly created instance of Operation.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_method_v1_models_versions_delete">Method: v1.models.versions.delete</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Deletes a model version.</p>
-</div>
-<div class="paragraph">
-<p>Each model can have multiple versions deployed and in use at any given time.
-Use this method to remove a single version.</p>
-</div>
-<div class="paragraph">
-<p>Note: You cannot delete the version that is set as the default version of the model
- unless it is the only remaining version.</p>
-</div>
-<div class="sect2">
-<h3 id="_http_request_2">HTTP request</h3>
-<div class="paragraph">
-<p><code>DELETE <a href="https://{site}v1/{models/" class="bare">https://{site}v1/{models/</a><strong>/versions/</strong>}</code></p>
-</div>
-<div class="paragraph">
-<p>The URL uses Google API HTTP annotation syntax.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_path_parameters_2">Path parameters</h3>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 14.2857%;">
@@ -980,7 +932,58 @@ Use this method to remove a single version.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Required. The name of the version. You can get the names of all the versions of a model by calling projects.models.versions.list.</p>
+<p>Required. The name of the job to cancel.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_request_body">Request body</h3>
+<div class="paragraph">
+<p>The request body must be empty.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_body">Response body</h3>
+<div class="paragraph">
+<p>If successful, the response body will be empty.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_method_v1_services_anomalies_create">Method: v1.services.anomalies.create</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Creates a training or a batch anomaly job.</p>
+</div>
+<div class="sect2">
+<h3 id="_http_request_2">HTTP request</h3>
+<div class="paragraph">
+<p>POST <a href="https://{site}/v1/serivces/anomalies/{name=anomaly/*}" class="bare">https://{site}/v1/serivces/anomalies/{name=anomaly/*}</a></p>
+</div>
+<div class="paragraph">
+<p>The URL uses Google API HTTP annotation syntax.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_path_parameters_2">Path parameters</h3>
+<div class="paragraph">
+<p>Parameters</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Required. The project name.</p>
 </div></div></td>
 </tr>
 </tbody>
@@ -989,32 +992,27 @@ Use this method to remove a single version.</p>
 <div class="sect2">
 <h3 id="_request_body_2">Request body</h3>
 <div class="paragraph">
-<p>The request body must be empty.</p>
+<p>The request body contains an instance of Job.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_response_body_2">Response body</h3>
 <div class="paragraph">
-<p>If successful, the response body contains an instance of Operation.</p>
+<p>If successful, the response body contains a newly created instance of Job.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_method_v1_models_versions_get">Method: v1.models.versions.get</h2>
+<h2 id="_method_v1_services_anomalies_get">Method: v1.services.anomalies.get</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Gets information about a model version.</p>
-</div>
-<div class="paragraph">
-<p>Models can have multiple versions.
- You can call <code>v1.models.versions.list</code> to get the same information that this method returns for all of
- the versions of a model.</p>
+<p>Describes a anomaly job.</p>
 </div>
 <div class="sect2">
 <h3 id="_http_request_3">HTTP request</h3>
 <div class="paragraph">
-<p><code>GET <a href="https://{site}/v1/{models/" class="bare">https://{site}/v1/{models/</a><strong>/versions/</strong>}</code></p>
+<p>GET <a href="https://{site}/v1/services/anomalies/{name=anomaly/*}" class="bare">https://{site}/v1/services/anomalies/{name=anomaly/*}</a></p>
 </div>
 <div class="paragraph">
 <p>The URL uses Google API HTTP annotation syntax.</p>
@@ -1022,6 +1020,9 @@ Use this method to remove a single version.</p>
 </div>
 <div class="sect2">
 <h3 id="_path_parameters_3">Path parameters</h3>
+<div class="paragraph">
+<p>Parameters</p>
+</div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 14.2857%;">
@@ -1033,7 +1034,7 @@ Use this method to remove a single version.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Required. The name of the version.</p>
+<p>Required. The name of the job to get the description of.</p>
 </div></div></td>
 </tr>
 </tbody>
@@ -1048,28 +1049,25 @@ Use this method to remove a single version.</p>
 <div class="sect2">
 <h3 id="_response_body_3">Response body</h3>
 <div class="paragraph">
-<p>If successful, the response body contains an instance of Version.</p>
+<p>If successful, the response body contains an instance of Job.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_method_v1_models_versions_list">Method: v1.models.versions.list</h2>
+<h2 id="_method_v1_services_anomalies_list">Method: v1.services.anomalies.list</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Gets basic information about all the versions of a model.</p>
+<p>Lists the anomaly jobs in the project.</p>
 </div>
 <div class="paragraph">
-<p>If you expect that a model has many versions, or if you need to handle only a limited number of results at a time,
- you can request that the list be retrieved in batches (called pages).</p>
-</div>
-<div class="paragraph">
-<p>If there are no versions that match the request parameters, the list request returns an empty response body: {}.</p>
+<p>If there are no jobs that match the request parameters,
+the list request returns an empty response body: {}.</p>
 </div>
 <div class="sect2">
 <h3 id="_http_request_4">HTTP request</h3>
 <div class="paragraph">
-<p><code>GET <a href="https://{site}/v1/{models/*}/versions" class="bare">https://{site}/v1/{models/*}/versions</a></code></p>
+<p>GET <a href="https://{site}/v1/services/anomalies" class="bare">https://{site}/v1/services/anomalies</a></p>
 </div>
 <div class="paragraph">
 <p>The URL uses Google API HTTP annotation syntax.</p>
@@ -1077,6 +1075,9 @@ Use this method to remove a single version.</p>
 </div>
 <div class="sect2">
 <h3 id="_path_parameters_4">Path parameters</h3>
+<div class="paragraph">
+<p>Parameters</p>
+</div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 14.2857%;">
@@ -1088,7 +1089,7 @@ Use this method to remove a single version.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">parent</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Required. The name of the model for which to list the version.</p>
+<p>Required. The name of the project for which to list jobs.</p>
 </div></div></td>
 </tr>
 </tbody>
@@ -1096,6 +1097,9 @@ Use this method to remove a single version.</p>
 </div>
 <div class="sect2">
 <h3 id="_query_parameters">Query parameters</h3>
+<div class="paragraph">
+<p>Parameters</p>
+</div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 14.2857%;">
@@ -1107,24 +1111,23 @@ Use this method to remove a single version.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">filter</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Optional. Specifies the subset of versions to retrieve.</p>
+<p>Optional. Specifies the subset of jobs to retrieve.
+You can filter on the value of one or more attributes of the job object.</p>
 </div></div></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">pageToken</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Optional. A page token to request the next page of results.</p>
-</div>
-<div class="paragraph">
-<p>You get the token from the nextPageToken field of the response from the previous call.</p>
+<p>Optional. A page token to request the next page of results.
+You get the token from the nextPageToken field of the response from the previous call.</p>
 </div></div></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">pageSize</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Optional. The number of versions to retrieve per "page" of results. If there are more remaining results than this number, the response message will contain a valid value in the nextPageToken field.</p>
+<p>Optional. The number of jobs to retrieve per "page" of results. If there are more remaining results than this number, the response message will contain a valid value in the nextPageToken field.</p>
 </div>
 <div class="paragraph">
 <p>The default value is 20, and the maximum page size is 100.</p>
@@ -1145,15 +1148,15 @@ Use this method to remove a single version.</p>
 <p>If successful, the response body contains data with the following structure:</p>
 </div>
 <div class="paragraph">
-<p>Response message for the versions.list method.</p>
+<p>Response message for the jobs.list method.</p>
 </div>
 <div class="listingblock">
 <div class="title">JSON representation</div>
 <div class="content">
 <pre>{
-  "versions": [
+  "anomalies": [
     {
-      object(Version)
+      object(Anomaly)
     }
   ],
   "nextPageToken": string
@@ -1169,10 +1172,10 @@ Use this method to remove a single version.</p>
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">versions[]</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">object(Version)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">anomalies[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object(Anomaly)</p></td>
 <td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>The list of versions.</p>
+<p>The list of anomaly jobs.</p>
 </div></div></td>
 </tr>
 <tr>
@@ -1187,140 +1190,10 @@ Use this method to remove a single version.</p>
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_method_v1_models_versions_patch">Method: v1.models.versions.patch</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Updates the specified Version resource.</p>
-</div>
-<div class="sect2">
-<h3 id="_http_request_5">HTTP request</h3>
-<div class="paragraph">
-<p><code>PATCH https:/{site}/v1/{models/<strong>/versions/</strong>}</code></p>
-</div>
-<div class="paragraph">
-<p>The URL uses Google API HTTP annotation syntax.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_path_parameters_5">Path parameters</h3>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 71.4286%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Required. The name of the model.</p>
-</div></div></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_query_parameters_2">Query parameters</h3>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 71.4286%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">updateMask</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string (FieldMask format)</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Required. Specifies the path, relative to Version, of the field to update. Must be present and non-empty.<br>
-For example, to change the description of a version to "foo", the updateMask parameter would be specified as description,
-and the PATCH request body would specify the new value, as follows: <code>{ "description": "foo" }</code></p>
-</div>
-<div class="paragraph">
-<p>Currently the only supported update mask isdescription.</p>
-</div>
-<div class="paragraph">
-<p>A comma-separated list of fully qualified names of fields. Example: "user.displayName,photo".</p>
-</div></div></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_request_body_5">Request body</h3>
-<div class="paragraph">
-<p>The request body contains an instance of Version.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_response_body_5">Response body</h3>
-<div class="paragraph">
-<p>If successful, the response body contains an instance of Operation.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_method_v1_models_versions_setdefault">Method: v1.models.versions.setDefault</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Designates a version to be the default for the model.</p>
-</div>
-<div class="paragraph">
-<p>The default version is used for prediction requests made against the model that don&#8217;t specify a version.</p>
-</div>
-<div class="paragraph">
-<p>The first version to be created for a model is automatically set as the default. You must make any subsequent changes to the default version setting manually using this method.</p>
-</div>
-<div class="sect2">
-<h3 id="_http_request_6">HTTP request</h3>
-<div class="paragraph">
-<p><code>POST <a href="https://{site}/v1/{models/" class="bare">https://{site}/v1/{models/</a><strong>/versions/</strong>}:setDefault</code></p>
-</div>
-<div class="paragraph">
-<p>The URL uses Google API HTTP annotation syntax.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_path_parameters_6">Path parameters</h3>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 71.4286%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Required. The name of the version to make the default for the model.
-You can get the names of all the versions of a model by calling projects.models.versions.list.</p>
-</div></div></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_request_body_6">Request body</h3>
-<div class="paragraph">
-<p>The request body must be empty.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_response_body_6">Response body</h3>
-<div class="paragraph">
-<p>If successful, the response body contains an instance of Version.</p>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-07-04 15:44:09 IST
+Last updated 2018-07-04 16:46:02 IST
 </div>
 </div>
 </body>

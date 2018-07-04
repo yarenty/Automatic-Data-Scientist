@@ -3,6 +3,8 @@
 
 = MLaaS - Machine Learning API
 
+
+== Intro
 An API to enable creating and using machine learning models.
 
 
@@ -12,6 +14,11 @@ This service provides the following discovery document:
 **https://{site}/$discovery/rest?version=v1**
 
 
+
+**General flow:** +
+Data => ADS => Model (repo) => Services (prediction/anomalies)
+
+All on top of operations and types (policy)  
 
 
 

@@ -432,8 +432,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">API</div>
 <ul class="sectlevel1">
 <li><a href="#_resource_job">Resource: Job</a></li>
-<li><a href="#_hyperparameteroutput">HyperparameterOutput</a></li>
-<li><a href="#_method_projects_jobs_testiampermissions">Method: projects.jobs.testIamPermissions</a></li>
+<li><a href="#_fields">Fields</a></li>
+<li><a href="#_hyperparameterspec">HyperparameterSpec</a></li>
+<li><a href="#_hyperparameteroutput">HyperparameterOutput</a>
+<ul class="sectlevel2">
+<li><a href="#_method_projects_jobs_cancel">Method: projects.jobs.cancel</a></li>
+<li><a href="#_method_projects_jobs_create">Method: projects.jobs.create</a></li>
+<li><a href="#_method_projects_jobs_get">Method: projects.jobs.get</a></li>
+<li><a href="#_method_projects_jobs_list">Method: projects.jobs.list</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -451,31 +459,27 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Represents a training or prediction job.</p>
 </div>
-<div class="paragraph">
-<p>JSON representation
-{
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
   "jobId": string,
   "createTime": string,
   "startTime": string,
   "endTime": string,
   "state": enum(State),
-  "errorMessage": string,</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>// Union field input can be only one of the following:
-"trainingInput": {
-  object(TrainingInput)
-},
-"predictionInput": {
-  object(PredictionInput)
-}
-// End of list of possible types for union field input.</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>  // Union field output can be only one of the following:
+  "errorMessage": string,
+
+  // Union field input can be only one of the following:
+  "trainingInput": {
+    object(TrainingInput)
+  },
+  "predictionInput": {
+    object(PredictionInput)
+  }
+  // End of list of possible types for union field input.
+
+  // Union field output can be only one of the following:
   "trainingOutput": {
     object(TrainingOutput)
   },
@@ -483,11 +487,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     object(PredictionOutput)
   }
   // End of list of possible types for union field output.
-}
-== Fields
-jobId
-string</pre>
+}</pre>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fields">Fields</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>jobId
+string</p>
 </div>
 <div class="paragraph">
 <p>Required. The user-specified id of the job.</p>
@@ -570,9 +580,10 @@ object(PredictionOutput)</p>
 <p>TrainingInput
 Represents input parameters for a training job. When using the gcloud command to submit your training job, you can specify the input parameters as command-line arguments and/or in a YAML configuration file referenced from the --config command-line argument. For details, see the guide to submitting a training job.</p>
 </div>
-<div class="paragraph">
-<p>JSON representation
-{
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
   "scaleTier": enum(ScaleTier),
   "masterType": string,
   "workerType": string,
@@ -593,8 +604,11 @@ Represents input parameters for a training job. When using the gcloud command to
   "jobDir": string,
   "runtimeVersion": string,
   "pythonVersion": string
-}
-Fields
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Fields
 scaleTier
 enum(ScaleTier)</p>
 </div>
@@ -764,13 +778,18 @@ The CUSTOM tier is not a set tier, but rather enables you to use your own cluste
 <div class="paragraph">
 <p>Note that all of your workers must use the same machine type, which can be different from your parameter server type and master type. Your parameter servers must likewise use the same machine type, which can be different from your worker type and master type.</p>
 </div>
-<div class="paragraph">
-<p>HyperparameterSpec
-Represents a set of hyperparameters to optimize.</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_hyperparameterspec">HyperparameterSpec</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>JSON representation
-{
+<p>Represents a set of hyperparameters to optimize.</p>
+</div>
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
   "goal": enum(GoalType),
   "params": [
     {
@@ -783,9 +802,12 @@ Represents a set of hyperparameters to optimize.</p>
   "resumePreviousJobId": string,
   "enableTrialEarlyStopping": boolean,
   "algorithm": enum(Algorithm)
-}
-Fields
-goal
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">Fields</div>
+<p>goal
 enum(GoalType)</p>
 </div>
 <div class="paragraph">
@@ -864,9 +886,10 @@ MINIMIZE	Minimize the goal metric.
 ParameterSpec
 Represents a single hyperparameter to optimize.</p>
 </div>
-<div class="paragraph">
-<p>JSON representation
-{
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
   "parameterName": string,
   "type": enum(ParameterType),
   "minValue": number,
@@ -878,9 +901,12 @@ Represents a single hyperparameter to optimize.</p>
     number
   ],
   "scaleType": enum(ScaleType)
-}
-Fields
-parameterName
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">Fields</div>
+<p>parameterName
 string</p>
 </div>
 <div class="paragraph">
@@ -959,9 +985,10 @@ RANDOM_SEARCH	Simple random search within the feasible space.
 PredictionInput
 Represents input parameters for a prediction job.</p>
 </div>
-<div class="paragraph">
-<p>JSON representation
-{
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
   "dataFormat": enum(DataFormat),
   "inputPaths": [
     string
@@ -971,20 +998,20 @@ Represents input parameters for a prediction job.</p>
   "region": string,
   "runtimeVersion": string,
   "batchSize": string,
-  "signatureName": string,</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>  // Union field model_version can be only one of the following:
+  "signatureName": string,
+
+  // Union field model_version can be only one of the following:
   "modelName": string,
   "versionName": string,
   "uri": string
   // End of list of possible types for union field model_version.
-}
-Fields
-dataFormat
-enum(DataFormat)</pre>
+}</pre>
 </div>
+</div>
+<div class="paragraph">
+<div class="title">Fields</div>
+<p>dataFormat
+enum(DataFormat)</p>
 </div>
 <div class="paragraph">
 <p>Required. The format of the input data files.</p>
@@ -1096,9 +1123,10 @@ CANCELLED	The job has been cancelled. errorMessage should describe the reason fo
 TrainingOutput
 Represents results of a training job. Output only.</p>
 </div>
-<div class="paragraph">
-<p>JSON representation
-{
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
   "completedTrialCount": string,
   "trials": [
     {
@@ -1107,8 +1135,11 @@ Represents results of a training job. Output only.</p>
   ],
   "consumedMLUnits": number,
   "isHyperparameterTuningJob": boolean
-}
-Fields
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Fields
 completedTrialCount
 string (int64 format)</p>
 </div>
@@ -1144,13 +1175,14 @@ boolean</p>
 <div class="paragraph">
 <p>Represents the result of a single hyperparameter tuning trial from a training job. The TrainingOutput object that is returned on successful completion of a training job with hyperparameter tuning includes a list of HyperparameterOutput objects, one for each successful trial.</p>
 </div>
-<div class="paragraph">
-<p>JSON representation
-{
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
   "trialId": string,
   "hyperparameters": {
     string: string,
-    &#8230;&#8203;
+    ...
   },
   "finalMetric": {
     object(HyperparameterMetric)
@@ -1161,9 +1193,12 @@ boolean</p>
       object(HyperparameterMetric)
     }
   ]
-}
-Fields
-trialId
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">Fields</div>
+<p>trialId
 string</p>
 </div>
 <div class="paragraph">
@@ -1272,18 +1307,13 @@ create
 Creates a training or a batch prediction job.
 get
 Describes a job.
-getIamPolicy
-Gets the access control policy for a resource.
 list
-Lists the jobs in the project.
-setIamPolicy
-Sets the access control policy on the specified resource.
-testIamPermissions
-Returns permissions that a caller has on the specified resource.</p>
+Lists the jobs in the project.</p>
 </div>
+<div class="sect2">
+<h3 id="_method_projects_jobs_cancel">Method: projects.jobs.cancel</h3>
 <div class="paragraph">
-<p>Method: projects.jobs.cancel
-Cancels a running job.</p>
+<p>Cancels a running job.</p>
 </div>
 <div class="paragraph">
 <p>HTTP request
@@ -1313,9 +1343,11 @@ The request body must be empty.</p>
 <p>Response body
 If successful, the response body will be empty.</p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_method_projects_jobs_create">Method: projects.jobs.create</h3>
 <div class="paragraph">
-<p>Method: projects.jobs.create
-Creates a training or a batch prediction job.</p>
+<p>Creates a training or a batch prediction job.</p>
 </div>
 <div class="paragraph">
 <p>HTTP request
@@ -1345,9 +1377,11 @@ The request body contains an instance of Job.</p>
 <p>Response body
 If successful, the response body contains a newly created instance of Job.</p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_method_projects_jobs_get">Method: projects.jobs.get</h3>
 <div class="paragraph">
-<p>Method: projects.jobs.get
-Describes a job.</p>
+<p>Describes a job.</p>
 </div>
 <div class="paragraph">
 <p>HTTP request
@@ -1377,37 +1411,11 @@ The request body must be empty.</p>
 <p>Response body
 If successful, the response body contains an instance of Job.</p>
 </div>
-<div class="paragraph">
-<p>Method: projects.jobs.getIamPolicy
-Gets the access control policy for a resource. Returns an empty policy if the resource exists and does not have a policy set.</p>
 </div>
+<div class="sect2">
+<h3 id="_method_projects_jobs_list">Method: projects.jobs.list</h3>
 <div class="paragraph">
-<p>HTTP request
-GET <a href="https://ml.googleapis.com/v1/{resource=projects/" class="bare">https://ml.googleapis.com/v1/{resource=projects/</a><strong>/jobs/</strong>}:getIamPolicy</p>
-</div>
-<div class="paragraph">
-<p>The URL uses Google API HTTP annotation syntax.</p>
-</div>
-<div class="paragraph">
-<p>Path parameters
-Parameters
-resource
-string</p>
-</div>
-<div class="paragraph">
-<p>REQUIRED: The resource for which the policy is being requested. See the operation documentation for the appropriate value for this field.</p>
-</div>
-<div class="paragraph">
-<p>Request body
-The request body must be empty.</p>
-</div>
-<div class="paragraph">
-<p>Response body
-If successful, the response body contains an instance of Policy.</p>
-</div>
-<div class="paragraph">
-<p>Method: projects.jobs.list
-Lists the jobs in the project.</p>
+<p>Lists the jobs in the project.</p>
 </div>
 <div class="paragraph">
 <p>If there are no jobs that match the request parameters, the list request returns an empty response body: {}.</p>
@@ -1508,114 +1516,13 @@ string</p>
 <div class="paragraph">
 <p>Optional. Pass this token as the pageToken field of the request for a subsequent call.</p>
 </div>
-<div class="paragraph">
-<p>Method: projects.jobs.setIamPolicy
-Sets the access control policy on the specified resource. Replaces any existing policy.</p>
-</div>
-<div class="paragraph">
-<p>HTTP request
-POST <a href="https://ml.googleapis.com/v1/{resource=projects/" class="bare">https://ml.googleapis.com/v1/{resource=projects/</a><strong>/jobs/</strong>}:setIamPolicy</p>
-</div>
-<div class="paragraph">
-<p>The URL uses Google API HTTP annotation syntax.</p>
-</div>
-<div class="paragraph">
-<p>Path parameters
-Parameters
-resource
-string</p>
-</div>
-<div class="paragraph">
-<p>REQUIRED: The resource for which the policy is being specified. See the operation documentation for the appropriate value for this field.</p>
-</div>
-<div class="paragraph">
-<p>Request body
-The request body contains data with the following structure:</p>
-</div>
-<div class="paragraph">
-<p>JSON representation
-{
-  "policy": {
-    object(Policy)
-  },
-  "updateMask": string
-}
-Fields
-policy
-object(Policy)</p>
-</div>
-<div class="paragraph">
-<p>REQUIRED: The complete policy to be applied to the resource. The size of the policy is limited to a few 10s of KB. An empty policy is a valid policy but certain Cloud Platform services (such as Projects) might reject them.</p>
-</div>
-<div class="paragraph">
-<p>updateMask
-string (FieldMask format)</p>
-</div>
-<div class="paragraph">
-<p>OPTIONAL: A FieldMask specifying which fields of the policy to modify. Only the fields in the mask will be modified. If no mask is provided, the following default mask is used: paths: "bindings, etag" This field is only used by Cloud IAM.</p>
-</div>
-<div class="paragraph">
-<p>A comma-separated list of fully qualified names of fields. Example: "user.displayName,photo".</p>
-</div>
-<div class="paragraph">
-<p>Response body
-If successful, the response body contains an instance of Policy.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_method_projects_jobs_testiampermissions">Method: projects.jobs.testIamPermissions</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Returns permissions that a caller has on the specified resource. If the resource does not exist, this will return an empty set of permissions, not a NOT_FOUND error.</p>
-</div>
-<div class="paragraph">
-<p>Note: This operation is designed to be used for building permission-aware UIs and command-line tools, not for authorization checking. This operation may "fail open" without warning.</p>
-</div>
-<div class="paragraph">
-<p>HTTP request
-POST <a href="https://ml.googleapis.com/v1/{resource=projects/" class="bare">https://ml.googleapis.com/v1/{resource=projects/</a><strong>/jobs/</strong>}:testIamPermissions</p>
-</div>
-<div class="paragraph">
-<p>The URL uses Google API HTTP annotation syntax.</p>
-</div>
-<div class="paragraph">
-<p>Path parameters
-Parameters
-resource
-string</p>
-</div>
-<div class="paragraph">
-<p>REQUIRED: The resource for which the policy detail is being requested. See the operation documentation for the appropriate value for this field.</p>
-</div>
-<div class="paragraph">
-<p>Request body
-The request body contains data with the following structure:</p>
-</div>
-<div class="paragraph">
-<p>JSON representation
-{
-  "permissions": [
-    string
-  ]
-}
-Fields
-permissions[]
-string</p>
-</div>
-<div class="paragraph">
-<p>The set of permissions to check for the resource. Permissions with wildcards (such as '<strong>' or 'storage.</strong>') are not allowed. For more information see IAM Overview.</p>
-</div>
-<div class="paragraph">
-<p>Response body
-If successful, the response body contains an instance of TestIamPermissionsResponse.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-07-03 14:04:21 IST
+Last updated 2018-07-04 15:48:52 IST
 </div>
 </div>
 </body>

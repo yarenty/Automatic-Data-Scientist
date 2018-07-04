@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.6.1">
-<title>REST Resource: projects.jobs</title>
+<title>REST Resource: v1.ads</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -427,11 +427,61 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>REST Resource: projects.jobs</h1>
+<h1>REST Resource: v1.ads</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">API</div>
 <ul class="sectlevel1">
-<li><a href="#_resource_job">Resource: Job</a></li>
+<li><a href="#_resource_datascientistflow">Resource: DataScientistFlow</a>
+<ul class="sectlevel2">
+<li><a href="#_traininginput">TrainingInput</a></li>
+<li><a href="#_scaletier">ScaleTier</a></li>
+</ul>
+</li>
+<li><a href="#_hyperparameterspec">HyperparameterSpec</a>
+<ul class="sectlevel2">
+<li><a href="#_goaltype">GoalType</a></li>
+<li><a href="#_parameterspec">ParameterSpec</a></li>
+<li><a href="#_parametertype">ParameterType</a></li>
+<li><a href="#_scaletype">ScaleType</a></li>
+<li><a href="#_algorithm">Algorithm</a></li>
+</ul>
+</li>
+<li><a href="#_trainingoutput">TrainingOutput</a></li>
+<li><a href="#_hyperparameteroutput">HyperparameterOutput</a>
+<ul class="sectlevel2">
+<li><a href="#_hyperparametermetric">HyperparameterMetric</a></li>
+</ul>
+</li>
+<li><a href="#_method_v1_ads_cancel">Method: v1.ads.cancel</a>
+<ul class="sectlevel2">
+<li><a href="#_path_parameters">Path parameters</a></li>
+<li><a href="#_request_body">Request body</a></li>
+<li><a href="#_response_body">Response body</a></li>
+</ul>
+</li>
+<li><a href="#_method_v1_ads_create">Method: v1.ads.create</a>
+<ul class="sectlevel2">
+<li><a href="#_http_request">HTTP request</a></li>
+<li><a href="#_request_body_2">Request body</a></li>
+<li><a href="#_response_body_2">Response body</a></li>
+</ul>
+</li>
+<li><a href="#_method_v1_ads_get">Method: v1.ads.get</a>
+<ul class="sectlevel2">
+<li><a href="#_http_request_2">HTTP request</a></li>
+<li><a href="#_request_body_3">Request body</a></li>
+<li><a href="#_response_body_3">Response body</a></li>
+</ul>
+</li>
+<li><a href="#_method_v1_ads_list">Method: v1.ads.list</a>
+<ul class="sectlevel2">
+<li><a href="#_http_request_3">HTTP request</a></li>
+<li><a href="#_path_parameters_2">Path parameters</a></li>
+<li><a href="#_query_parameters">Query parameters</a></li>
+<li><a href="#_request_body_4">Request body</a></li>
+<li><a href="#_response_body_4">Response body</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -444,133 +494,116 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_resource_job">Resource: Job</h2>
+<h2 id="_resource_datascientistflow">Resource: DataScientistFlow</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Represents a training or prediction job.</p>
+<p>Represents DataScientistFlow job, metamodel and actions on them.</p>
 </div>
-<div class="paragraph">
-<p>JSON representation
-{
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
   "jobId": string,
   "createTime": string,
   "startTime": string,
   "endTime": string,
   "state": enum(State),
-  "errorMessage": string,</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>// Union field input can be only one of the following:
-"trainingInput": {
-  object(TrainingInput)
-},
-"predictionInput": {
-  object(PredictionInput)
-}
-// End of list of possible types for union field input.</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>  // Union field output can be only one of the following:
+  "errorMessage": string,
+
+  "trainingInput": {
+    object(TrainingInput)
+  },
+
   "trainingOutput": {
     object(TrainingOutput)
-  },
-  "predictionOutput": {
-    object(PredictionOutput)
   }
-  // End of list of possible types for union field output.
-}
-== Fields
-jobId
-string</pre>
+}</pre>
 </div>
 </div>
-<div class="paragraph">
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Fields</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">jobId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Required. The user-specified id of the job.</p>
-</div>
-<div class="paragraph">
-<p>createTime
-string (Timestamp format)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">createTime</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string (Timestamp format)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Output only. When the job was created.</p>
 </div>
 <div class="paragraph">
 <p>A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".</p>
-</div>
-<div class="paragraph">
-<p>startTime
-string (Timestamp format)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">startTime</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string (Timestamp format)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Output only. When the job processing was started.</p>
 </div>
 <div class="paragraph">
 <p>A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".</p>
-</div>
-<div class="paragraph">
-<p>endTime
-string (Timestamp format)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">endTime</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string (Timestamp format)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Output only. When the job processing was completed.</p>
 </div>
 <div class="paragraph">
 <p>A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".</p>
-</div>
-<div class="paragraph">
-<p>state
-enum(State)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">state</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enum(State)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Output only. The detailed state of a job.</p>
-</div>
-<div class="paragraph">
-<p>errorMessage
-string</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">errorMessage</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Output only. The details of a failure or a cancellation.</p>
-</div>
-<div class="paragraph">
-<p>Union field input. Required. Parameters to create a job. input can be only one of the following:
-trainingInput
-object(TrainingInput)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">trainingInput</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object(TrainingInput)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Input parameters to create a training job.</p>
-</div>
-<div class="paragraph">
-<p>predictionInput
-object(PredictionInput)</p>
-</div>
-<div class="paragraph">
-<p>Input parameters to create a prediction job.</p>
-</div>
-<div class="paragraph">
-<p>Union field output. Output only. The current result of the job. output can be only one of the following:
-trainingOutput
-object(TrainingOutput)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">trainingOutput</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object(TrainingOutput)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>The current training job result.</p>
-</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="_traininginput">TrainingInput</h3>
 <div class="paragraph">
-<p>predictionOutput
-object(PredictionOutput)</p>
+<p>Represents input parameters for a training job.</p>
 </div>
-<div class="paragraph">
-<p>The current prediction job result.</p>
-</div>
-<div class="paragraph">
-<p>TrainingInput
-Represents input parameters for a training job. When using the gcloud command to submit your training job, you can specify the input parameters as command-line arguments and/or in a YAML configuration file referenced from the --config command-line argument. For details, see the guide to submitting a training job.</p>
-</div>
-<div class="paragraph">
-<p>JSON representation
-{
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
   "scaleTier": enum(ScaleTier),
   "masterType": string,
   "workerType": string,
@@ -587,58 +620,91 @@ Represents input parameters for a training job. When using the gcloud command to
   "hyperparameters": {
     object(HyperparameterSpec)
   },
-  "region": string,
   "jobDir": string,
   "runtimeVersion": string,
   "pythonVersion": string
-}
-Fields
-scaleTier
-enum(ScaleTier)</p>
+}</pre>
 </div>
-<div class="paragraph">
-<p>Required. Specifies the machine types, the number of replicas for workers and parameter servers.</p>
 </div>
-<div class="paragraph">
-<p>masterType
-string</p>
-</div>
-<div class="paragraph">
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Fields</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">scaleTier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enum(ScaleTier)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Required. Specifies the machine types, the number of replicas for workers
+and parameter servers.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">masterType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. Specifies the type of virtual machine to use for your training job&#8217;s master worker.</p>
 </div>
 <div class="paragraph">
 <p>The following types are supported:</p>
 </div>
-<div class="paragraph">
+<div class="ulist">
+<ul>
+<li>
 <p>standard
-A basic machine configuration suitable for training simple models with small to moderate datasets.
-large_model
-A machine with a lot of memory, specially suited for parameter servers when your model is large (having many hidden layers or layers with very large numbers of nodes).
-complex_model_s
-A machine suitable for the master and workers of the cluster when your model requires more computation than the standard machine can handle satisfactorily.
-complex_model_m
-A machine with roughly twice the number of cores and roughly double the memory of complex_model_s.
-complex_model_l
-A machine with roughly twice the number of cores and roughly double the memory of complex_model_m.
-standard_gpu
-A machine equivalent to standard that also includes a single NVIDIA Tesla K80 GPU. See more about using GPUs to train your model.
-complex_model_m_gpu
-A machine equivalent to complex_model_m that also includes four NVIDIA Tesla K80 GPUs.
-complex_model_l_gpu
-A machine equivalent to complex_model_l that also includes eight NVIDIA Tesla K80 GPUs.
-standard_p100
-A machine equivalent to standard that also includes a single NVIDIA Tesla P100 GPU. The availability of these GPUs is in the Beta launch stage.
-complex_model_m_p100
-A machine equivalent to complex_model_m that also includes four NVIDIA Tesla P100 GPUs. The availability of these GPUs is in the Beta launch stage.
-cloud_tpu
+A basic machine configuration suitable for training simple models with small to moderate datasets.</p>
+</li>
+<li>
+<p>large_model
+A machine with a lot of memory, specially suited for parameter servers when your model is large (having many hidden layers or layers with very large numbers of nodes).</p>
+</li>
+<li>
+<p>complex_model_s
+A machine suitable for the master and workers of the cluster when your model requires more computation than the standard machine can handle satisfactorily.</p>
+</li>
+<li>
+<p>complex_model_m
+A machine with roughly twice the number of cores and roughly double the memory of complex_model_s.</p>
+</li>
+<li>
+<p>complex_model_l
+A machine with roughly twice the number of cores and roughly double the memory of complex_model_m.</p>
+</li>
+<li>
+<p>standard_gpu
+A machine equivalent to standard that also includes a single NVIDIA Tesla K80 GPU. See more about using GPUs to train your model.</p>
+</li>
+<li>
+<p>complex_model_m_gpu
+A machine equivalent to complex_model_m that also includes four NVIDIA Tesla K80 GPUs.</p>
+</li>
+<li>
+<p>complex_model_l_gpu
+A machine equivalent to complex_model_l that also includes eight NVIDIA Tesla K80 GPUs.</p>
+</li>
+<li>
+<p>standard_p100
+A machine equivalent to standard that also includes a single NVIDIA Tesla P100 GPU. The availability of these GPUs is in the Beta launch stage.</p>
+</li>
+<li>
+<p>complex_model_m_p100
+A machine equivalent to complex_model_m that also includes four NVIDIA Tesla P100 GPUs. The availability of these GPUs is in the Beta launch stage.</p>
+</li>
+<li>
+<p>cloud_tpu
 A TPU VM including one Cloud TPU. The availability of Cloud TPU is in Beta launch stage. See more about using TPUs to train your model.
 You must set this value when scaleTier is set to CUSTOM.</p>
-</div>
-<div class="paragraph">
-<p>workerType
-string</p>
-</div>
-<div class="paragraph">
+</li>
+</ul>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">workerType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. Specifies the type of virtual machine to use for your training job&#8217;s worker nodes.</p>
 </div>
 <div class="paragraph">
@@ -646,12 +712,12 @@ string</p>
 </div>
 <div class="paragraph">
 <p>This value must be present when scaleTier is set to CUSTOM and workerCount is greater than zero.</p>
-</div>
-<div class="paragraph">
-<p>parameterServerType
-string</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">parameterServerType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. Specifies the type of virtual machine to use for your training job&#8217;s parameter server.</p>
 </div>
 <div class="paragraph">
@@ -659,116 +725,114 @@ string</p>
 </div>
 <div class="paragraph">
 <p>This value must be present when scaleTier is set to CUSTOM and parameterServerCount is greater than zero.</p>
-</div>
-<div class="paragraph">
-<p>workerCount
-string (int64 format)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">workerCount</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string (int64 format)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. The number of worker replicas to use for the training job. Each replica in the cluster will be of the type specified in workerType.</p>
 </div>
 <div class="paragraph">
 <p>This value can only be used when scaleTier is set to CUSTOM. If you set this value, you must also set workerType.</p>
-</div>
-<div class="paragraph">
-<p>parameterServerCount
-string (int64 format)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">parameterServerCount</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string (int64 format)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. The number of parameter server replicas to use for the training job. Each replica in the cluster will be of the type specified in parameterServerType.</p>
 </div>
 <div class="paragraph">
 <p>This value can only be used when scaleTier is set to CUSTOM.If you set this value, you must also set parameterServerType.</p>
-</div>
-<div class="paragraph">
-<p>packageUris[]
-string</p>
-</div>
-<div class="paragraph">
-<p>Required. The Google Cloud Storage location of the packages with the training program and any additional dependencies. The maximum number of package URIs is 100.</p>
-</div>
-<div class="paragraph">
-<p>pythonModule
-string</p>
-</div>
-<div class="paragraph">
-<p>Required. The Python module name to run after installing the packages.</p>
-</div>
-<div class="paragraph">
-<p>args[]
-string</p>
-</div>
-<div class="paragraph">
-<p>Optional. Command line arguments to pass to the program.</p>
-</div>
-<div class="paragraph">
-<p>hyperparameters
-object(HyperparameterSpec)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">packageUris[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Required. The  Storage location of the packages with the training program and any additional dependencies. The maximum number of package URIs is 100.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hyperparameters</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object(HyperparameterSpec)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. The set of Hyperparameters to tune.</p>
-</div>
-<div class="paragraph">
-<p>region
-string</p>
-</div>
-<div class="paragraph">
-<p>Required. The Google Compute Engine region to run the training job in. See the available regions for ML Engine services.</p>
-</div>
-<div class="paragraph">
-<p>jobDir
-string</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">jobDir</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. A Google Cloud Storage path in which to store training outputs and other data needed for training. This path is passed to your TensorFlow program as the '--job-dir' command-line argument. The benefit of specifying this field is that Cloud ML validates the path for use in training.</p>
-</div>
-<div class="paragraph">
-<p>runtimeVersion
-string</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">runtimeVersion</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. The Google Cloud ML runtime version to use for training. If not set, Google Cloud ML will choose a stable version, which is defined in the documentation of runtime version list.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
+<div class="sect2">
+<h3 id="_scaletier">ScaleTier</h3>
 <div class="paragraph">
-<p>pythonVersion
-string</p>
+<p>A scale tier is an abstract representation of the resources  ML will allocate to a training job. When selecting a scale tier for your training job, you should consider the size of your training dataset and the complexity of your model. As the tiers increase, virtual machines are added to handle your job, and the individual machines in the cluster generally have more memory and greater processing power than they do at lower tiers. The number of training units charged per hour of processing increases as tiers get more advanced. Refer to the pricing guide for more details. Note that in addition to incurring costs, your use of training resources is constrained by the quota policy.</p>
 </div>
-<div class="paragraph">
-<p>Optional. The version of Python used in training. If not set, the default version is '2.7'. Python '3.5' is available when runtimeVersion is set to '1.4' and above. Python '2.7' works with all supported runtime versions.</p>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 3. Enums</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BASIC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A single worker instance. This tier is suitable for learning how to use Cloud ML, and for experimenting with new models using small datasets.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STANDARD_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Many workers and a few parameter servers.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PREMIUM_1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A large number of workers with many parameter servers.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BASIC_GPU</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A single worker instance with a GPU.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BASIC_TPU</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A single worker instance with a Cloud TPU. The availability of Cloud TPU is in Beta launch stage.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CUSTOM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The CUSTOM tier is not a set tier, but rather enables you to use your own cluster specification. When you use this tier, set values to configure your processing cluster according to these guidelines:</p>
+<p class="tableblock">* You must set TrainingInput.masterType to specify the type of machine to use for your master node. This is the only required setting.</p>
+<p class="tableblock">* You may set TrainingInput.workerCount to specify the number of workers to use. If you specify one or more workers, you must also set TrainingInput.workerType to specify the type of machine to use for your worker nodes.</p>
+<p class="tableblock">* You may set TrainingInput.parameterServerCount to specify the number of parameter servers to use. If you specify one or more parameter servers, you must also set TrainingInput.parameterServerType to specify the type of machine to use for your parameter servers.</p>
+<p class="tableblock">Note that all of your workers must use the same machine type, which can be different from your parameter server type and master type. Your parameter servers must likewise use the same machine type, which can be different from your worker type and master type.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
-<div class="paragraph">
-<p>ScaleTier
-A scale tier is an abstract representation of the resources Cloud ML will allocate to a training job. When selecting a scale tier for your training job, you should consider the size of your training dataset and the complexity of your model. As the tiers increase, virtual machines are added to handle your job, and the individual machines in the cluster generally have more memory and greater processing power than they do at lower tiers. The number of training units charged per hour of processing increases as tiers get more advanced. Refer to the pricing guide for more details. Note that in addition to incurring costs, your use of training resources is constrained by the quota policy.</p>
 </div>
-<div class="paragraph">
-<p>Enums
-BASIC	A single worker instance. This tier is suitable for learning how to use Cloud ML, and for experimenting with new models using small datasets.
-STANDARD_1	Many workers and a few parameter servers.
-PREMIUM_1	A large number of workers with many parameter servers.
-BASIC_GPU	A single worker instance with a GPU.
-BASIC_TPU	A single worker instance with a Cloud TPU. The availability of Cloud TPU is in Beta launch stage.
-CUSTOM
-The CUSTOM tier is not a set tier, but rather enables you to use your own cluster specification. When you use this tier, set values to configure your processing cluster according to these guidelines:</p>
 </div>
+<div class="sect1">
+<h2 id="_hyperparameterspec">HyperparameterSpec</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>You must set TrainingInput.masterType to specify the type of machine to use for your master node. This is the only required setting.</p>
+<p>Represents a set of hyperparameters to optimize.</p>
 </div>
-<div class="paragraph">
-<p>You may set TrainingInput.workerCount to specify the number of workers to use. If you specify one or more workers, you must also set TrainingInput.workerType to specify the type of machine to use for your worker nodes.</p>
-</div>
-<div class="paragraph">
-<p>You may set TrainingInput.parameterServerCount to specify the number of parameter servers to use. If you specify one or more parameter servers, you must also set TrainingInput.parameterServerType to specify the type of machine to use for your parameter servers.</p>
-</div>
-<div class="paragraph">
-<p>Note that all of your workers must use the same machine type, which can be different from your parameter server type and master type. Your parameter servers must likewise use the same machine type, which can be different from your worker type and master type.</p>
-</div>
-<div class="paragraph">
-<p>HyperparameterSpec
-Represents a set of hyperparameters to optimize.</p>
-</div>
-<div class="paragraph">
-<p>JSON representation
-{
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
   "goal": enum(GoalType),
   "params": [
     {
@@ -781,39 +845,48 @@ Represents a set of hyperparameters to optimize.</p>
   "resumePreviousJobId": string,
   "enableTrialEarlyStopping": boolean,
   "algorithm": enum(Algorithm)
-}
-Fields
-goal
-enum(GoalType)</p>
+}</pre>
 </div>
-<div class="paragraph">
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 4. Fields</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">goal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enum(GoalType)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Required. The type of goal to use for tuning. Available types are MAXIMIZE and MINIMIZE.</p>
 </div>
 <div class="paragraph">
 <p>Defaults to MAXIMIZE.</p>
-</div>
-<div class="paragraph">
-<p>params[]
-object(ParameterSpec)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">params[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object(ParameterSpec)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Required. The set of parameters to tune.</p>
-</div>
-<div class="paragraph">
-<p>maxTrials
-number</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">maxTrials</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. How many training trials should be attempted to optimize the specified hyperparameters.</p>
 </div>
 <div class="paragraph">
 <p>Defaults to one.</p>
-</div>
-<div class="paragraph">
-<p>maxParallelTrials
-number</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">maxParallelTrials</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. The number of training trials to run concurrently. You can reduce the time it takes to perform hyperparameter tuning by adding trials in parallel. However, each trail only benefits from the information gained in completed trials. That means that a trial does not get access to the results of trials running at the same time, which could reduce the quality of the overall optimization.</p>
 </div>
 <div class="paragraph">
@@ -821,50 +894,75 @@ number</p>
 </div>
 <div class="paragraph">
 <p>Defaults to one.</p>
-</div>
-<div class="paragraph">
-<p>hyperparameterMetricTag
-string</p>
-</div>
-<div class="paragraph">
-<p>Optional. The Tensorflow summary tag name to use for optimizing trials. For current versions of Tensorflow, this tag name should exactly match what is shown in Tensorboard, including all scopes. For versions of Tensorflow prior to 0.12, this should be only the tag passed to tf.Summary. By default, "training/hptuning/metric" will be used.</p>
-</div>
-<div class="paragraph">
-<p>resumePreviousJobId
-string</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hyperparameterMetricTag</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. The  summary tag name to use for optimizing trials.
+  By default, "training/hptuning/metric" will be used.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">resumePreviousJobId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. The prior hyperparameter tuning job id that users hope to continue with. The job id will be used to find the corresponding vizier study guid and resume the study.</p>
-</div>
-<div class="paragraph">
-<p>enableTrialEarlyStopping
-boolean</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enableTrialEarlyStopping</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. Indicates if the hyperparameter tuning job enables auto trial early stopping.</p>
-</div>
-<div class="paragraph">
-<p>algorithm
-enum(Algorithm)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">algorithm</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enum(Algorithm)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. The search algorithm specified for the hyperparameter tuning job. Uses the default CloudML Engine hyperparameter tuning algorithm if unspecified.</p>
-</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="_goaltype">GoalType</h3>
 <div class="paragraph">
-<p>GoalType
-The available types of optimization goals.</p>
+<p>The available types of optimization goals.</p>
 </div>
-<div class="paragraph">
-<p>Enums
-GOAL_TYPE_UNSPECIFIED	Goal Type will default to maximize.
-MAXIMIZE	Maximize the goal metric.
-MINIMIZE	Minimize the goal metric.
-ParameterSpec
-Represents a single hyperparameter to optimize.</p>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 5. Enums</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNSPECIFIED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Goal Type will default to maximize.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MAXIMIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximize the goal metric.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MINIMIZE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Minimize the goal metric.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
+<div class="sect2">
+<h3 id="_parameterspec">ParameterSpec</h3>
 <div class="paragraph">
-<p>JSON representation
-{
+<p>Represents a single hyperparameter to optimize.</p>
+</div>
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
   "parameterName": string,
   "type": enum(ParameterType),
   "minValue": number,
@@ -876,227 +974,178 @@ Represents a single hyperparameter to optimize.</p>
     number
   ],
   "scaleType": enum(ScaleType)
-}
-Fields
-parameterName
-string</p>
+}</pre>
 </div>
-<div class="paragraph">
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 6. Fields</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">parameterName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Required. The parameter name must be unique amongst all ParameterConfigs in a HyperparameterSpec message. E.g., "learning_rate".</p>
-</div>
-<div class="paragraph">
-<p>type
-enum(ParameterType)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enum(ParameterType)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Required. The type of the parameter.</p>
-</div>
-<div class="paragraph">
-<p>minValue
-number</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">minValue</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Required if type is DOUBLE or INTEGER. This field should be unset if type is CATEGORICAL. This value should be integers if type is INTEGER.</p>
-</div>
-<div class="paragraph">
-<p>maxValue
-number</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">maxValue</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Required if type is DOUBLE or INTEGER. This field should be unset if type is CATEGORICAL. This value should be integers if type is INTEGER.</p>
-</div>
-<div class="paragraph">
-<p>categoricalValues[]
-string</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">categoricalValues[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Required if type is CATEGORICAL. The list of possible categories.</p>
-</div>
-<div class="paragraph">
-<p>discreteValues[]
-number</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">discreteValues[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Required if type is DISCRETE. A list of feasible points. The list should be in strictly increasing order. For instance, this parameter might have possible settings of 1.5, 2.5, and 4.0. This list should not contain more than 1,000 values.</p>
-</div>
-<div class="paragraph">
-<p>scaleType
-enum(ScaleType)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">scaleType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enum(ScaleType)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. How the parameter should be scaled to the hypercube. Leave unset for categorical parameters. Some kind of scaling is strongly recommended for real or integral parameters (e.g., UNIT_LINEAR_SCALE).</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
+<div class="sect2">
+<h3 id="_parametertype">ParameterType</h3>
 <div class="paragraph">
-<p>ParameterType
-The type of the parameter.</p>
+<p>The type of the parameter.</p>
 </div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 7. Enums</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNSPECIFIED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">You must specify a valid type. Using this unspecified type will result in an error.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DOUBLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type for real-valued parameters.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INTEGER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type for integral parameters.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CATEGORICAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The parameter is categorical, with a value chosen from the categories field.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DISCRETE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The parameter is real valued, with a fixed set of feasible points. If type==DISCRETE, feasible_points must be provided, and {minValue, maxValue} will be ignored.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_scaletype">ScaleType</h3>
 <div class="paragraph">
-<p>Enums
-PARAMETER_TYPE_UNSPECIFIED	You must specify a valid type. Using this unspecified type will result in an error.
-DOUBLE	Type for real-valued parameters.
-INTEGER	Type for integral parameters.
-CATEGORICAL	The parameter is categorical, with a value chosen from the categories field.
-DISCRETE	The parameter is real valued, with a fixed set of feasible points. If type==DISCRETE, feasible_points must be provided, and {minValue, maxValue} will be ignored.
-ScaleType
-The type of scaling that should be applied to this parameter.</p>
+<p>The type of scaling that should be applied to this parameter.</p>
 </div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 8. Enums</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NONE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">By default, no scaling is applied.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNIT_LINEAR_SCALE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scales the feasible space to (0, 1) linearly.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNIT_LOG_SCALE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scales the feasible space logarithmically to (0, 1). The entire feasible space must be strictly positive.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNIT_REVERSE_LOG_SCALE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scales the feasible space "reverse" logarithmically to (0, 1). The result is that values close to the top of the feasible space are spread out more than points near the bottom. The entire feasible space must be strictly positive.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_algorithm">Algorithm</h3>
 <div class="paragraph">
-<p>Enums
-NONE	By default, no scaling is applied.
-UNIT_LINEAR_SCALE	Scales the feasible space to (0, 1) linearly.
-UNIT_LOG_SCALE	Scales the feasible space logarithmically to (0, 1). The entire feasible space must be strictly positive.
-UNIT_REVERSE_LOG_SCALE	Scales the feasible space "reverse" logarithmically to (0, 1). The result is that values close to the top of the feasible space are spread out more than points near the bottom. The entire feasible space must be strictly positive.
-Algorithm
-The available search algorithms of hyperparameter tuning.</p>
+<p>The available search algorithms of hyperparameter tuning.</p>
 </div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 9. Enums</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UNSPECIFIED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The default algorithm used by hyperparameter tuning service.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GENETIC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Genetic algorithm</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GRID_SEARCH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Simple grid search within the feasible space. To use grid search, all parameters must be INTEGER, CATEGORICAL, or DISCRETE.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RANDOM_SEARCH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Simple random search within the feasible space.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_trainingoutput">TrainingOutput</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Enums
-ALGORITHM_UNSPECIFIED	The default algorithm used by hyperparameter tuning service.
-GRID_SEARCH	Simple grid search within the feasible space. To use grid search, all parameters must be INTEGER, CATEGORICAL, or DISCRETE.
-RANDOM_SEARCH	Simple random search within the feasible space.
-PredictionInput
-Represents input parameters for a prediction job.</p>
+<p>Represents results of a training job. Output only.</p>
 </div>
-<div class="paragraph">
-<p>JSON representation
-{
-  "dataFormat": enum(DataFormat),
-  "inputPaths": [
-    string
-  ],
-  "outputPath": string,
-  "maxWorkerCount": string,
-  "region": string,
-  "runtimeVersion": string,
-  "batchSize": string,
-  "signatureName": string,</p>
-</div>
-<div class="literalblock">
+<div class="listingblock">
+<div class="title">JSON representation</div>
 <div class="content">
-<pre>  // Union field model_version can be only one of the following:
-  "modelName": string,
-  "versionName": string,
-  "uri": string
-  // End of list of possible types for union field model_version.
-}
-Fields
-dataFormat
-enum(DataFormat)</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Required. The format of the input data files.</p>
-</div>
-<div class="paragraph">
-<p>inputPaths[]
-string</p>
-</div>
-<div class="paragraph">
-<p>Required. The Google Cloud Storage location of the input data files. May contain wildcards.</p>
-</div>
-<div class="paragraph">
-<p>outputPath
-string</p>
-</div>
-<div class="paragraph">
-<p>Required. The output Google Cloud Storage location.</p>
-</div>
-<div class="paragraph">
-<p>maxWorkerCount
-string (int64 format)</p>
-</div>
-<div class="paragraph">
-<p>Optional. The maximum number of workers to be used for parallel processing. Defaults to 10 if not specified.</p>
-</div>
-<div class="paragraph">
-<p>region
-string</p>
-</div>
-<div class="paragraph">
-<p>Required. The Google Compute Engine region to run the prediction job in. See the available regions for ML Engine services.</p>
-</div>
-<div class="paragraph">
-<p>runtimeVersion
-string</p>
-</div>
-<div class="paragraph">
-<p>Optional. The Google Cloud ML runtime version to use for this batch prediction. If not set, Google Cloud ML will pick the runtime version used during the versions.create request for this model version, or choose the latest stable version when model version information is not available such as when the model is specified by uri.</p>
-</div>
-<div class="paragraph">
-<p>batchSize
-string (int64 format)</p>
-</div>
-<div class="paragraph">
-<p>Optional. Number of records per batch, defaults to 64. The service will buffer batchSize number of records in memory before invoking one Tensorflow prediction call internally. So take the record size and memory available into consideration when setting this parameter.</p>
-</div>
-<div class="paragraph">
-<p>signatureName
-string</p>
-</div>
-<div class="paragraph">
-<p>Optional. The name of the signature defined in the SavedModel to use for this job. Please refer to SavedModel for information about how to use signatures.</p>
-</div>
-<div class="paragraph">
-<p>Defaults to DEFAULT_SERVING_SIGNATURE_DEF_KEY , which is "serving_default".</p>
-</div>
-<div class="paragraph">
-<p>Union field model_version. Required. The model or the version to use for prediction. model_version can be only one of the following:
-modelName
-string</p>
-</div>
-<div class="paragraph">
-<p>Use this field if you want to use the default version for the specified model. The string must use the following format:</p>
-</div>
-<div class="paragraph">
-<p>"projects/YOUR_PROJECT/models/YOUR_MODEL"</p>
-</div>
-<div class="paragraph">
-<p>versionName
-string</p>
-</div>
-<div class="paragraph">
-<p>Use this field if you want to specify a version of the model to use. The string is formatted the same way as model_version, with the addition of the version information:</p>
-</div>
-<div class="paragraph">
-<p>"projects/YOUR_PROJECT/models/YOUR_MODEL/versions/YOUR_VERSION"</p>
-</div>
-<div class="paragraph">
-<p>uri
-string</p>
-</div>
-<div class="paragraph">
-<p>Use this field if you want to specify a Google Cloud Storage path for the model to use.</p>
-</div>
-<div class="paragraph">
-<p>DataFormat
-The format used to separate data instances in the source and destination files.</p>
-</div>
-<div class="paragraph">
-<p>Enums
-DATA_FORMAT_UNSPECIFIED	Unspecified format.
-JSON	Each line of the file is a JSON dictionary representing one record.
-TEXT	Deprecated. Use JSON instead.
-TF_RECORD	INPUT ONLY. The source file is a TFRecord file.
-TF_RECORD_GZIP	INPUT ONLY. The source file is a GZIP-compressed TFRecord file.
-State
-Describes the job state.</p>
-</div>
-<div class="paragraph">
-<p>Enums
-STATE_UNSPECIFIED	The job state is unspecified.
-QUEUED	The job has been just created and processing has not yet begun.
-PREPARING	The service is preparing to run the job.
-RUNNING	The job is in progress.
-SUCCEEDED	The job completed successfully.
-FAILED	The job failed. errorMessage should contain the details of the failure.
-CANCELLING	The job is being cancelled. errorMessage should describe the reason for the cancellation.
-CANCELLED	The job has been cancelled. errorMessage should describe the reason for the cancellation.
-TrainingOutput
-Represents results of a training job. Output only.</p>
-</div>
-<div class="paragraph">
-<p>JSON representation
-{
+<pre>{
   "completedTrialCount": string,
   "trials": [
     {
@@ -1105,46 +1154,63 @@ Represents results of a training job. Output only.</p>
   ],
   "consumedMLUnits": number,
   "isHyperparameterTuningJob": boolean
-}
-Fields
-completedTrialCount
-string (int64 format)</p>
+}</pre>
 </div>
-<div class="paragraph">
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 10. Fields</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">completedTrialCount</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string (int64 format)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>The number of hyperparameter tuning trials that completed successfully. Only set for hyperparameter tuning jobs.</p>
-</div>
-<div class="paragraph">
-<p>trials[]
-object(HyperparameterOutput)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">trials[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object(HyperparameterOutput)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Results for individual Hyperparameter trials. Only set for hyperparameter tuning jobs.</p>
-</div>
-<div class="paragraph">
-<p>consumedMLUnits
-number</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">consumedMLUnits</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>The amount of ML units consumed by the job.</p>
-</div>
-<div class="paragraph">
-<p>isHyperparameterTuningJob
-boolean</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">isHyperparameterTuningJob</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Whether this job is a hyperparameter tuning job.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
-<div class="paragraph">
-<p>HyperparameterOutput
-Represents the result of a single hyperparameter tuning trial from a training job. The TrainingOutput object that is returned on successful completion of a training job with hyperparameter tuning includes a list of HyperparameterOutput objects, one for each successful trial.</p>
 </div>
+<div class="sect1">
+<h2 id="_hyperparameteroutput">HyperparameterOutput</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>JSON representation
-{
+<p>Represents the result of a single hyperparameter tuning trial from a training job. The TrainingOutput object that is returned on successful completion of a training job with hyperparameter tuning includes a list of HyperparameterOutput objects, one for each successful trial.</p>
+</div>
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
   "trialId": string,
   "hyperparameters": {
     string: string,
-    &#8230;&#8203;
+    ...
   },
   "finalMetric": {
     object(HyperparameterMetric)
@@ -1155,457 +1221,430 @@ Represents the result of a single hyperparameter tuning trial from a training jo
       object(HyperparameterMetric)
     }
   ]
-}
-Fields
-trialId
-string</p>
+}</pre>
 </div>
-<div class="paragraph">
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 11. Fields</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">trialId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>The trial id for these results.</p>
-</div>
-<div class="paragraph">
-<p>hyperparameters
-map (key: string, value: string)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hyperparameters</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">map (key: string, value: string)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>The hyperparameters given to this trial.</p>
 </div>
 <div class="paragraph">
 <p>An object containing a list of "key": value pairs. Example: { "name": "wrench", "mass": "1.3kg", "count": "3" }.</p>
-</div>
-<div class="paragraph">
-<p>finalMetric
-object(HyperparameterMetric)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">finalMetric</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object(HyperparameterMetric)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>The final objective metric seen for this trial.</p>
-</div>
-<div class="paragraph">
-<p>isTrialStoppedEarly
-boolean</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">isTrialStoppedEarly</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>True if the trial is stopped early.</p>
-</div>
-<div class="paragraph">
-<p>allMetrics[]
-object(HyperparameterMetric)</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">allMetrics[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object(HyperparameterMetric)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>All recorded object metrics for this trial. This field is not currently populated.</p>
-</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="_hyperparametermetric">HyperparameterMetric</h3>
 <div class="paragraph">
-<p>HyperparameterMetric
-An observed value of a metric.</p>
+<p>An observed value of a metric.</p>
 </div>
-<div class="paragraph">
-<p>JSON representation
-{
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
   "trainingStep": string,
   "objectiveValue": number
-}
-Fields
-trainingStep
-string (int64 format)</p>
+}</pre>
 </div>
-<div class="paragraph">
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 12. Fields</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">trainingStep</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string (int64 format)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>The global training step for this metric.</p>
-</div>
-<div class="paragraph">
-<p>objectiveValue
-number</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">objectiveValue</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>The objective value at this training step.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="sect3">
+<h4 id="_methods">Methods</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 11.1111%;">
+<col style="width: 11.1111%;">
+<col style="width: 22.2222%;">
+<col style="width: 55.5556%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cancel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/ads/{name=job/*}:cancel</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Cancels a running ADS training job.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/ads/jobs</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Creates a training ads job.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">get</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/ads/{name=jobs/*}</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Describes a ads job.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/ads/jobs</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Lists the adsd jobs in the project.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
-<div class="paragraph">
-<p>PredictionOutput
-Represents results of a prediction job.</p>
 </div>
-<div class="paragraph">
-<p>JSON representation
-{
-  "outputPath": string,
-  "predictionCount": string,
-  "errorCount": string,
-  "nodeHours": number
-}
-Fields
-outputPath
-string</p>
 </div>
-<div class="paragraph">
-<p>The output Google Cloud Storage location provided at the job creation time.</p>
 </div>
+<div class="sect1">
+<h2 id="_method_v1_ads_cancel">Method: v1.ads.cancel</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>predictionCount
-string (int64 format)</p>
-</div>
-<div class="paragraph">
-<p>The number of generated predictions.</p>
-</div>
-<div class="paragraph">
-<p>errorCount
-string (int64 format)</p>
-</div>
-<div class="paragraph">
-<p>The number of data instances which resulted in errors.</p>
-</div>
-<div class="paragraph">
-<p>nodeHours
-number</p>
-</div>
-<div class="paragraph">
-<p>Node hours used by the batch prediction job.</p>
-</div>
-<div class="paragraph">
-<p>Methods
-cancel
-Cancels a running job.
-create
-Creates a training or a batch prediction job.
-get
-Describes a job.
-getIamPolicy
-Gets the access control policy for a resource.
-list
-Lists the jobs in the project.
-setIamPolicy
-Sets the access control policy on the specified resource.
-testIamPermissions
-Returns permissions that a caller has on the specified resource.</p>
-</div>
-<div class="paragraph">
-<p>Method: projects.jobs.cancel
-Cancels a running job.</p>
+<p>Cancels a running ADS training job.</p>
 </div>
 <div class="paragraph">
 <p>HTTP request
-POST <a href="https://ml.googleapis.com/v1/{name=projects/" class="bare">https://ml.googleapis.com/v1/{name=projects/</a><strong>/jobs/</strong>}:cancel</p>
+POST <a href="https://{site}/v1/ads/{name=job/*}:cancel" class="bare">https://{site}/v1/ads/{name=job/*}:cancel</a></p>
 </div>
 <div class="paragraph">
 <p>The URL uses Google API HTTP annotation syntax.</p>
 </div>
+<div class="sect2">
+<h3 id="_path_parameters">Path parameters</h3>
 <div class="paragraph">
-<p>Path parameters
-Parameters
-name
-string</p>
+<p>Parameters</p>
 </div>
-<div class="paragraph">
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Required. The name of the job to cancel.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
+<div class="sect2">
+<h3 id="_request_body">Request body</h3>
 <div class="paragraph">
-<p>Authorization requires the following Google IAM permission on the specified resource name:</p>
+<p>The request body must be empty.</p>
 </div>
-<div class="paragraph">
-<p>ml.jobs.cancel
-Request body
-The request body must be empty.</p>
 </div>
+<div class="sect2">
+<h3 id="_response_body">Response body</h3>
 <div class="paragraph">
-<p>Response body
-If successful, the response body will be empty.</p>
+<p>If successful, the response body will be empty.</p>
 </div>
-<div class="paragraph">
-<p>Method: projects.jobs.create
-Creates a training or a batch prediction job.</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_method_v1_ads_create">Method: v1.ads.create</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>HTTP request
-POST <a href="https://ml.googleapis.com/v1/{parent=projects/*}/jobs" class="bare">https://ml.googleapis.com/v1/{parent=projects/*}/jobs</a></p>
+<p>Creates a new training job.</p>
+</div>
+<div class="sect2">
+<h3 id="_http_request">HTTP request</h3>
+<div class="paragraph">
+<p>POST <a href="https://{site}/v1/ads/jobs" class="bare">https://{site}/v1/ads/jobs</a></p>
 </div>
 <div class="paragraph">
 <p>The URL uses Google API HTTP annotation syntax.</p>
 </div>
 <div class="paragraph">
 <p>Path parameters
-Parameters
-parent
-string</p>
+Parameters</p>
 </div>
-<div class="paragraph">
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">parent</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Required. The project name.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
+<div class="sect2">
+<h3 id="_request_body_2">Request body</h3>
 <div class="paragraph">
-<p>Authorization requires the following Google IAM permission on the specified resource parent:</p>
+<p>The request body contains an instance of Job.</p>
 </div>
-<div class="paragraph">
-<p>ml.jobs.create
-Request body
-The request body contains an instance of Job.</p>
 </div>
+<div class="sect2">
+<h3 id="_response_body_2">Response body</h3>
 <div class="paragraph">
-<p>Response body
-If successful, the response body contains a newly created instance of Job.</p>
+<p>If successful, the response body contains a newly created instance of Job.</p>
 </div>
-<div class="paragraph">
-<p>Method: projects.jobs.get
-Describes a job.</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_method_v1_ads_get">Method: v1.ads.get</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>HTTP request
-GET <a href="https://ml.googleapis.com/v1/{name=projects/" class="bare">https://ml.googleapis.com/v1/{name=projects/</a><strong>/jobs/</strong>}</p>
+<p>Describes a job.</p>
+</div>
+<div class="sect2">
+<h3 id="_http_request_2">HTTP request</h3>
+<div class="paragraph">
+<p>GET <a href="https://{site}/v1/ads/{name=jobs/*}" class="bare">https://{site}/v1/ads/{name=jobs/*}</a></p>
 </div>
 <div class="paragraph">
 <p>The URL uses Google API HTTP annotation syntax.</p>
 </div>
 <div class="paragraph">
 <p>Path parameters
-Parameters
-name
-string</p>
+Parameters</p>
 </div>
-<div class="paragraph">
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Required. The name of the job to get the description of.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
+<div class="sect2">
+<h3 id="_request_body_3">Request body</h3>
 <div class="paragraph">
-<p>Authorization requires the following Google IAM permission on the specified resource name:</p>
+<p>The request body must be empty.</p>
 </div>
-<div class="paragraph">
-<p>ml.jobs.get
-Request body
-The request body must be empty.</p>
 </div>
+<div class="sect2">
+<h3 id="_response_body_3">Response body</h3>
 <div class="paragraph">
-<p>Response body
-If successful, the response body contains an instance of Job.</p>
+<p>If successful, the response body contains an instance of Job.</p>
 </div>
-<div class="paragraph">
-<p>Method: projects.jobs.getIamPolicy
-Gets the access control policy for a resource. Returns an empty policy if the resource exists and does not have a policy set.</p>
 </div>
-<div class="paragraph">
-<p>HTTP request
-GET <a href="https://ml.googleapis.com/v1/{resource=projects/" class="bare">https://ml.googleapis.com/v1/{resource=projects/</a><strong>/jobs/</strong>}:getIamPolicy</p>
 </div>
-<div class="paragraph">
-<p>The URL uses Google API HTTP annotation syntax.</p>
 </div>
+<div class="sect1">
+<h2 id="_method_v1_ads_list">Method: v1.ads.list</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Path parameters
-Parameters
-resource
-string</p>
-</div>
-<div class="paragraph">
-<p>REQUIRED: The resource for which the policy is being requested. See the operation documentation for the appropriate value for this field.</p>
-</div>
-<div class="paragraph">
-<p>Request body
-The request body must be empty.</p>
-</div>
-<div class="paragraph">
-<p>Response body
-If successful, the response body contains an instance of Policy.</p>
-</div>
-<div class="paragraph">
-<p>Method: projects.jobs.list
-Lists the jobs in the project.</p>
+<p>Lists the jobs in the project.</p>
 </div>
 <div class="paragraph">
 <p>If there are no jobs that match the request parameters, the list request returns an empty response body: {}.</p>
 </div>
+<div class="sect2">
+<h3 id="_http_request_3">HTTP request</h3>
 <div class="paragraph">
-<p>HTTP request
-GET <a href="https://ml.googleapis.com/v1/{parent=projects/*}/jobs" class="bare">https://ml.googleapis.com/v1/{parent=projects/*}/jobs</a></p>
+<p>GET <a href="https://{site}/v1/ads/jobs" class="bare">https://{site}/v1/ads/jobs</a></p>
 </div>
 <div class="paragraph">
 <p>The URL uses Google API HTTP annotation syntax.</p>
 </div>
-<div class="paragraph">
-<p>Path parameters
-Parameters
-parent
-string</p>
 </div>
+<div class="sect2">
+<h3 id="_path_parameters_2">Path parameters</h3>
 <div class="paragraph">
+<p>Parameters</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">parent</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Required. The name of the project for which to list jobs.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
+<div class="sect2">
+<h3 id="_query_parameters">Query parameters</h3>
 <div class="paragraph">
-<p>Authorization requires the following Google IAM permission on the specified resource parent:</p>
+<p>Parameters</p>
 </div>
-<div class="paragraph">
-<p>ml.jobs.list
-Query parameters
-Parameters
-filter
-string</p>
-</div>
-<div class="paragraph">
-<p>Optional. Specifies the subset of jobs to retrieve. You can filter on the value of one or more attributes of the job object. For example, retrieve jobs with a job identifier that starts with 'census':</p>
-</div>
-<div class="paragraph">
-<p>gcloud ml-engine jobs list --filter='jobId:census*'</p>
-</div>
-<div class="paragraph">
-<p>List all failed jobs with names that start with 'rnn':</p>
-</div>
-<div class="paragraph">
-<p>gcloud ml-engine jobs list --filter='jobId:rnn* AND state:FAILED'</p>
-</div>
-<div class="paragraph">
-<p>For more examples, see the guide to monitoring jobs.</p>
-</div>
-<div class="paragraph">
-<p>pageToken
-string</p>
-</div>
-<div class="paragraph">
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">filter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. Specifies the subset of jobs to retrieve.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pageToken</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. A page token to request the next page of results.</p>
 </div>
 <div class="paragraph">
 <p>You get the token from the nextPageToken field of the response from the previous call.</p>
-</div>
-<div class="paragraph">
-<p>pageSize
-number</p>
-</div>
-<div class="paragraph">
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pageSize</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. The number of jobs to retrieve per "page" of results. If there are more remaining results than this number, the response message will contain a valid value in the nextPageToken field.</p>
 </div>
 <div class="paragraph">
 <p>The default value is 20, and the maximum page size is 100.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
+<div class="sect2">
+<h3 id="_request_body_4">Request body</h3>
 <div class="paragraph">
-<p>Request body
-The request body must be empty.</p>
+<p>The request body must be empty.</p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_response_body_4">Response body</h3>
 <div class="paragraph">
-<p>Response body
-If successful, the response body contains data with the following structure:</p>
+<p>If successful, the response body contains data with the following structure:</p>
 </div>
 <div class="paragraph">
 <p>Response message for the jobs.list method.</p>
 </div>
-<div class="paragraph">
-<p>JSON representation
-{
-  "jobs": [
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
+  "ads": [
     {
-      object(Job)
+      object(DataScientistFlow)
     }
   ],
   "nextPageToken": string
-}
-Fields
-jobs[]
-object(Job)</p>
+}</pre>
 </div>
-<div class="paragraph">
-<p>The list of jobs.</p>
 </div>
-<div class="paragraph">
-<p>nextPageToken
-string</p>
-</div>
-<div class="paragraph">
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 13. Fields</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ads[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object(DataScientistFlow)</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>The list of DataScientistFlow jobs.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">nextPageToken</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
 <p>Optional. Pass this token as the pageToken field of the request for a subsequent call.</p>
-</div>
-<div class="paragraph">
-<p>Method: projects.jobs.setIamPolicy
-Sets the access control policy on the specified resource. Replaces any existing policy.</p>
-</div>
-<div class="paragraph">
-<p>HTTP request
-POST <a href="https://ml.googleapis.com/v1/{resource=projects/" class="bare">https://ml.googleapis.com/v1/{resource=projects/</a><strong>/jobs/</strong>}:setIamPolicy</p>
-</div>
-<div class="paragraph">
-<p>The URL uses Google API HTTP annotation syntax.</p>
-</div>
-<div class="paragraph">
-<p>Path parameters
-Parameters
-resource
-string</p>
-</div>
-<div class="paragraph">
-<p>REQUIRED: The resource for which the policy is being specified. See the operation documentation for the appropriate value for this field.</p>
-</div>
-<div class="paragraph">
-<p>Request body
-The request body contains data with the following structure:</p>
-</div>
-<div class="paragraph">
-<p>JSON representation
-{
-  "policy": {
-    object(Policy)
-  },
-  "updateMask": string
-}
-Fields
-policy
-object(Policy)</p>
-</div>
-<div class="paragraph">
-<p>REQUIRED: The complete policy to be applied to the resource. The size of the policy is limited to a few 10s of KB. An empty policy is a valid policy but certain Cloud Platform services (such as Projects) might reject them.</p>
-</div>
-<div class="paragraph">
-<p>updateMask
-string (FieldMask format)</p>
-</div>
-<div class="paragraph">
-<p>OPTIONAL: A FieldMask specifying which fields of the policy to modify. Only the fields in the mask will be modified. If no mask is provided, the following default mask is used: paths: "bindings, etag" This field is only used by Cloud IAM.</p>
-</div>
-<div class="paragraph">
-<p>A comma-separated list of fully qualified names of fields. Example: "user.displayName,photo".</p>
-</div>
-<div class="paragraph">
-<p>Response body
-If successful, the response body contains an instance of Policy.</p>
-</div>
-<div class="paragraph">
-<p>Method: projects.jobs.testIamPermissions
-Returns permissions that a caller has on the specified resource. If the resource does not exist, this will return an empty set of permissions, not a NOT_FOUND error.</p>
-</div>
-<div class="paragraph">
-<p>Note: This operation is designed to be used for building permission-aware UIs and command-line tools, not for authorization checking. This operation may "fail open" without warning.</p>
-</div>
-<div class="paragraph">
-<p>HTTP request
-POST <a href="https://ml.googleapis.com/v1/{resource=projects/" class="bare">https://ml.googleapis.com/v1/{resource=projects/</a><strong>/jobs/</strong>}:testIamPermissions</p>
-</div>
-<div class="paragraph">
-<p>The URL uses Google API HTTP annotation syntax.</p>
-</div>
-<div class="paragraph">
-<p>Path parameters
-Parameters
-resource
-string</p>
-</div>
-<div class="paragraph">
-<p>REQUIRED: The resource for which the policy detail is being requested. See the operation documentation for the appropriate value for this field.</p>
-</div>
-<div class="paragraph">
-<p>Request body
-The request body contains data with the following structure:</p>
-</div>
-<div class="paragraph">
-<p>JSON representation
-{
-  "permissions": [
-    string
-  ]
-}
-Fields
-permissions[]
-string</p>
-</div>
-<div class="paragraph">
-<p>The set of permissions to check for the resource. Permissions with wildcards (such as '<strong>' or 'storage.</strong>') are not allowed. For more information see IAM Overview.</p>
-</div>
-<div class="paragraph">
-<p>Response body
-If successful, the response body contains an instance of TestIamPermissionsResponse.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-07-03 14:02:35 IST
+Last updated 2018-07-04 17:11:06 IST
 </div>
 </div>
 </body>
