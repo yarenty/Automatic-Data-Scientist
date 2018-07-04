@@ -8,114 +8,170 @@ link:../../index.html[back <<]
 
 
 == Resource: Dataset
+Represents a dataset.
 
-Represents a dataset
+A dataset can have multiple versions/increases, usually with time.
 
-A model can have multiple versions, each of which is a deployed, trained model ready to receive prediction requests.
- The model itself is just a container.
-
-JSON representation
+.JSON representation
+----
 {
   "name": string,
   "description": string,
   "defaultVersion": {
     object(Version)
   },
-  "regions": [
-    string
-  ],
-  "onlinePredictionLogging": boolean
+  "isTimeSerie": boolean
 }
-Fields
-name	
-string
+----
 
-Required. The name specified for the model when it was created.
-
-The model name must be unique within the project it is created in.
-
-description	
-string
-
-Optional. The description specified for the model when it was created.
-
-defaultVersion	
-object(Version)
-
-Output only. The default version of the model. This version will be used to handle prediction requests that do not specify a version.
-
-You can change the default version by calling projects.methods.versions.setDefault.
-
-regions[]	
-string
-
-Optional. The list of regions where the model is going to be deployed. Currently only one region per model is supported. Defaults to 'us-central1' if nothing is set. See the available regions for ML Engine services. Note: * No matter where a model is deployed, it can always be accessed by users from anywhere, both for online and batch prediction. * The region for a batch prediction job is set by the region field when submitting the batch prediction job and does not take its value from this field.
-
-onlinePredictionLogging	
-boolean
-
-Optional. If true, enables StackDriver Logging for online prediction. Default is false.
-
-Methods
-create
-Creates a model which will later contain one or more versions.
-delete
-Deletes a model.
-get
-Gets information about a model, including its name, the description (if set), and the default version (if at least one version of the model has been deployed).
-getIamPolicy
-Gets the access control policy for a resource.
-list
-Lists the models in a project.
-patch
-Updates a specific model resource.
-setIamPolicy
-Sets the access control policy on the specified resource.
-testIamPermissions
-Returns permissions that a caller has on the specified resource.
-
-
-
-== Methods
-[cols="1,1,2,5a"]
+=== Fields
+[cols="1,1,5a"]
 |===
-|list |GET | v1/datasets/ | Returns list ov datasets
-|list |GET | v1/datasets/{name=dataset/*) | Returns specific dataset
-|spec |GET | v1/datasets/{name=dataset/*}:spec | Returns dataset specification
-|slice |POST | v1/datasets/{name=dataset/*}:slice | slice data set into temporary slices    
+|name	
+|string
+|Required. The name specified for the dataset when it was created. +
+The dataset name must be unique.
+|description	
+|string
+|Optional. The description specified for the dataset when it was created.
+|defaultVersion	
+|object(Version)
+| Output only. The default version of the data. 
+This version will be used to handle prediction requests that do not specify a version. +
+You can change the default version by calling v1.datasets.updateData.
+|isTimeSerie	
+|boolean
+| Optional. If true, it specifies data is time serie type. Default is false.
 |===
+
+
+=== Methods
+[cols="1,5a"]
+|===
+|create
+|Creates a new dataset.
+|delete
+|Deletes a dataset.
+|get
+|Gets information about a dataset, including its name, the description (if set), 
+and the default version specification.
+|list
+|Lists the datasets in a project.
+|patch
+|Updates a specific model resource.
+|===
+
+
+
+
+
+
+== Method: v1.datasets.create
+Creates a dataset.
+
+=== HTTP request
+`POST https://{site}/datasets`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+None 
+
+=== Request body
+The request body contains an dataset body.
+
+=== Response body
+If successful, the response body contains a newly created instance of Dataset.
+
+
+
+== Method: v1.datasets.delete
+Deletes a dataset.
+
+
+=== HTTP request
+`DELETE https://{site}/v1/datasets/{name=dataset/*}`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+[cols="1,1,5a"]
+|===
+|name	
+|string
+|Required. The name of the dataset.
+|===
+
+=== Request body
+The request body must be empty.
+
+=== Response body
+If successful, the response body contains an instance of Operation.
+
+
+
+
+
+
+== Method: v1.datasets.get
+Gets information about a dataset, including its name, the description (if set),
+ list of the versions/increases.
+
+=== HTTP request
+`GET https://{site|}/v1/datasets/{name=dataset/*}`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+[cols="1,1,5a"]
+|===
+|name	
+|string
+|Required. The name of the dataset.
+|===
+
+=== Request body
+The request body must be empty.
+
+=== Response body
+If successful, the response body contains an instance of Dataset.
+
+
+
+
+
 
 
 
 == Method: v1.datasets.list
+Lists the datasets in a project.
 
-List all datasets.
+If there are no datasets that match the request parameters, the list request returns an empty response body: {}.
 
-=== HTTP request +
+=== HTTP request
 `GET https://{site}/v1/datasets`
 
-The URL uses link:https://github.com/googleapis/googleapis/blob/master/google/api/http.proto?[Google API HTTP annotation] syntax.
-
-
+The URL uses Google API HTTP annotation syntax.
 
 === Path parameters
-
-[cols="1,1,5a"]
-|===
-| parent | string
-|Required. The name of the project for which available locations are to be listed (since some locations might be whitelisted for specific projects).
-|===
+None
 
 === Query parameters
 [cols="1,1,5a"]
 |===
-| pageToken	 |string| Optional. A page token to request the next page of results.
+|filter	
+|string
+|Optional. Specifies the subset of datasets to retrieve.
 
+|pageToken	
+|string
+|Optional. A page token to request the next page of results. +
 You get the token from the nextPageToken field of the response from the previous call.
-
-|pageSize| number |
-Optional. The number of locations to retrieve per "page" of results. If there are more remaining results than this number, the response message will contain a valid value in the nextPageToken field.
-
+|pageSize	
+|number
+|Optional. The number of datasets to retrieve per "page" of results. 
+If there are more remaining results than this number, the response message will contain a valid value 
+in the nextPageToken field. +
 The default value is 20, and the maximum page size is 100.
 |===
 
@@ -125,114 +181,76 @@ The request body must be empty.
 === Response body
 If successful, the response body contains data with the following structure:
 
+Response message for the datasets.list method.
+
 .JSON representation
 ----
 {
-  "locations": [
+  "datasets": [
     {
-      object(Location)
+      object(Dataset)
     }
   ],
   "nextPageToken": string
 }
 ----
 
-=== Fields
-
+.Fields
 [cols="1,1,5a"]
 |===
-|locations[]	
-|object(Location)|
+|models[]	
+|object(Dataset)
+|The list of datasets.
 
-Locations where at least one type of CMLE capability is available.
 |nextPageToken	
 |string
-|
-Optional. Pass this token as the pageToken field of the request for a subsequent call.
+|Optional. Pass this token as the pageToken field of the request for a subsequent call.
 |===
 
 
-== Method: v1.data.spec
 
-Get the service account information associated with your project. You need this information in order to grant the service account permissions for the Google Cloud Storage location where you put your model training code for training the model with Google Cloud Machine Learning.
 
-HTTP request
-GET https://ml.googleapis.com/v1/{name=projects/*}:getConfig
+== Method: v1.datasets.patch
+Updates a specific dataset with increased data.
+
+
+=== HTTP request
+`PATCH https://{site}/v1/datasets/{name=dataset/*}`
 
 The URL uses Google API HTTP annotation syntax.
 
-Path parameters
-Parameters
-name	
-string
+=== Path parameters
 
-Required. The project name.
+[cols="1,1,5a"]
+|===
+|name
+|string
+|name of the dataset to be increased
+|===
 
-Authorization requires the following Google IAM permission on the specified resource name:
 
-ml.projects.getConfig
-Request body
-The request body must be empty.
+=== Query parameters
+[cols="1,1,5a"]
+|===
+|update	
+|string 
+|Required. Specifies the new branch of data. +
+ 
+For example, if data is time serie type new branch could be new 1 week of data between 01/06/2018 and 08/06/2018:
+`+{ "description": "1 week od data between...", "defaultVersion": { "name":"version_1" } }+`
 
-Response body
-If successful, the response body contains data with the following structure:
+A comma-separated list of fully qualified names of fields. Example: "user.displayName,photo".
+|===
 
-Returns service account information associated with a project.
+=== Request body
+The request body contains an instance of Dataset.
 
-JSON representation
-{
-  "serviceAccount": string,
-  "serviceAccountProject": string,
-  "config": {
-    object(Config)
-  }
-}
-Fields
-serviceAccount	
-string
-
-The service account Cloud ML uses to access resources in the project.
-
-serviceAccountProject	
-string (int64 format)
-
-The project number for serviceAccount.
-
-config	
-object(Config)
-
-Authorization Scopes
-Requires the following OAuth scope:
-
-https://www.googleapis.com/auth/cloud-platform
-For more information, see the Auth Guide.
-
-Config
-JSON representation
-{
-  "tpuServiceAccount": string
-}
-Fields
-tpuServiceAccount	
-string
-
-The service account Cloud ML uses to run on TPU node.
+=== Response body
+If successful, the response body contains an instance of Operation.
 
 
 
 
-== Method v1.data.slice
 
-Returns data specification
 
-.Example JSON:
 
-[source,json]
-----
-   {
-        slices: [0.8, 0.1, 0.1],
-        names: [train, test, valid],
-        type: random,
-        random : 888666888L
-    }
-----
