@@ -12,7 +12,8 @@ link:../../index.html[back <<]
 == Resource: Job
 Represents a training or prediction job.
 
-JSON representation
+.JSON representation
+----
 {
   "jobId": string,
   "createTime": string,
@@ -39,6 +40,7 @@ JSON representation
   }
   // End of list of possible types for union field output.
 }
+----
 == Fields
 jobId	
 string
@@ -101,7 +103,8 @@ The current prediction job result.
 TrainingInput
 Represents input parameters for a training job. When using the gcloud command to submit your training job, you can specify the input parameters as command-line arguments and/or in a YAML configuration file referenced from the --config command-line argument. For details, see the guide to submitting a training job.
 
-JSON representation
+.JSON representation
+----
 {
   "scaleTier": enum(ScaleTier),
   "masterType": string,
@@ -124,6 +127,7 @@ JSON representation
   "runtimeVersion": string,
   "pythonVersion": string
 }
+----
 Fields
 scaleTier	
 enum(ScaleTier)
@@ -253,10 +257,11 @@ You may set TrainingInput.parameterServerCount to specify the number of paramete
 
 Note that all of your workers must use the same machine type, which can be different from your parameter server type and master type. Your parameter servers must likewise use the same machine type, which can be different from your worker type and master type.
 
-HyperparameterSpec
+== HyperparameterSpec
 Represents a set of hyperparameters to optimize.
 
-JSON representation
+.JSON representation
+----
 {
   "goal": enum(GoalType),
   "params": [
@@ -271,7 +276,9 @@ JSON representation
   "enableTrialEarlyStopping": boolean,
   "algorithm": enum(Algorithm)
 }
-Fields
+----
+
+.Fields
 goal	
 enum(GoalType)
 
@@ -330,7 +337,8 @@ MINIMIZE	Minimize the goal metric.
 ParameterSpec
 Represents a single hyperparameter to optimize.
 
-JSON representation
+.JSON representation
+----
 {
   "parameterName": string,
   "type": enum(ParameterType),
@@ -344,7 +352,8 @@ JSON representation
   ],
   "scaleType": enum(ScaleType)
 }
-Fields
+----
+.Fields
 parameterName	
 string
 
@@ -407,7 +416,8 @@ RANDOM_SEARCH	Simple random search within the feasible space.
 PredictionInput
 Represents input parameters for a prediction job.
 
-JSON representation
+.JSON representation
+----
 {
   "dataFormat": enum(DataFormat),
   "inputPaths": [
@@ -426,7 +436,8 @@ JSON representation
   "uri": string
   // End of list of possible types for union field model_version.
 }
-Fields
+----
+.Fields
 dataFormat	
 enum(DataFormat)
 
@@ -513,7 +524,8 @@ CANCELLED	The job has been cancelled. errorMessage should describe the reason fo
 TrainingOutput
 Represents results of a training job. Output only.
 
-JSON representation
+.JSON representation
+----
 {
   "completedTrialCount": string,
   "trials": [
@@ -524,6 +536,7 @@ JSON representation
   "consumedMLUnits": number,
   "isHyperparameterTuningJob": boolean
 }
+----
 Fields
 completedTrialCount	
 string (int64 format)
@@ -548,7 +561,8 @@ Whether this job is a hyperparameter tuning job.
 == HyperparameterOutput
 Represents the result of a single hyperparameter tuning trial from a training job. The TrainingOutput object that is returned on successful completion of a training job with hyperparameter tuning includes a list of HyperparameterOutput objects, one for each successful trial.
 
-JSON representation
+.JSON representation
+----
 {
   "trialId": string,
   "hyperparameters": {
@@ -565,7 +579,8 @@ JSON representation
     }
   ]
 }
-Fields
+----
+.Fields
 trialId	
 string
 
@@ -650,14 +665,8 @@ create
 Creates a training or a batch prediction job.
 get
 Describes a job.
-getIamPolicy
-Gets the access control policy for a resource.
 list
 Lists the jobs in the project.
-setIamPolicy
-Sets the access control policy on the specified resource.
-testIamPermissions
-Returns permissions that a caller has on the specified resource.
 
 
 
@@ -671,7 +680,11 @@ Returns permissions that a caller has on the specified resource.
 
 
 
-Method: projects.jobs.cancel
+
+
+
+
+=== Method: projects.jobs.cancel
 Cancels a running job.
 
 HTTP request
@@ -701,7 +714,7 @@ If successful, the response body will be empty.
 
 
 
-Method: projects.jobs.create
+=== Method: projects.jobs.create
 Creates a training or a batch prediction job.
 
 HTTP request
@@ -729,7 +742,7 @@ If successful, the response body contains a newly created instance of Job.
 
 
 
-Method: projects.jobs.get
+=== Method: projects.jobs.get
 Describes a job.
 
 HTTP request
@@ -759,32 +772,10 @@ If successful, the response body contains an instance of Job.
 
 
 
-Method: projects.jobs.getIamPolicy
-Gets the access control policy for a resource. Returns an empty policy if the resource exists and does not have a policy set.
-
-HTTP request
-GET https://ml.googleapis.com/v1/{resource=projects/*/jobs/*}:getIamPolicy
-
-The URL uses Google API HTTP annotation syntax.
-
-Path parameters
-Parameters
-resource	
-string
-
-REQUIRED: The resource for which the policy is being requested. See the operation documentation for the appropriate value for this field.
-
-Request body
-The request body must be empty.
-
-Response body
-If successful, the response body contains an instance of Policy.
 
 
 
-
-
-Method: projects.jobs.list
+=== Method: projects.jobs.list
 Lists the jobs in the project.
 
 If there are no jobs that match the request parameters, the list request returns an empty response body: {}.
@@ -869,90 +860,6 @@ Optional. Pass this token as the pageToken field of the request for a subsequent
 
 
 
-Method: projects.jobs.setIamPolicy
-Sets the access control policy on the specified resource. Replaces any existing policy.
-
-HTTP request
-POST https://ml.googleapis.com/v1/{resource=projects/*/jobs/*}:setIamPolicy
-
-The URL uses Google API HTTP annotation syntax.
-
-Path parameters
-Parameters
-resource	
-string
-
-REQUIRED: The resource for which the policy is being specified. See the operation documentation for the appropriate value for this field.
-
-Request body
-The request body contains data with the following structure:
-
-JSON representation
-{
-  "policy": {
-    object(Policy)
-  },
-  "updateMask": string
-}
-Fields
-policy	
-object(Policy)
-
-REQUIRED: The complete policy to be applied to the resource. The size of the policy is limited to a few 10s of KB. An empty policy is a valid policy but certain Cloud Platform services (such as Projects) might reject them.
-
-updateMask	
-string (FieldMask format)
-
-OPTIONAL: A FieldMask specifying which fields of the policy to modify. Only the fields in the mask will be modified. If no mask is provided, the following default mask is used: paths: "bindings, etag" This field is only used by Cloud IAM.
-
-A comma-separated list of fully qualified names of fields. Example: "user.displayName,photo".
-
-Response body
-If successful, the response body contains an instance of Policy.
-
-
-
-
-
-
-
-
-
-
-== Method: projects.jobs.testIamPermissions
-Returns permissions that a caller has on the specified resource. If the resource does not exist, this will return an empty set of permissions, not a NOT_FOUND error.
-
-Note: This operation is designed to be used for building permission-aware UIs and command-line tools, not for authorization checking. This operation may "fail open" without warning.
-
-HTTP request
-POST https://ml.googleapis.com/v1/{resource=projects/*/jobs/*}:testIamPermissions
-
-The URL uses Google API HTTP annotation syntax.
-
-Path parameters
-Parameters
-resource	
-string
-
-REQUIRED: The resource for which the policy detail is being requested. See the operation documentation for the appropriate value for this field.
-
-Request body
-The request body contains data with the following structure:
-
-JSON representation
-{
-  "permissions": [
-    string
-  ]
-}
-Fields
-permissions[]	
-string
-
-The set of permissions to check for the resource. Permissions with wildcards (such as '*' or 'storage.*') are not allowed. For more information see IAM Overview.
-
-Response body
-If successful, the response body contains an instance of TestIamPermissionsResponse.
 
 
 

@@ -126,15 +126,20 @@ An object containing fields of an arbitrary type. An additional field "@type" co
 
 === Methods
 
-[cols="1,4"]
+[cols="1,1,2,4"]
 |===
+|name |type |url |description
 |cancel
+|POST |/v1/operations/{name=operation/*}:cancel
 |Starts asynchronous cancellation on a long-running operation.
 |delete
+|DELETE |/v1/operations/{name=operation/*}
 |Deletes a long-running operation.
 |get
+|GET |/v1/operations/{name=operation/*}
 |Gets the latest state of a long-running operation.
 |list
+|GET |/v1/operations
 |Lists operations that match the specified filter in the request.
 |===
 
@@ -143,7 +148,15 @@ An object containing fields of an arbitrary type. An additional field "@type" co
 
 
 == Method: v1.operations.cancel
-Starts asynchronous cancellation on a long-running operation. The server makes a best effort to cancel the operation, but success is not guaranteed. If the server doesn't support this method, it returns google.rpc.Code.UNIMPLEMENTED. Clients can use Operations.GetOperation or other methods to check whether the cancellation succeeded or whether the operation completed despite cancellation. On successful cancellation, the operation is not deleted; instead, it becomes an operation with an Operation.error value with a google.rpc.Status.code of 1, corresponding to Code.CANCELLED.
+Starts asynchronous cancellation on a long-running operation. 
+The server makes a best effort to cancel the operation, 
+but success is not guaranteed. If the server doesn't support this method, 
+it returns Code.UNIMPLEMENTED. 
+Clients can use Operations.GetOperation or other methods to check whether 
+the cancellation succeeded or whether the operation completed despite cancellation. 
+On successful cancellation, the operation is not deleted; instead, i
+t becomes an operation with an Operation.error value with a Status.code of 1, 
+corresponding to Code.CANCELLED.
 
 === HTTP request
 `POST https://{site}/v1/operations/{name=operation/*}:cancel`
@@ -170,7 +183,9 @@ If successful, the response body will be empty.
 
 
 == Method: v1.operations.delete
-Deletes a long-running operation. This method indicates that the client is no longer interested in the operation result. It does not cancel the operation. If the server doesn't support this method, it returns google.rpc.Code.UNIMPLEMENTED.
+Deletes a long-running operation. This method indicates that the client is no longer 
+interested in the operation result. It does not cancel the operation. 
+If the server doesn't support this method, it returns Code.UNIMPLEMENTED.
 
 === HTTP request
 `DELETE https://{site}/v1/operations/{name=operation/*}`
@@ -196,7 +211,8 @@ If successful, the response body will be empty.
 
 
 == Method: v1.operations.get
-Gets the latest state of a long-running operation. Clients can use this method to poll the operation result at intervals as recommended by the API service.
+Gets the latest state of a long-running operation. Clients can use this method 
+to poll the operation result at intervals as recommended by the API service.
 
 === HTTP request
 `GET https://{site}/v1/operations/{name=operation/*}`
@@ -224,8 +240,8 @@ If successful, the response body contains an instance of Operation.
 Lists operations that match the specified filter in the request. 
 If the server doesn't support this method, it returns UNIMPLEMENTED.
 
-NOTE: the name binding allows API services to override the binding to use different resource name schemes,
- such as users/*/operations. 
+NOTE: the name binding allows API services to override the binding to use 
+different resource name schemes,  such as users/*/operations. 
  To override the binding, API services can add a binding such as `"/v1/{name=users/*}/operations"`
   to their service configuration. For backwards compatibility, the default name includes the operations collection id, 
   however overriding users must ensure the name binding is the parent resource, without the operations collection id.

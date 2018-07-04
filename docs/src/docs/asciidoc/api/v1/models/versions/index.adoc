@@ -197,19 +197,26 @@ Available frameworks for prediction.
 |===
 	
 == Methods
-[cols="1,5a"]
+[cols="1,1,2,5a"]
 |===
+|name |type |url |description
 |create
+|POST |/v1/{models/*}/versions
 |Creates a new version of a model from a trained TensorFlow model.
 |delete
+|DELETE |/v1/{models/*/versions/*}
 |Deletes a model version.
 |get
+|GET |/v1/{models/*/versions/*}
 |Gets information about a model version.
 |list
+|GET |/v1/{models/*}/versions
 |Gets basic information about all the versions of a model.
 |patch
+|PATCH |/v1/{models/*/versions/*}
 |Updates the specified Version resource.
 |setDefault
+|POST |t/v1/{models/*/versions/*}:setDefault
 |Designates a version to be the default for the model.
 |===
 
@@ -433,7 +440,7 @@ If successful, the response body contains an instance of Operation.
 
 
 
-== Method: V1.models.versions.setDefault
+== Method: v1.models.versions.setDefault
 Designates a version to be the default for the model.
 
 The default version is used for prediction requests made against the model that don't specify a version.
@@ -441,7 +448,7 @@ The default version is used for prediction requests made against the model that 
 The first version to be created for a model is automatically set as the default. You must make any subsequent changes to the default version setting manually using this method.
 
 === HTTP request
-`POST https://ml.googleapis.com/v1/{models/*/versions/*}:setDefault`
+`POST https://{site}/v1/{models/*/versions/*}:setDefault`
 
 The URL uses Google API HTTP annotation syntax.
 
@@ -450,7 +457,8 @@ The URL uses Google API HTTP annotation syntax.
 |===
 |name	
 |string
-|Required. The name of the version to make the default for the model. You can get the names of all the versions of a model by calling projects.models.versions.list.
+|Required. The name of the version to make the default for the model. 
+You can get the names of all the versions of a model by calling projects.models.versions.list.
 |===
 
 === Request body

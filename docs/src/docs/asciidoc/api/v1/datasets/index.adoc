@@ -46,20 +46,43 @@ You can change the default version by calling v1.datasets.updateData.
 
 
 === Methods
-[cols="1,5a"]
+[cols="1,1,2,5a"]
 |===
+|name |type |url |description
 |create
+|POST |/v1/datasets
 |Creates a new dataset.
 |delete
+|DELETE |/v1/datasets/{name=dataset/*}
 |Deletes a dataset.
 |get
+|GET |/v1/datasets/{name=dataset/*}
 |Gets information about a dataset, including its name, the description (if set), 
 and the default version specification.
 |list
+|GET |/v1/datasets
 |Lists the datasets in a project.
 |patch
-|Updates a specific model resource.
+|PATCH |/v1/datasets/{name=dataset/*}
+|Updates a specific dataset with new cached data.
+|getSlices
+|GET |/v1/datasets/{name=dataset/*}:getSlices
+|Gets a dataset, with train/test/validation slices.
+Slicing is depending on dataset and JSON parameters.
+Default is:
+
+* if dataset is time series: continuous, 60/20/20%
+* if dataset is not times eries: random sampling, 80/10/10%.
 |===
+
+
+
+
+
+
+
+
+
 
 
 
@@ -250,6 +273,45 @@ If successful, the response body contains an instance of Operation.
 
 
 
+== Method: v1.datasets.getSlices
+Gets a dataset, with train/test/validation slices.
+Slicing is depending on dataset and JSON parameters.
+Default is:
+
+* if dataset is time series: continuous, 60/20/20%
+* if dataset is not times eries: random sampling, 80/10/10%.
+
+=== HTTP request
+`GET https://{site}/v1/datasets/{name=dataset/*}:getSlices`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+[cols="1,1,5a"]
+|===
+|name	
+|string
+|Required. The name of the dataset.
+|===
+
+=== Request body
+Optional:
+
+.JSON body
+----
+{
+    sampling: "random",
+    slices: {80,10,10}
+}
+----
+
+Default is:
+
+* if dataset is time series: continuous, 60/20/20%
+* if dataset is not times eries: random sampling, 80/10/10%.
+
+=== Response body
+If successful, the response body contains an array of Datasets.
 
 
 

@@ -47,24 +47,37 @@ You can change the default version by calling projects.methods.versions.setDefau
 
 
 === Methods
-[cols="1,5a"]
+[cols="1,1,2,5a"]
 |===
+|name |type |url |description
 |create
+|POST| /v1/models
 |Creates a model which will later contain one or more versions.
 |delete
+|DELETE | /v1/models/{name=model/*}
 |Deletes a model.
 |get
-|Gets information about a model, including its name, the description (if set), and the default version (if at least one version of the model has been deployed).
-|getIamPolicy
-|Gets the access control policy for a resource.
+| GET | /v1/models/{name=model/*}
+|Gets information about a model, including its name, the description (if set),
+ and the default version (if at least one version of the model has been deployed).
+
 |list
+|GET |/v1/models
 |Lists the models in a project.
 |patch
+|PATCH |/v1/models/{name=model/*}
 |Updates a specific model resource.
+
+
+|getIamPolicy
+|GET |v1/models/{name=model/*}:getIamPolicy
+|Experimental. Gets the access control policy for a resource.
 |setIamPolicy
-|Sets the access control policy on the specified resource.
+|POST |v1/models/{name=model/*}:setIamPolicy
+|Experimental. Sets the access control policy on the specified resource.
 |testIamPermissions
-|Returns permissions that a caller has on the specified resource.
+|POST |/v1/model/{sname=model/*}:testIamPermissions
+|Experimental. Returns permissions that a caller has on the specified resource.
 |===
 
 
@@ -79,7 +92,7 @@ You must add at least one version before you can request predictions from the mo
 Add versions by calling v1.models.versions.create.
 
 === HTTP request
-`POST https://{site}/models`
+`POST https://{site}/v1/models`
 
 The URL uses Google API HTTP annotation syntax.
 
@@ -151,29 +164,6 @@ If successful, the response body contains an instance of Model.
 
 
 
-
-== Method: v1.models.getIamPolicy
-Gets the access control policy for a resource. 
-Returns an empty policy if the resource exists and does not have a policy set.
-
-=== HTTP request
-`GET https://{site}/v1/models/{name=model/*}:getIamPolicy`
-
-The URL uses Google API HTTP annotation syntax.
-
-=== Path parameters
-[cols="1,1,5a"]
-|===
-|resource	
-|string
-|REQUIRED: The resource for which the policy is being requested.
-|===
-
-=== Request body
-The request body must be empty.
-
-=== Response body
-If successful, the response body contains an instance of Policy.
 
 
 
@@ -280,12 +270,51 @@ If successful, the response body contains an instance of Operation.
 
 
 
+*EXPERIMENTAL*
+
+
+
+
+
+
+
+
+
+
+== Method: v1.models.getIamPolicy
+Gets the access control policy for a resource. 
+Returns an empty policy if the resource exists and does not have a policy set.
+
+=== HTTP request
+`GET https://{site}/v1/models/{name=model/*}:getIamPolicy`
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+[cols="1,1,5a"]
+|===
+|resource	
+|string
+|REQUIRED: The resource for which the policy is being requested.
+|===
+
+=== Request body
+The request body must be empty.
+
+=== Response body
+If successful, the response body contains an instance of Policy.
+
+
+
+
+
+
 
 == Method: v1.models.setIamPolicy
 Sets the access control policy on the specified resource. Replaces any existing policy.
 
 === HTTP request
-POST https://{site}/v1/{models/*}:setIamPolicy
+POST https://{site}/v1/models/{name=model/*}:setIamPolicy
 
 The URL uses Google API HTTP annotation syntax.
 
@@ -341,7 +370,7 @@ Note: This operation is designed to be used for building permission-aware UIs an
 not for authorization checking. This operation may "fail open" without warning.
 
 === HTTP request
-`POST https://ml.googleapis.com/v1/{models/*}:testIamPermissions`
+`POST https://{site}/v1/model/{sname=model/*}:testIamPermissions`
 
 The URL uses Google API HTTP annotation syntax.
 
@@ -350,7 +379,7 @@ The URL uses Google API HTTP annotation syntax.
 |===
 |resource	
 |string
-|REQUIRED: The resource for which the policy detail is being requested. See the operation documentation for the appropriate value for this field.
+|REQUIRED: The resource for which the policy detail is being requested. 
 |===
 
 === Request body

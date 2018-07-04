@@ -12,112 +12,196 @@ This service provides the following discovery document:
 **https://{site}/$discovery/rest?version=v1**
 
 
-link:v1/datasets/index.html[v1/datasets] +
+
+== MODEL
+
+Represents a machine learning solution.
+
+A model can have multiple versions, each of which is a deployed, trained model ready to receive prediction requests.
+ The model itself is just a container.
+
+Full API:  link:v1/models/index.html[v1/models]
+
+=== Methods
+[cols="1,1,2,5a"]
+|===
+|name |type |url |description
+|create
+|POST| /v1/models
+|Creates a model which will later contain one or more versions.
+|delete
+|DELETE | /v1/models/{name=model/*}
+|Deletes a model.
+|get
+| GET | /v1/models/{name=model/*}
+|Gets information about a model, including its name, the description (if set),
+ and the default version (if at least one version of the model has been deployed).
+
+|list
+|GET |/v1/models
+|Lists the models in a project.
+|patch
+|PATCH |/v1/models/{name=model/*}
+|Updates a specific model resource.
+
+
+|getIamPolicy
+|GET |v1/models/{name=model/*}:getIamPolicy
+|Experimental. Gets the access control policy for a resource.
+|setIamPolicy
+|POST |v1/models/{name=model/*}:setIamPolicy
+|Experimental. Sets the access control policy on the specified resource.
+|testIamPermissions
+|POST |/v1/model/{sname=model/*}:testIamPermissions
+|Experimental. Returns permissions that a caller has on the specified resource.
+|===
+
+
+
+
+== MODEL.VERSION
+
+Represents a version of the model.
+
+Each version is a trained model deployed in the cloud, ready to handle prediction requests. 
+A model can have multiple versions. You can get information about all of the versions of a given model by 
+calling `v1.models.versions.list`.
+
+
+Full API: link:v1/models/versions/index.html[v1/models/versions] 
+
+=== Methods
+[cols="1,1,2,5a"]
+|===
+|name |type |url |description
+|create
+|POST |/v1/{models/*}/versions
+|Creates a new version of a model from a trained TensorFlow model.
+|delete
+|DELETE |/v1/{models/*/versions/*}
+|Deletes a model version.
+|get
+|GET |/v1/{models/*/versions/*}
+|Gets information about a model version.
+|list
+|GET |/v1/{models/*}/versions
+|Gets basic information about all the versions of a model.
+|patch
+|PATCH |/v1/{models/*/versions/*}
+|Updates the specified Version resource.
+|setDefault
+|POST |t/v1/{models/*/versions/*}:setDefault
+|Designates a version to be the default for the model.
+|===
+
+
+
+
+== DATASET
+
+Represents a dataset.
+
+A dataset can have multiple versions/increases, usually with time.
+
+Full API: link:v1/datasets/index.html[v1/datasets] 
+
+
+=== Methods
+[cols="1,1,2,5a"]
+|===
+|name |type |url |description
+|create
+|POST |/v1/datasets
+|Creates a new dataset.
+|delete
+|DELETE |/v1/datasets/{name=dataset/*}
+|Deletes a dataset.
+|get
+|GET |/v1/datasets/{name=dataset/*}
+|Gets information about a dataset, including its name, the description (if set), 
+and the default version specification.
+|list
+|GET |/v1/datasets
+|Lists the datasets in a project.
+|patch
+|PATCH |/v1/datasets/{name=dataset/*}
+|Updates a specific dataset with new cached data.
+|getSlices
+|GET |/v1/datasets/{name=dataset/*}:getSlices
+|Gets a dataset, with train/test/validation slices.
+Slicing is depending on dataset and JSON parameters.
+Default is:
+
+* if dataset is time series: continuous, 60/20/20%
+* if dataset is not times eries: random sampling, 80/10/10%.
+|===
+
+
+
+
+
+
+
+
+
+
+
+
 link:v1/ads/index.html[v1/ads] +
-link:v1/models/index.html[v1/models] +
-link:v1/models/versions/index.html[v1/models/versions] +
-link:v1/operations/index.html[v1/operations] +
+
+
+
+
 link:v1/services/index.html[v1/services] +
-TYPES: + 
-link:v1/policy.html[v1/policy] +
-link:v1/predict.html[v1/predict] +
 
 
-== REST Resource: v1.data
 
-Methods
+
+
+
+
+
+
+
+== OPERATION
+
+This resource represents a long-running operation that is the result of an API call.
+
+
+Full API: link:v1/operations/index.html[v1/operations] 
+
+
+=== Methods
+
+[cols="1,1,2,4"]
 |===
-|spec |GET | v1/data/{name=dataset/*}:spec | Returns data specification
-|slice |POST | v1/data/{name=dataset/*}:slice | slice data set into temporary slices    
-| slice | 
+|name |type |url |description
+|cancel
+|POST |/v1/operations/{name=operation/*}:cancel
+|Starts asynchronous cancellation on a long-running operation.
+|delete
+|DELETE |/v1/operations/{name=operation/*}
+|Deletes a long-running operation.
+|get
+|GET |/v1/operations/{name=operation/*}
+|Gets the latest state of a long-running operation.
+|list
+|GET |/v1/operations
+|Lists operations that match the specified filter in the request.
 |===
 
 
-Example JSON:
-[source,json]
-----
-   {
-        slices: [0.8, 0.1, 0.1],
-        names: [train, test, valid],
-        type: random,
-        random : 888666888L
-    }
-----
 
-Methods
-|===
-| getConfig	| GET | /v1/{name=projects/*}:getConfig | Get the service account information associated with your project.
-| predict	| POST | /v1/{name=projects/**}:predict | Performs prediction on the data in the request.
-|===
+== TYPES 
 
+=== Policy 
+API: link:v1/policy.html[v1/policy] 
 
-== REST Resource: v1.projects.jobs
-Methods
-cancel	POST /v1/{name=projects/*/jobs/*}:cancel 
-Cancels a running job.
-create	POST /v1/{parent=projects/*}/jobs 
-Creates a training or a batch prediction job.
-get	GET /v1/{name=projects/*/jobs/*} 
-Describes a job.
-getIamPolicy	GET /v1/{resource=projects/*/jobs/*}:getIamPolicy 
-Gets the access control policy for a resource.
-list	GET /v1/{parent=projects/*}/jobs 
-Lists the jobs in the project.
-setIamPolicy	POST /v1/{resource=projects/*/jobs/*}:setIamPolicy 
-Sets the access control policy on the specified resource.
-testIamPermissions	POST /v1/{resource=projects/*/jobs/*}:testIamPermissions 
-Returns permissions that a caller has on the specified resource.
-REST Resource: v1.projects.locations
-Methods
-get	GET /v1/{name=projects/*/locations/*} 
-Get the complete list of CMLE capabilities in a location, along with their location-specific properties.
-list	GET /v1/{parent=projects/*}/locations 
-List all locations that provides at least one type of CMLE capability.
+=== Predict
+API: link:v1/predict.html[v1/predict] 
 
 
 
-== REST Resource: v1.projects.models
-Methods
-create	POST /v1/{parent=projects/*}/models 
-Creates a model which will later contain one or more versions.
-delete	DELETE /v1/{name=projects/*/models/*} 
-Deletes a model.
-get	GET /v1/{name=projects/*/models/*} 
-Gets information about a model, including its name, the description (if set), and the default version (if at least one version of the model has been deployed).
-getIamPolicy	GET /v1/{resource=projects/*/models/*}:getIamPolicy 
-Gets the access control policy for a resource.
-list	GET /v1/{parent=projects/*}/models 
-Lists the models in a project.
-patch	PATCH /v1/{name=projects/*/models/*} 
-Updates a specific model resource.
-setIamPolicy	POST /v1/{resource=projects/*/models/*}:setIamPolicy 
-Sets the access control policy on the specified resource.
-testIamPermissions	POST /v1/{resource=projects/*/models/*}:testIamPermissions 
-Returns permissions that a caller has on the specified resource.
-
-== REST Resource: v1.projects.models.versions
-Methods
-create	POST /v1/{parent=projects/*/models/*}/versions 
-Creates a new version of a model from a trained TensorFlow model.
-delete	DELETE /v1/{name=projects/*/models/*/versions/*} 
-Deletes a model version.
-get	GET /v1/{name=projects/*/models/*/versions/*} 
-Gets information about a model version.
-list	GET /v1/{parent=projects/*/models/*}/versions 
-Gets basic information about all the versions of a model.
-patch	PATCH /v1/{name=projects/*/models/*/versions/*} 
-Updates the specified Version resource.
-setDefault	POST /v1/{name=projects/*/models/*/versions/*}:setDefault 
-Designates a version to be the default for the model.
 
 
-== REST Resource: v1.projects.operations
-Methods
-cancel	POST /v1/{name=projects/*/operations/*}:cancel 
-Starts asynchronous cancellation on a long-running operation.
-delete	DELETE /v1/{name=projects/*/operations/*} 
-Deletes a long-running operation.
-get	GET /v1/{name=projects/*/operations/*} 
-Gets the latest state of a long-running operation.
-list	GET /v1/{name=projects/*}/operations 
-Lists operations that match the specified filter in the request.
+
