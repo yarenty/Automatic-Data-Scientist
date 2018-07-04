@@ -13,6 +13,84 @@ This service provides the following discovery document:
 
 
 
+
+
+== DATASET
+
+Represents a dataset.
+
+A dataset can have multiple versions/increases, usually with time.
+
+Full API: link:v1/datasets/index.html[v1/datasets] 
+
+
+=== Methods
+[cols="1,1,2,5"]
+|===
+|name |type |url |description
+|create
+|POST |/v1/datasets
+|Creates a new dataset.
+|delete
+|DELETE |/v1/datasets/{name=dataset/*}
+|Deletes a dataset.
+|get
+|GET |/v1/datasets/{name=dataset/*}
+|Gets information about a dataset, including its name, the description (if set), 
+and the default version specification.
+|list
+|GET |/v1/datasets
+|Lists the datasets in a project.
+|patch
+|PATCH |/v1/datasets/{name=dataset/*}
+|Updates a specific dataset with new cached data.
+|getSlices
+|GET |/v1/datasets/{name=dataset/*}:getSlices
+|Gets a dataset, with train/test/validation slices.
+Slicing is depending on dataset and JSON parameters.
+Default is:
+
+* if dataset is time series: continuous, 60/20/20%
+* if dataset is not times eries: random sampling, 80/10/10%.
+|===
+
+
+
+
+
+== ADS
+
+
+Represents DataScientistFlow job, metamodel and actions on them.
+
+
+Full API:  link:v1/ads/index.html[v1/ads]
+
+
+
+=== Methods
+[cols="1,1,2,5a"]
+|===
+|cancel
+|POST |/v1/ads/{name=job/*}:cancel
+|Cancels a running ADS training job.
+|create
+|POST |/v1/ads/jobs
+|Creates a training ads job.
+|get
+|GET |/v1/ads/{name=jobs/*}
+|Describes a ads job.
+|list
+|GET |/v1/ads/jobs
+|Lists the adsd jobs in the project.
+|===
+
+
+
+
+
+
+
 == MODEL
 
 Represents a machine learning solution.
@@ -97,43 +175,55 @@ Full API: link:v1/models/versions/index.html[v1/models/versions]
 
 
 
-== DATASET
 
-Represents a dataset.
 
-A dataset can have multiple versions/increases, usually with time.
+== SERVICE.PREDICTION
 
-Full API: link:v1/datasets/index.html[v1/datasets] 
+Represents anomaly job, and metadata.
 
+Full API: link:v1/services/predictions/index.html[v1/services/predictions] 
 
 === Methods
 [cols="1,1,2,5"]
 |===
-|name |type |url |description
+|cancel
+|POST |/v1/servicespredictions/{name=prediction/*}:cancel
+|Cancels a running prediction job.
 |create
-|POST |/v1/datasets
-|Creates a new dataset.
-|delete
-|DELETE |/v1/datasets/{name=dataset/*}
-|Deletes a dataset.
+|POST |/v1/serivces/predictions/{name=prediction/*}
+|Creates a batch prediction job.
 |get
-|GET |/v1/datasets/{name=dataset/*}
-|Gets information about a dataset, including its name, the description (if set), 
-and the default version specification.
+|GET |/v1/services/predictions/{name=prediction/*}
+|Describes a prediction job.
 |list
-|GET |/v1/datasets
-|Lists the datasets in a project.
-|patch
-|PATCH |/v1/datasets/{name=dataset/*}
-|Updates a specific dataset with new cached data.
-|getSlices
-|GET |/v1/datasets/{name=dataset/*}:getSlices
-|Gets a dataset, with train/test/validation slices.
-Slicing is depending on dataset and JSON parameters.
-Default is:
+|GET |/v1/services/predictions
+|Lists the prediction jobs in the project.
+|===
 
-* if dataset is time series: continuous, 60/20/20%
-* if dataset is not times eries: random sampling, 80/10/10%.
+
+
+== SERVICE.ANOMALY
+
+Represents anomaly job, and metadata.
+
+
+Full API: link:v1/services/anomalies/index.html[v1/services/anomalies] 
+
+=== Methods
+[cols="1,1,2,5"]
+|===
+|cancel
+|POST |/v1/services/anomalies/{name=anomaly/*}:cancel
+|Cancels a running anomaly job.
+|create
+|POST |/v1/serivces/anomalies/{name=anomaly/*}
+|Creates a batch anomaly job.
+|get
+|GET |/v1/services/anomalies/{name=anomaly/*}
+|Describes a anomaly job.
+|list
+|GET |/v1/services/anomalies
+|Lists the anomaly jobs in the project.
 |===
 
 
@@ -142,17 +232,6 @@ Default is:
 
 
 
-
-
-
-
-
-link:v1/ads/index.html[v1/ads] +
-
-
-
-
-link:v1/services/index.html[v1/services] +
 
 
 

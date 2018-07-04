@@ -1,0 +1,444 @@
+:toc2:
+:toc-title: API
+
+
+
+
+= REST Resource: v1.services.anomalies
+
+link:../../../index.html[back <<] 
+
+
+== Resource: Anomaly
+Represents anomaly job, and metadata.
+
+.JSON representation
+----
+{
+  "jobId": string,
+  "createTime": string,
+  "startTime": string,
+  "endTime": string,
+  "state": enum(State),
+  "errorMessage": string,
+  "anomalyInput": {
+    object(AnomalyInput)
+  }
+  "anomalyOutput": {
+    object(AnomalyOutput)
+  }
+}
+----
+
+.Fields
+[cols="1,1,5a"]
+|===
+|jobId	
+|string
+|Required. The user-specified id of the job.
+
+|createTime	
+|string (Timestamp format)
+|Output only. When the job was created. +
+A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. 
+Example: "2014-10-02T15:01:23.045123456Z".
+
+|startTime	
+|string (Timestamp format)
+|Output only. When the job processing was started. +
+A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. 
+Example: "2014-10-02T15:01:23.045123456Z".
+
+|endTime	
+|string (Timestamp format)
+|Output only. When the job processing was completed. +
+A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. 
+Example: "2014-10-02T15:01:23.045123456Z".
+
+|state	
+|enum(State)
+|Output only. The detailed state of a job.
+
+|errorMessage	
+|string
+|Output only. The details of a failure or a cancellation.
+
+|anomalyInput	
+|object(AnomalyInput)
+|Input parameters to create a anomaly job.
+
+|anomalyOutput	
+|object(AnomalyOutput)
+|The current anomaly job result.
+|===
+
+
+
+=== AnomalyInput
+Represents input parameters for a anomaly job.
+
+.JSON representation
+----
+{
+  "dataFormat": enum(DataFormat),
+  "inputPaths": [
+    string
+  ],
+  "outputPath": string,
+  "maxWorkerCount": string,
+  "region": string,
+  "runtimeVersion": string,
+  "batchSize": string,
+  "signatureName": string,
+
+  // Union field model_version can be only one of the following:
+  "modelName": string,
+  "versionName": string,
+  "uri": string
+  // End of list of possible types for union field model_version.
+}
+----
+
+
+.Fields
+[cols="1,1,5a"]
+|===
+|dataFormat	
+|enum(DataFormat)
+|Required. The format of the input data files.
+
+|inputPaths[]	
+|string
+|Required. The location of the input data files. May contain wildcards.
+
+|outputPath	
+|string
+|Required. The output Storage location.
+
+|maxWorkerCount	
+|string (int64 format)
+|Optional. The maximum number of workers to be used for parallel processing.
+ Defaults to 10 if not specified.
+
+|runtimeVersion	
+|string
+|Optional. The ML runtime version to use for this batch anomaly.
+ If not set,  ML will pick the runtime version used during the versions.create request 
+ for this model version, or choose the latest stable version when model version information
+  is not available such as when the model is specified by uri.
+
+|batchSize	
+|string (int64 format)
+|Optional. Number of records per batch, defaults to 64. 
+The service will buffer batchSize number of records in memory before invoking 
+one ML anomaly call internally. So take the record size and memory available 
+into consideration when setting this parameter.
+
+|signatureName	
+|string
+|Optional. The name of the signature defined in the SavedModel to use for this job.
+
+Defaults to DEFAULT_SERVING_SIGNATURE_DEF_KEY , which is "serving_default".
+
+|||Union field model_version. Required. The model or the version to use for 
+anomaly.model_version can be only one of the following:
+
+|modelName	
+|string
+|Use this field if you want to use the default version for the specified model. 
+The string must use the following format:
+
+"/models/YOUR_MODEL"
+
+|versionName	
+|string
+|Use this field if you want to specify a version of the model to use. 
+The string is formatted the same way as model_version, with the addition of the 
+version information:
+
+"/models/YOUR_MODEL/versions/YOUR_VERSION"
+
+|uri	
+|string
+|Use this field if you want to specify a Storage path for the model to use.
+|===
+
+=== DataFormat
+The format used to separate data instances in the source and destination files.
+
+.Enums
+[cols="1,5"]
+|===
+|UNSPECIFIED	|Unspecified format.
+|JSON	|Each line of the file is a JSON dictionary representing one record.
+|TEXT	|Deprecated. Use JSON instead.
+|TF_RECORD	|INPUT ONLY. The source file is a TFRecord file.
+|TF_RECORD_GZIP	|INPUT ONLY. The source file is a GZIP-compressed TFRecord file.
+|===
+
+=== State
+Describes the job state.
+
+.Enums
+[cols="1,5"]
+|===
+|STATE_UNSPECIFIED	|The job state is unspecified.
+|QUEUED	|The job has been just created and processing has not yet begun.
+|PREPARING	|The service is preparing to run the job.
+|RUNNING	|The job is in progress.
+|SUCCEEDED	|The job completed successfully.
+|FAILED	The |job failed. errorMessage should contain the details of the failure.
+|CANCELLING	|The job is being cancelled. errorMessage should describe the reason for the cancellation.
+|CANCELLED	|The job has been cancelled. errorMessage should describe the reason for the cancellation.
+|===
+
+
+
+=== AnomalyOutput
+Represents results of a anomaly job.
+
+.JSON representation
+----
+{
+  "outputPath": string,
+  "totalyCount": string,
+  "anomalyCount": string,
+  "errorCount": string,
+  "nodeHours": number
+}
+----
+
+.Fields
+[cols="1,1,5a"]
+|===
+|outputPath	
+|string
+|The output Storage location provided at the job creation time.
+
+|totalCount	
+|string (int64 format)
+|The number of processed records.
+
+|anomalyCount	
+|string (int64 format)
+|The number of found anomalies.
+
+|errorCount	
+|string (int64 format)
+|The number of data instances which resulted in errors.
+
+|nodeHours	
+|number
+|Node hours used by the batch anomaly job.
+|===
+
+=== Methods
+[cols="1,1,2,5"]
+|===
+|cancel
+|POST |/v1/services/anomalies/{name=anomaly/*}:cancel
+|Cancels a running anomaly job.
+|create
+|POST |/v1/serivces/anomalies/{name=anomaly/*}
+|Creates a batch anomaly job.
+|get
+|GET |/v1/services/anomalies/{name=anomaly/*}
+|Describes a anomaly job.
+|list
+|GET |/v1/services/anomalies
+|Lists the anomaly jobs in the project.
+|===
+
+
+
+
+
+
+
+
+
+
+
+== Method: v1.services.anomalies.cancel
+Cancels a running job.
+
+=== HTTP request
+POST https://{site}/v1/servicesanomalys/{name=anomaly/*}:cancel
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+Parameters
+[cols="1,1,5a"]
+|===
+|name	
+|string
+|Required. The name of the job to cancel.
+|===
+=== Request body
+The request body must be empty.
+
+=== Response body
+If successful, the response body will be empty.
+
+
+
+
+
+
+
+== Method: v1.services.anomalies.create
+Creates a training or a batch anomaly job.
+
+=== HTTP request
+POST https://{site}/v1/serivces/anomalies/{name=anomaly/*}
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+Parameters
+[cols="1,1,5a"]
+|===
+|name	
+|string
+|Required. The project name.
+|===
+
+=== Request body
+The request body contains an instance of Job.
+
+=== Response body
+If successful, the response body contains a newly created instance of Job.
+
+
+
+
+
+== Method: v1.services.anomalies.get
+Describes a anomaly job.
+
+=== HTTP request
+GET https://{site}/v1/services/anomalies/{name=anomaly/*}
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+Parameters
+[cols="1,1,5a"]
+|===
+|name	
+|string
+|Required. The name of the job to get the description of.
+|===
+
+=== Request body
+The request body must be empty.
+
+=== Response body
+If successful, the response body contains an instance of Job.
+
+
+
+
+
+
+
+
+
+
+== Method: v1.services.anomalies.list
+Lists the anomaly jobs in the project.
+
+If there are no jobs that match the request parameters, 
+the list request returns an empty response body: {}.
+
+=== HTTP request
+GET https://{site}/v1/services/anomalies
+
+The URL uses Google API HTTP annotation syntax.
+
+=== Path parameters
+Parameters
+[cols="1,1,5a"]
+|===
+|parent	
+|string
+|Required. The name of the project for which to list jobs.
+|===
+
+=== Query parameters
+Parameters
+[cols="1,1,5a"]
+|===
+|filter	
+|string
+|Optional. Specifies the subset of jobs to retrieve. 
+You can filter on the value of one or more attributes of the job object. 
+
+|pageToken	
+|string
+|Optional. A page token to request the next page of results.
+You get the token from the nextPageToken field of the response from the previous call.
+
+|pageSize	
+|number
+|Optional. The number of jobs to retrieve per "page" of results. If there are more remaining results than this number, the response message will contain a valid value in the nextPageToken field.
+
+The default value is 20, and the maximum page size is 100.
+|===
+
+=== Request body
+The request body must be empty.
+
+=== Response body
+If successful, the response body contains data with the following structure:
+
+Response message for the jobs.list method.
+
+.JSON representation
+----
+{
+  "anomalies": [
+    {
+      object(Anomaly)
+    }
+  ],
+  "nextPageToken": string
+}
+----
+
+.Fields
+[cols="1,1,5a"]
+|===
+|anomalies[]	
+|object(Anomaly)
+|The list of anomaly jobs.
+
+|nextPageToken	
+|string
+|Optional. Pass this token as the pageToken field of the request for a subsequent call.
+|===
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
