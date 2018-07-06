@@ -489,22 +489,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
          &lt;transformation type&gt;,
          ...
          ]
-   }
+   },
   "algorithms": {
         "allAlgorithms": boolean,
         "algorithms": [
-            &lt;algorithm&gt;|&lt;hyperparams&gt;,
+            &lt;algorithm&gt;|[&lt;hyperparams&gt;],
             ...
         ],
         "objective": &lt;objective&gt;,
 
-   }
-  "lime": {
-      "k": int,
-      ...
-   }
-  "loco": {
-        "process":boolean,
+   }.
+   "interpretation": {
+      "lime": {
+          "k": int,
+          ...
+       }
+      "loco": {
+            "process":boolean,
+       }
    }
 }</pre>
 </div>
@@ -559,6 +561,299 @@ since they have default values and whole process should be as much automatic as 
 <p>If not specified default values will be processed. See below.</p>
 </div></div></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lime</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Parameters for lime automatic interpretation.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">loco</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Parameters for LOCO - input data explanation (RCA).</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. AFE structure</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">levels</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. How many levels of data transformation should be used.</p>
+</div>
+<div class="paragraph">
+<p>Default value 3.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">allTransformations</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. Should use all provided transformations</p>
+</div>
+<div class="paragraph">
+<p>Default true.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">nanTransformations</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enum</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. How to process non existing values
+.<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>NAN transformations</p>
+<div class="ulist">
+<ul>
+<li>
+<p>None</p>
+</li>
+<li>
+<p>Zero</p>
+</li>
+<li>
+<p>ConstValue</p>
+</li>
+<li>
+<p>Mean</p>
+</li>
+<li>
+<p>Median</p>
+</li>
+<li>
+<p>LastGoodValue</p>
+</li>
+<li>
+<p>DailyAverage</p>
+</li>
+<li>
+<p>DailyAverageSoftened</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Default is None.</p>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnote_1">
+<a href="#_footnoteref_1">1</a>. some algorithms could not get NANs as input - XGBoost/SDAR
+</div>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">transformations[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. List of transformations to be used in processing.</p>
+</div>
+<div class="paragraph">
+<p>Currently supported:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>math</p>
+<div class="ulist">
+<ul>
+<li>
+<p>log</p>
+</li>
+<li>
+<p>ln</p>
+</li>
+<li>
+<p>sqrt</p>
+</li>
+<li>
+<p>sqrt3</p>
+</li>
+<li>
+<p>power</p>
+</li>
+<li>
+<p>qube</p>
+</li>
+<li>
+<p>sin</p>
+</li>
+<li>
+<p>cos</p>
+</li>
+<li>
+<p>tan</p>
+</li>
+<li>
+<p>10^x</p>
+</li>
+<li>
+<p>e^x</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>time series</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Y - year</p>
+</li>
+<li>
+<p>M - month of year</p>
+</li>
+<li>
+<p>WoY - week of year</p>
+</li>
+<li>
+<p>WoM - week of month</p>
+</li>
+<li>
+<p>DoY - day of year</p>
+</li>
+<li>
+<p>D - day of month</p>
+</li>
+<li>
+<p>DoW - day of week</p>
+</li>
+<li>
+<p>HoY - hour of year</p>
+</li>
+<li>
+<p>HoM - hour of month</p>
+</li>
+<li>
+<p>HoW - hour of week</p>
+</li>
+<li>
+<p>H - hour of day</p>
+</li>
+<li>
+<p>MoM - minute of month</p>
+</li>
+<li>
+<p>MoW - minute of week</p>
+</li>
+<li>
+<p>MoD - minute of day</p>
+</li>
+<li>
+<p>M - minute of hour</p>
+</li>
+<li>
+<p>SoM - second of month</p>
+</li>
+<li>
+<p>SoW - second of week</p>
+</li>
+<li>
+<p>SoD - second of day</p>
+</li>
+<li>
+<p>SoH - second of hour</p>
+</li>
+<li>
+<p>S - second of minute</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>distribution transformation</p>
+<div class="ulist">
+<ul>
+<li>
+<p>BoxCox</p>
+</li>
+<li>
+<p>Partial Least Square</p>
+</li>
+<li>
+<p>Winsorization</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Algorithm structure</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">allAlgorithms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. Should data be testes against all available algorithms.</p>
+</div>
+<div class="paragraph">
+<p>Default value true.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">algorithms[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. List of algorithms to be used in processing.
+Each algorithm can contain their own hyperparameters scope.</p>
+</div>
+<div class="paragraph">
+<p>Currently supported:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>GLM [H2O]</p>
+</li>
+<li>
+<p>K-means [H2O]</p>
+</li>
+<li>
+<p>Boosting Treee [H2O]</p>
+</li>
+<li>
+<p>Random Forest [H2O]</p>
+</li>
+<li>
+<p>SDAR [Jaro]</p>
+</li>
+<li>
+<p>RNN [Tensorflow]</p>
+</li>
+<li>
+<p>XGBoost [XGBoost]</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Hyperparameters are depending on each of algorithm.</strong> They are specified as list structure:<br>
+<code>&lt;parameter name&gt;: [ &lt;value 1&gt;,&lt;value 2&gt;, &#8230;&#8203; ]</code></p>
+</div></div></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -611,25 +906,27 @@ since they have default values and whole process should be as much automatic as 
   "algorithms": {
         "allAlgorithms": boolean,
         "algorithms": [
-            &lt;algorithm&gt;|&lt;hyperparams&gt;,
+            &lt;algorithm&gt;|[&lt;hyperparams&gt;],
             ...
         ],
         "objective": &lt;objective&gt;,
 
    }
-  "lime": {
-      "k": int,
-      ...
-   }
-  "loco": {
-        "process":boolean,
+   "interpretation": {
+      "lime": {
+          "k": int,
+          ...
+       }
+      "loco": {
+            "process":boolean,
 
+       }
    }
 }</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If prediction fails for any instance, the response body contains no predictions.
+<p>If ADS fails for any instance, the response body contains no flow.
 Instead, it contains a single error entry:</p>
 </div>
 <div class="listingblock">
@@ -640,19 +937,7 @@ Instead, it contains a single error entry:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>The predictions[] object contains the list of predictions, one for each instance in the request.</p>
-</div>
-<div class="paragraph">
-<p>On error, the error string contains a message describing the problem.
-The error is returned instead of a prediction list if an error occurred while processing any instance.</p>
-</div>
-<div class="paragraph">
-<p>Even though there is one prediction per instance, the format of a prediction is not directly
-related to the format of an instance. Predictions take whatever format is specified in the outputs
-collection defined in the model. The collection of predictions is returned in a JSON list.
-Each member of the list can be a simple value, a list, or a JSON object of any complexity.
-If your model has more than one output tensor, each prediction will be a JSON object containing
-a name/value pair for each output. The names identify the output aliases in the graph.</p>
+<p>On error, the error string contains a message describing the problem.</p>
 </div>
 <div class="sect2">
 <h3 id="_response_body_examples">Response body examples</h3>
@@ -676,7 +961,7 @@ a name/value pair for each output. The names identify the output aliases in the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-07-06 12:33:50 IST
+Last updated 2018-07-06 15:02:38 IST
 </div>
 </div>
 </body>
