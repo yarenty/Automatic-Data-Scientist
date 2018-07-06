@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.6.1">
-<title>MLaaS - Machine Learning API</title>
+<title>ADS Flow</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -427,532 +427,248 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>MLaaS - Machine Learning API</h1>
+<h1>ADS Flow</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">API</div>
 <ul class="sectlevel1">
-<li><a href="#_intro">Intro</a></li>
-<li><a href="#_dataset">DATASET</a>
+<li><a href="#_request_body">Request body</a>
 <ul class="sectlevel2">
-<li><a href="#_methods">Methods</a></li>
+<li><a href="#_fields">Fields</a></li>
+<li><a href="#_examples">Examples</a></li>
 </ul>
 </li>
-<li><a href="#_ads">ADS</a>
+<li><a href="#_response_body">Response body</a>
 <ul class="sectlevel2">
-<li><a href="#_methods_2">Methods</a></li>
-</ul>
-</li>
-<li><a href="#_model">MODEL</a>
-<ul class="sectlevel2">
-<li><a href="#_methods_3">Methods</a></li>
-</ul>
-</li>
-<li><a href="#_model_version">MODEL.VERSION</a>
-<ul class="sectlevel2">
-<li><a href="#_methods_4">Methods</a></li>
-</ul>
-</li>
-<li><a href="#_service_prediction">SERVICE.PREDICTION</a>
-<ul class="sectlevel2">
-<li><a href="#_methods_5">Methods</a></li>
-</ul>
-</li>
-<li><a href="#_service_anomaly">SERVICE.ANOMALY</a>
-<ul class="sectlevel2">
-<li><a href="#_methods_6">Methods</a></li>
-</ul>
-</li>
-<li><a href="#_operation">OPERATION</a>
-<ul class="sectlevel2">
-<li><a href="#_methods_7">Methods</a></li>
-</ul>
-</li>
-<li><a href="#_types">TYPES</a>
-<ul class="sectlevel2">
-<li><a href="#_predict">Predict</a></li>
-<li><a href="#_adsflow">ADSFlow</a></li>
-<li><a href="#_policy">Policy</a></li>
+<li><a href="#_response_body_examples">Response body examples</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_intro">Intro</h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>An API to enable creating and using machine learning models.</p>
+<p><a href="../index.html">back &lt;&lt;</a></p>
 </div>
 <div class="paragraph">
-<p>The URL uses <a href="https://github.com/googleapis/googleapis/blob/master/google/api/http.proto?">Google API HTTP annotation</a> syntax.</p>
+<p>The ADS methods performs transformations, trainings, model selection and model reasoning
+ on the data in the request.</p>
 </div>
 <div class="paragraph">
-<p>This service provides the following discovery document:
-<strong><a href="https://{site}/$discovery/rest?version=v1" class="bare">https://{site}/$discovery/rest?version=v1</a></strong></p>
+<p>This page describes the format of the ADS Flow request body and of the response body,
+ as well as the URL format of the HTTP request.</p>
 </div>
 <div class="paragraph">
-<p><strong>General flow:</strong><br>
-Data &#8658; ADS &#8658; Model (repo) &#8658; Services (prediction/anomalies)</p>
-</div>
-<div class="paragraph">
-<p>All on top of operations and types (policy)</p>
+<p>While request body is almost optional - everything shoulld be automatic - response body is extremely important,
+ it contains all methods: transformations, models, and found parameters for best data transformations and
+ model hyperparameters processing.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_dataset">DATASET</h2>
+<h2 id="_request_body">Request body</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Represents a dataset.</p>
+<p>The request body contains data with the following structure:</p>
+</div>
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
+  "dataset": {
+        "train": &lt;train data url&gt;,
+        "test": &lt;test data url&gt;,
+        "valid": &lt;valid data url&gt;,
+  },
+
+  "afe": {
+        "levels": int,
+        "allTransformations": boolean,
+        "transformations": [
+         &lt;transformation type&gt;,
+         ...
+         ]
+   }
+  "algorithms": {
+        "allAlgorithms": boolean,
+        "algorithms": [
+            &lt;algorithm&gt;|&lt;hyperparams&gt;,
+            ...
+        ],
+        "objective": &lt;objective&gt;,
+
+   }
+  "lime": {
+      "k": int,
+      ...
+   }
+  "loco": {
+        "process":boolean,
+   }
+}</pre>
+</div>
 </div>
 <div class="paragraph">
-<p>A dataset can have multiple versions/increases, usually with time.</p>
-</div>
-<div class="paragraph">
-<p>Full API: <a href="v1/datasets/index.html">v1/datasets</a></p>
+<p>The data object is required, and must contain the list of data sources to get model for, other are optional
+since they have default values and whole process should be as much automatic as possible.</p>
 </div>
 <div class="sect2">
-<h3 id="_methods">Methods</h3>
+<h3 id="_fields">Fields</h3>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 22.2222%;">
-<col style="width: 55.5556%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">type</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">url</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dataset</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Required. Source of train, test, validation data to be processsed.</p>
+</div></div></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/datasets</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Creates a new dataset.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DELETE</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/datasets/{name=dataset/*}</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Deletes a dataset.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">get</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/datasets/{name=dataset/*}</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Gets information about a dataset, including its name, the description (if set),
-and the default version specification.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/datasets</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lists the datasets in a project.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">patch</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PATCH</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/datasets/{name=dataset/*}</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Updates a specific dataset with new cached data.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">getSlices</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/datasets/{name=dataset/*}:getSlices</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Gets a dataset, with train/test/validation slices.
-Slicing is depending on dataset and JSON parameters.
-Default is:</p>
-<p class="tableblock">- if dataset is time series: continuous, 60/20/20%</p>
-<p class="tableblock">- if dataset is not times eries: random sampling, 80/10/10%.</p></td>
-</tr>
-</tbody>
-</table>
+<td class="tableblock halign-left valign-top"><p class="tableblock">afe</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. Defines scope of automatic feature engineering:</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_ads">ADS</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Represents DataScientistFlow job, metamodel and actions on them.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>how many levels of futures processing</p>
+</li>
+<li>
+<p>list of transformations to be used</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>Full API:  <a href="v1/ads/index.html">v1/ads</a></p>
+<p>If not specified default values will be processed. See below.</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">algorithms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Optional. List of ML algorithms to take part in race for best.</p>
 </div>
-<div class="sect2">
-<h3 id="_methods_2">Methods</h3>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 22.2222%;">
-<col style="width: 55.5556%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">cancel</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/ads/{name=job/*}:cancel</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Cancels a running ADS training job.</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/ads/jobs</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Creates a training ads job.</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">get</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/ads/{name=jobs/*}</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Describes a ads job.</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/ads/jobs</p></td>
-<td class="tableblock halign-left valign-top"><div><div class="paragraph">
-<p>Lists the adsd jobs in the project.</p>
+<div class="paragraph">
+<p>If not specified default values will be processed. See below.</p>
 </div></div></td>
 </tr>
 </tbody>
 </table>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_model">MODEL</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Represents a machine learning solution.</p>
-</div>
-<div class="paragraph">
-<p>A model can have multiple versions, each of which is a deployed, trained model ready to receive prediction requests.
- The model itself is just a container.</p>
-</div>
-<div class="paragraph">
-<p>Full API  <a href="v1/models/index.html">v1/models</a></p>
-</div>
 <div class="sect2">
-<h3 id="_methods_3">Methods</h3>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 22.2222%;">
-<col style="width: 55.5556%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">type</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">url</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">description</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/models</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Creates a model which will later contain one or more versions.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DELETE</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/models/{name=model/*}</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Deletes a model.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">get</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/models/{name=model/*}</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Gets information about a model, including its name, the description (if set),
- and the default version (if at least one version of the model has been deployed).</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/models</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lists the models in a project.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">patch</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PATCH</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/models/{name=model/*}</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Updates a specific model resource.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">getIamPolicy</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">v1/models/{name=model/*}:getIamPolicy</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Experimental. Gets the access control policy for a resource.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">setIamPolicy</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">v1/models/{name=model/*}:setIamPolicy</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Experimental. Sets the access control policy on the specified resource.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">testIamPermissions</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/model/{sname=model/*}:testIamPermissions</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Experimental. Returns permissions that a caller has on the specified resource.</p></td>
-</tr>
-</tbody>
-</table>
+<h3 id="_examples">Examples</h3>
+<div class="paragraph">
+<p>Below are some examples of request bodies.</p>
+</div>
+<div class="paragraph">
+<p>@todo</p>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_model_version">MODEL.VERSION</h2>
+<h2 id="_response_body">Response body</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Represents a version of the model.</p>
+<p>Responses are very important as they contains output of whole Automatic Data Scientist flow:
+ - all columns
+ - chosen transformations and they output - method used and they parameters (ie: found BoxCox scalling)
+ - chosen models with they hyperparameters
+ - output of model rationalization - lime/lcoc</p>
 </div>
 <div class="paragraph">
-<p>Each version is a trained model deployed in the cloud, ready to handle prediction requests.
-A model can have multiple versions. You can get information about all of the versions of a given model by
-calling <code>v1.models.versions.list</code>.</p>
+<p>If the call is successful, the response body contains description of whole ADS Flow:</p>
+</div>
+<div class="listingblock">
+<div class="title">JSON representation</div>
+<div class="content">
+<pre>{
+  "dataset": {
+        "train": &lt;train data url&gt;,
+        "test": &lt;test data url&gt;,
+        "valid": &lt;valid data url&gt;,
+  },
+
+  "afe": {
+        "levels":[
+            {
+                "level": &lt;number of level&gt;,
+                "transformations": [
+                    &lt;column&gt;,&lt;new name&gt;,&lt;transformation with parameters&gt;,
+                ...
+                ]
+            },
+            ...
+         ]
+   }
+  "algorithms": {
+        "allAlgorithms": boolean,
+        "algorithms": [
+            &lt;algorithm&gt;|&lt;hyperparams&gt;,
+            ...
+        ],
+        "objective": &lt;objective&gt;,
+
+   }
+  "lime": {
+      "k": int,
+      ...
+   }
+  "loco": {
+        "process":boolean,
+
+   }
+}</pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Full API: <a href="v1/models/versions/index.html">v1/models/versions</a></p>
+<p>If prediction fails for any instance, the response body contains no predictions.
+Instead, it contains a single error entry:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>{
+  "error": string
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The predictions[] object contains the list of predictions, one for each instance in the request.</p>
+</div>
+<div class="paragraph">
+<p>On error, the error string contains a message describing the problem.
+The error is returned instead of a prediction list if an error occurred while processing any instance.</p>
+</div>
+<div class="paragraph">
+<p>Even though there is one prediction per instance, the format of a prediction is not directly
+related to the format of an instance. Predictions take whatever format is specified in the outputs
+collection defined in the model. The collection of predictions is returned in a JSON list.
+Each member of the list can be a simple value, a list, or a JSON object of any complexity.
+If your model has more than one output tensor, each prediction will be a JSON object containing
+a name/value pair for each output. The names identify the output aliases in the graph.</p>
 </div>
 <div class="sect2">
-<h3 id="_methods_4">Methods</h3>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 22.2222%;">
-<col style="width: 55.5556%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">type</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">url</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">description</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/{models/*}/versions</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Creates a new version of a model from a trained TensorFlow model.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DELETE</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/v1/{models/*/versions/*}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Deletes a model version.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">get</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/v1/{models/*/versions/*}</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Gets information about a model version.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/{models/*}/versions</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Gets basic information about all the versions of a model.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">patch</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PATCH</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/{models/<strong>/versions/</strong>}</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Updates the specified Version resource.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">setDefault</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">t/v1/{models/<strong>/versions/</strong>}:setDefault</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Designates a version to be the default for the model.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_service_prediction">SERVICE.PREDICTION</h2>
-<div class="sectionbody">
+<h3 id="_response_body_examples">Response body examples</h3>
 <div class="paragraph">
-<p>Represents anomaly job, and metadata.</p>
+<p>The following examples show some possible responses:</p>
 </div>
 <div class="paragraph">
-<p>Full API: <a href="v1/services/predictions/index.html">v1/services/predictions</a></p>
-</div>
-<div class="sect2">
-<h3 id="_methods_5">Methods</h3>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 22.2222%;">
-<col style="width: 55.5556%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">cancel</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/servicespredictions/{name=prediction/*}:cancel</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cancels a running prediction job.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/serivces/predictions/{name=prediction/*}</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Creates a batch prediction job.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">get</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/services/predictions/{name=prediction/*}</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Describes a prediction job.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/services/predictions</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lists the prediction jobs in the project.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_service_anomaly">SERVICE.ANOMALY</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Represents anomaly job, and metadata.</p>
+<p>@todo</p>
 </div>
 <div class="paragraph">
-<p>Full API: <a href="v1/services/anomalies/index.html">v1/services/anomalies</a></p>
+<p>A response when there is an error processing an input instance:</p>
 </div>
-<div class="sect2">
-<h3 id="_methods_6">Methods</h3>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 22.2222%;">
-<col style="width: 55.5556%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">cancel</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/services/anomalies/{name=anomaly/*}:cancel</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cancels a running anomaly job.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/serivces/anomalies/{name=anomaly/*}</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Creates a batch anomaly job.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">get</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/services/anomalies/{name=anomaly/*}</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Describes a anomaly job.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/services/anomalies</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lists the anomaly jobs in the project.</p></td>
-</tr>
-</tbody>
-</table>
+<div class="listingblock">
+<div class="content">
+<pre>{"error": "Divide by zero"}</pre>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_operation">OPERATION</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This resource represents a long-running operation that is the result of an API call.</p>
-</div>
-<div class="paragraph">
-<p>Full API: <a href="v1/operations/index.html">v1/operations</a></p>
-</div>
-<div class="sect2">
-<h3 id="_methods_7">Methods</h3>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 11.1111%;">
-<col style="width: 22.2222%;">
-<col style="width: 55.5556%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">type</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">url</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">description</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">cancel</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/operations/{name=operation/*}:cancel</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Starts asynchronous cancellation on a long-running operation.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DELETE</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/operations/{name=operation/*}</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Deletes a long-running operation.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">get</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/operations/{name=operation/*}</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Gets the latest state of a long-running operation.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">/v1/operations</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lists operations that match the specified filter in the request.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_types">TYPES</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_predict">Predict</h3>
-<div class="paragraph">
-<p>API: <a href="v1/predict.html">v1/predict</a></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_adsflow">ADSFlow</h3>
-<div class="paragraph">
-<p>API: <a href="v1/adsflow.html">v1/adsflow</a></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_policy">Policy</h3>
-<div class="paragraph">
-<p>API: <a href="v1/policy.html">v1/policy</a></p>
 </div>
 </div>
 </div>

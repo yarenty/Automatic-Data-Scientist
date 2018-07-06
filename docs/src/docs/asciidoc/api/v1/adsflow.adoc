@@ -1,0 +1,169 @@
+:toc2:
+:toc-title: API
+
+= ADS Flow
+
+link:../index.html[back <<] 
+
+The ADS methods performs transformations, trainings, model selection and model reasoning 
+ on the data in the request.
+
+This page describes the format of the ADS Flow request body and of the response body,
+ as well as the URL format of the HTTP request. 
+ 
+While request body is almost optional - everything shoulld be automatic - response body is extremely important,
+ it contains all methods: transformations, models, and found parameters for best data transformations and 
+ model hyperparameters processing. 
+
+
+== Request body
+
+The request body contains data with the following structure:
+
+.JSON representation
+----
+{
+  "dataset": {
+        "train": <train data url>,
+        "test": <test data url>,
+        "valid": <valid data url>,
+  },
+  
+  "afe": {
+        "levels": int,
+        "allTransformations": boolean,
+        "transformations": [
+         <transformation type>,
+         ... 
+         ]
+   }
+  "algorithms": {
+        "allAlgorithms": boolean,
+        "algorithms": [
+            <algorithm>|<hyperparams>,
+            ...
+        ],
+        "objective": <objective>,
+       
+   }  
+  "lime": {
+      "k": int,
+      ...
+   }
+  "loco": {
+        "process":boolean,
+   }  
+}
+----
+
+The data object is required, and must contain the list of data sources to get model for, other are optional 
+since they have default values and whole process should be as much automatic as possible.
+
+=== Fields
+[cols="1,1,5a"]
+|===
+| dataset | object | Required. Source of train, test, validation data to be processsed.
+| afe | object |  Optional. Defines scope of automatic feature engineering:
+
+- how many levels of futures processing
+
+- list of transformations to be used
+
+If not specified default values will be processed. See below.
+|algorithms| object | Optional. List of ML algorithms to take part in race for best. 
+
+
+
+If not specified default values will be processed. See below.
+|===
+
+
+
+
+=== Examples
+Below are some examples of request bodies.
+
+@todo
+
+
+
+
+== Response body
+Responses are very important as they contains output of whole Automatic Data Scientist flow:
+ - all columns
+ - chosen transformations and they output - method used and they parameters (ie: found BoxCox scalling)
+ - chosen models with they hyperparameters
+ - output of model rationalization - lime/lcoc
+
+If the call is successful, the response body contains description of whole ADS Flow:
+
+.JSON representation
+----
+{
+  "dataset": {
+        "train": <train data url>,
+        "test": <test data url>,
+        "valid": <valid data url>,
+  },
+  
+  "afe": {
+        "levels":[
+            {
+                "level": <number of level>,
+                "transformations": [
+                    <column>,<new name>,<transformation with parameters>,
+                ...
+                ]
+            },
+            ...
+         ]
+   }
+  "algorithms": {
+        "allAlgorithms": boolean,
+        "algorithms": [
+            <algorithm>|<hyperparams>,
+            ...
+        ],
+        "objective": <objective>,
+       
+   }  
+  "lime": {
+      "k": int,
+      ...
+   }
+  "loco": {
+        "process":boolean,
+
+   }  
+}
+----
+
+If prediction fails for any instance, the response body contains no predictions. 
+Instead, it contains a single error entry:
+----
+{
+  "error": string
+}
+----
+The predictions[] object contains the list of predictions, one for each instance in the request.
+
+On error, the error string contains a message describing the problem. 
+The error is returned instead of a prediction list if an error occurred while processing any instance.
+
+Even though there is one prediction per instance, the format of a prediction is not directly 
+related to the format of an instance. Predictions take whatever format is specified in the outputs 
+collection defined in the model. The collection of predictions is returned in a JSON list. 
+Each member of the list can be a simple value, a list, or a JSON object of any complexity. 
+If your model has more than one output tensor, each prediction will be a JSON object containing 
+a name/value pair for each output. The names identify the output aliases in the graph.
+
+=== Response body examples
+The following examples show some possible responses:
+
+@todo
+
+A response when there is an error processing an input instance:
+----
+{"error": "Divide by zero"}
+----
+

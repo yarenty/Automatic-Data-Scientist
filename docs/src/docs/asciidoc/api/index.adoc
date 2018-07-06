@@ -57,8 +57,9 @@ and the default version specification.
 Slicing is depending on dataset and JSON parameters.
 Default is:
 
-* if dataset is time series: continuous, 60/20/20%
-* if dataset is not times eries: random sampling, 80/10/10%.
+- if dataset is time series: continuous, 60/20/20%
+
+- if dataset is not times eries: random sampling, 80/10/10%.
 |===
 
 
@@ -280,14 +281,13 @@ Full API: link:v1/operations/index.html[v1/operations]
 
 == TYPES 
 
-=== Policy 
-API: link:v1/policy.html[v1/policy] 
-
 === Predict
 API: link:v1/predict.html[v1/predict] 
 
+=== ADSFlow
+API: link:v1/adsflow.html[v1/adsflow] 
 
-
-
+=== Policy 
+API: link:v1/policy.html[v1/policy] 
 
 
