@@ -1,3 +1,4 @@
+
 // The build script settings to fetch plugins and put them on classpath
 buildscript {
     repositories {
@@ -49,7 +50,11 @@ ext {
     tfVersion = "1.6.0"
     
     playVersion = '2.6.13'
-    
+
+    Http4sVersion = '0.18.15'
+
+    LogbackVersion = '1.2.3'
+    Specs2Version = '4.3.0'
     
     scalaProjects = [
             project(':shared'),
@@ -108,6 +113,7 @@ subprojects {
 
         dependencies {
             compile "org.scala-lang:scala-library:$scalaVersion"
+
             testCompile "junit:junit:${junitVersion}"
             testCompile "org.scalatest:scalatest_${scalaBinaryVersion}:2.2.1"
         }
@@ -154,6 +160,7 @@ project(':ml_tensorflow') {
     dependencies {
         compile project(':ml_yarenty'), project(':shared'), project(':api')
         testCompile project(':shared'), project(':api')
+
     }
 }
 
@@ -161,8 +168,11 @@ project(':ml_tensorflow') {
 project(':web') {
     dependencies {
         compile project(':ml_h2o'), project(':ml_yarenty'), project(':shared'), project(':api')
-        testCompile project(':shared'), project(':api')
+        testCompile project(':api'), project(':shared')
+        implementation project(':ml_yarenty'), project(':shared'), project(':api')
     }
+
+    build.dependsOn project(":shared").tasks.build
 }
 
 tasks.withType(ScalaCompile) {
