@@ -1,48 +1,28 @@
 description = "ADS API (Scala version ${scalaVersion})"
 
-apply plugin: 'play'
-apply plugin: 'idea'
+//apply plugin: 'play'
+//apply plugin: 'idea'
 //apply plugin: 'application'
 
-model {
-    components {
-        play {
-            platform play: playVersion, scala: scalaBinaryVersion, java: '1.8'
-            injectedRoutesGenerator = true
-
-            sources {
-                twirlTemplates {
-                    defaultImports = TwirlImports.SCALA
-                }
-                scala {
-                    source.srcDir "src/main/scala"
-                }
-            }
-        }
-    }
-}
-
-
-sourceSets {
-    main {
-        scala.outputDir = file('build/playBinary/classes')
-    }
-    test {
-        scala.outputDir = file('build/playBinary/testClasses')
-    }
-}
-
-configurations {
-    compile.extendsFrom(play)
-    testCompile.extendsFrom(playTest)
-    implementation.extendsFrom(playRun)
-    implementation.extendsFrom(playPlatform)
-}
+//model {
+//    components {
+//        play {
+//            platform play: playVersion, scala: scalaBinaryVersion, java: '1.8'
+//            injectedRoutesGenerator = true
+//
+//            sources {
+//                twirlTemplates {
+//                    defaultImports = TwirlImports.SCALA
+//                }
+//            }
+//        }
+//    }
+//}
 
 dependencies {
     def withoutServlet = { exclude group: 'javax.servlet', module: 'servlet-api' }
     compile group: 'org.scalanlp', name: "breeze_$scalaBinaryVersion", version: '0.13.2'
-    
+
     compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
     compile group: 'org.joda', name: 'joda-convert', version: '1.8.1'
     compile group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
@@ -50,26 +30,52 @@ dependencies {
 
 
     compile project(":shared")
-    
-    play "com.typesafe.play:play-guice_$scalaBinaryVersion:$playVersion"
-    play "com.typesafe.play:play-logback_$scalaBinaryVersion:$playVersion"
-    play "com.typesafe.play:filters-helpers_$scalaBinaryVersion:$playVersion"
 
-    play "org.joda:joda-convert:1.9.2"
-    play "net.logstash.logback:logstash-logback-encoder:4.11"
 
-    play "com.netaporter:scala-uri_$scalaBinaryVersion:0.4.16"
-    play "net.codingwell:scala-guice_$scalaBinaryVersion:4.2.1"
+    compile group: 'org.http4s', name: "http4s-blaze-server_$scalaBinaryVersion", version: "$Http4sVersion"
+    compile group: 'org.http4s', name: "http4s-circe_$scalaBinaryVersion", version: "$Http4sVersion"
+    compile group: 'org.http4s', name: "http4s-dsl_$scalaBinaryVersion", version: "$Http4sVersion"
+    compile group: "ch.qos.logback", name: "logback-classic", version: "$LogbackVersion"
 
-//    play project(':shared')
-//    play project(':api')
-//    play project(':ml_yarenty')
-//    play project(':ml_h2o')
 
-    playRun project(':shared')
+    testCompile group: "org.specs2", name: "specs2-core_$scalaBinaryVersion", version: "$Specs2Version"
 
-    playTest "org.scalatestplus.play:scalatestplus-play_$scalaBinaryVersion:3.1.2"
-
-    testCompile project(path: ":shared")
+//    play "com.typesafe.play:play-guice_$scalaBinaryVersion:$playVersion"
+//    play "com.typesafe.play:play-logback_$scalaBinaryVersion:$playVersion"
+//    play "com.typesafe.play:filters-helpers_$scalaBinaryVersion:$playVersion"
+//
+//    play "org.joda:joda-convert:1.9.2"
+//    play "net.logstash.logback:logstash-logback-encoder:4.11"
+//
+//    play "com.netaporter:scala-uri_$scalaBinaryVersion:0.4.16"
+//    play "net.codingwell:scala-guice_$scalaBinaryVersion:4.2.1"
+//
+////    play project(':shared')
+////    play project(':api')
+////    play project(':ml_yarenty')
+////    play project(':ml_h2o')
+//
+//    playRun project(':shared')
+//
+//    playTest "org.scalatestplus.play:scalatestplus-play_$scalaBinaryVersion:3.1.2"
+//
+//    testCompile project(path: ":shared")
 }
 
+//
+//idea {
+//    module {
+//        sourceDirs += file("app")
+//        testSourceDirs += file("test")
+//        scopes.COMPILE = [plus: [configurations.play], minus: []]
+//        scopes.RUNTIME = [plus: [configurations.playRun], minus:[configurations.play]]
+//        scopes.TEST = [plus: [configurations.playTest], minus: [configurations.playRun]]
+//    }
+//}
+//
+//configurations {
+//    compile.extendsFrom(play)
+//    testCompile.extendsFrom(playTest)
+//    implementation.extendsFrom(playRun)
+//    implementation.extendsFrom(playPlatform)
+//}

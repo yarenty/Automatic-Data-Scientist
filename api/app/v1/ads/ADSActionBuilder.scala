@@ -1,12 +1,12 @@
 package v1.ads
 
 import javax.inject.Inject
-
 import net.logstash.logback.marker.LogstashMarker
 import play.api.{Logger, MarkerContext}
 import play.api.http.{FileMimeTypes, HttpVerbs}
 import play.api.i18n.{Langs, MessagesApi}
 import play.api.mvc._
+import utils.RequestMarkerContext
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -19,25 +19,25 @@ import scala.concurrent.{ExecutionContext, Future}
 trait ADSRequestHeader extends MessagesRequestHeader with PreferredMessagesProvider
 class ADSRequest[A](request: Request[A], val messagesApi: MessagesApi) extends WrappedRequest(request) with ADSRequestHeader
 
-/**
- * Provides an implicit marker that will show the request in all logger statements.
- */
-trait ADSRequestMarkerContext {
-  import net.logstash.logback.marker.Markers
-  
-  private def marker(tuple: (String, Any)) = Markers.append(tuple._1, tuple._2)
-
-  private implicit class RichLogstashMarker(marker1: LogstashMarker) {
-    def &&(marker2: LogstashMarker): LogstashMarker = marker1.and(marker2)
-  }
-
-  implicit def requestHeaderToMarkerContext(implicit request: RequestHeader): MarkerContext = {
-    MarkerContext {
-      marker("id" -> request.id) && marker("host" -> request.host) && marker("remoteAddress" -> request.remoteAddress)
-    }
-  }
-
-}
+///**
+// * Provides an implicit marker that will show the request in all logger statements.
+// */
+//trait ADSRequestMarkerContext {
+//  import net.logstash.logback.marker.Markers
+//  
+//  private def marker(tuple: (String, Any)) = Markers.append(tuple._1, tuple._2)
+//
+//  private implicit class RichLogstashMarker(marker1: LogstashMarker) {
+//    def &&(marker2: LogstashMarker): LogstashMarker = marker1.and(marker2)
+//  }
+//
+//  implicit def adsRequestHeaderToMarkerContext(implicit request: RequestHeader): MarkerContext = {
+//    MarkerContext {
+//      marker("id" -> request.id) && marker("host" -> request.host) && marker("remoteAddress" -> request.remoteAddress)
+//    }
+//  }
+//
+//}
 
 /**
   * The action builder for the ADS resource.
@@ -49,7 +49,7 @@ trait ADSRequestMarkerContext {
 class ADSActionBuilder @Inject()(messagesApi: MessagesApi, playBodyParsers: PlayBodyParsers)
                                  (implicit val executionContext: ExecutionContext)
     extends ActionBuilder[ADSRequest, AnyContent]
-    with ADSRequestMarkerContext
+    with RequestMarkerContext
     with HttpVerbs {
 
   override val parser: BodyParser[AnyContent] = playBodyParsers.anyContent
@@ -83,8 +83,8 @@ class ADSActionBuilder @Inject()(messagesApi: MessagesApi, playBodyParsers: Play
  * This is a good way to minimize the surface area exposed to the controller, so the
  * controller only has to have one thing injected.
  */
-case class ADSControllerComponents @Inject()(postActionBuilder: ADSActionBuilder,
-                                               postResourceHandler: ADSResourceHandler,
+case class ADSControllerComponents @Inject()(adsActionBuilder: ADSActionBuilder,
+                                             adsResourceHandler: ADSResourceHandler,
                                                actionBuilder: DefaultActionBuilder,
                                                parsers: PlayBodyParsers,
                                                messagesApi: MessagesApi,
@@ -96,10 +96,10 @@ case class ADSControllerComponents @Inject()(postActionBuilder: ADSActionBuilder
 /**
  * Exposes actions and handler to the ADSController by wiring the injected state into the base class.
  */
-class ADSBaseController @Inject()(pcc: ADSControllerComponents) extends BaseController with ADSRequestMarkerContext {
-  override protected def controllerComponents: ControllerComponents = pcc
+class ADSBaseController @Inject()(adsCC: ADSControllerComponents) extends BaseController with RequestMarkerContext {
+  override protected def controllerComponents: ControllerComponents = adsCC
 
-  def ADSAction: ADSActionBuilder = pcc.postActionBuilder
+  def adsAction: ADSActionBuilder = adsCC.adsActionBuilder
 
-  def postResourceHandler: ADSResourceHandler = pcc.postResourceHandler
+  def adsResourceHandler: ADSResourceHandler = adsCC.adsResourceHandler
 }

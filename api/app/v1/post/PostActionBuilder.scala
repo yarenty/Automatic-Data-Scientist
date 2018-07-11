@@ -1,12 +1,12 @@
 package v1.post
 
 import javax.inject.Inject
-
 import net.logstash.logback.marker.LogstashMarker
 import play.api.{Logger, MarkerContext}
 import play.api.http.{FileMimeTypes, HttpVerbs}
 import play.api.i18n.{Langs, MessagesApi}
 import play.api.mvc._
+import utils.RequestMarkerContext
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -19,25 +19,7 @@ import scala.concurrent.{ExecutionContext, Future}
 trait PostRequestHeader extends MessagesRequestHeader with PreferredMessagesProvider
 class PostRequest[A](request: Request[A], val messagesApi: MessagesApi) extends WrappedRequest(request) with PostRequestHeader
 
-/**
- * Provides an implicit marker that will show the request in all logger statements.
- */
-trait PostRequestMarkerContext {
-  import net.logstash.logback.marker.Markers
 
-  private def marker(tuple: (String, Any)) = Markers.append(tuple._1, tuple._2)
-
-  private implicit class RichLogstashMarker(marker1: LogstashMarker) {
-    def &&(marker2: LogstashMarker): LogstashMarker = marker1.and(marker2)
-  }
-
-  implicit def requestHeaderToMarkerContext(implicit request: RequestHeader): MarkerContext = {
-    MarkerContext {
-      marker("id" -> request.id) && marker("host" -> request.host) && marker("remoteAddress" -> request.remoteAddress)
-    }
-  }
-
-}
 
 /**
   * The action builder for the Post resource.
@@ -49,7 +31,7 @@ trait PostRequestMarkerContext {
 class PostActionBuilder @Inject()(messagesApi: MessagesApi, playBodyParsers: PlayBodyParsers)
                                  (implicit val executionContext: ExecutionContext)
     extends ActionBuilder[PostRequest, AnyContent]
-    with PostRequestMarkerContext
+    with RequestMarkerContext
     with HttpVerbs {
 
   override val parser: BodyParser[AnyContent] = playBodyParsers.anyContent
@@ -96,7 +78,7 @@ case class PostControllerComponents @Inject()(postActionBuilder: PostActionBuild
 /**
  * Exposes actions and handler to the PostController by wiring the injected state into the base class.
  */
-class PostBaseController @Inject()(pcc: PostControllerComponents) extends BaseController with PostRequestMarkerContext {
+class PostBaseController @Inject()(pcc: PostControllerComponents) extends BaseController with RequestMarkerContext {
   override protected def controllerComponents: ControllerComponents = pcc
 
   def PostAction: PostActionBuilder = pcc.postActionBuilder

@@ -17,13 +17,13 @@ object ADSResource {
   /**
     * Mapping to write a ADSResource out as a JSON value.
     */
-  implicit val implicitWrites = new Writes[ADSResource] {
-    def writes(post: ADSResource): JsValue = {
+  implicit val implicitADSWrites = new Writes[ADSResource] {
+    def writes(ads: ADSResource): JsValue = {
       Json.obj(
-        "id" -> post.id,
-        "link" -> post.link,
-        "title" -> post.title,
-        "body" -> post.body
+        "id" -> ads.id,
+        "link" -> ads.link,
+        "title" -> ads.title,
+        "body" -> ads.body
       )
     }
   }
@@ -33,34 +33,34 @@ object ADSResource {
   * Controls access to the backend data, returning [[ADSResource]]
   */
 class ADSResourceHandler @Inject()(
-    routerProvider: Provider[ADSRouter],
-    postRepository: ADSRepository)(implicit ec: ExecutionContext) {
+    adsRouterProvider: Provider[ADSRouter],
+    adsRepository: ADSRepository)(implicit adsEC: ExecutionContext) {
 
   def create(postInput: ADSFormInput)(implicit mc: MarkerContext): Future[ADSResource] = {
     val data = ADSData(ADSId("999"), postInput.title, postInput.body)
     // We don't actually create the post, so return what we have
-    postRepository.create(data).map { id =>
+    adsRepository.create(data).map { id =>
       createADSResource(data)
     }
   }
 
   def lookup(id: String)(implicit mc: MarkerContext): Future[Option[ADSResource]] = {
-    val postFuture = postRepository.get(ADSId(id))
+    val postFuture = adsRepository.get(ADSId(id))
     postFuture.map { maybeADSData =>
-      maybeADSData.map { postData =>
-        createADSResource(postData)
+      maybeADSData.map { adsData =>
+        createADSResource(adsData)
       }
     }
   }
 
   def find(implicit mc: MarkerContext): Future[Iterable[ADSResource]] = {
-    postRepository.list().map { postDataList =>
-      postDataList.map(postData => createADSResource(postData))
+    adsRepository.list().map { postDataList =>
+      postDataList.map(adsData => createADSResource(adsData))
     }
   }
 
   private def createADSResource(p: ADSData): ADSResource = {
-    ADSResource(p.id.toString, routerProvider.get.link(p.id), p.title, p.body)
+    ADSResource(p.id.toString, adsRouterProvider.get.link(p.id), p.title, p.body)
   }
 
 }

@@ -14,8 +14,8 @@ case class ADSFormInput(title: String, body: String)
 /**
   * Takes HTTP requests and produces JSON.
   */
-class ADSController @Inject()(cc: ADSControllerComponents)(implicit ec: ExecutionContext)
-    extends ADSBaseController(cc) {
+class ADSController @Inject()(adsCC: ADSControllerComponents)(implicit adsEC: ExecutionContext)
+    extends ADSBaseController(adsCC) {
 
   private val logger = Logger(getClass)
 
@@ -31,33 +31,33 @@ class ADSController @Inject()(cc: ADSControllerComponents)(implicit ec: Executio
     )
   }
 
-  def index: Action[AnyContent] = ADSAction.async { implicit request =>
+  def index: Action[AnyContent] = adsAction.async { implicit request =>
     logger.trace("index: ")
-    postResourceHandler.find.map { posts =>
-      Ok(Json.toJson(posts))
+    adsResourceHandler.find.map { adses =>
+      Ok(Json.toJson(adses))
     }
   }
 
-  def process: Action[AnyContent] = ADSAction.async { implicit request =>
+  def process: Action[AnyContent] = adsAction.async { implicit request =>
     logger.trace("process: ")
     processJsonADS()
   }
 
-  def show(id: String): Action[AnyContent] = ADSAction.async { implicit request =>
+  def show(id: String): Action[AnyContent] = adsAction.async { implicit request =>
     logger.trace(s"show: id = $id")
-    postResourceHandler.lookup(id).map { post =>
-      Ok(Json.toJson(post))
+    adsResourceHandler.lookup(id).map { ads =>
+      Ok(Json.toJson(ads))
     }
   }
 
-  private def processJsonADS[A]()(implicit request: ADSRequest[A]): Future[Result] = {
+  private def processJsonADS[A]()(implicit adsRequest: ADSRequest[A]): Future[Result] = {
     def failure(badForm: Form[ADSFormInput]) = {
       Future.successful(BadRequest(badForm.errorsAsJson))
     }
 
     def success(input: ADSFormInput) = {
-      postResourceHandler.create(input).map { post =>
-        Created(Json.toJson(post)).withHeaders(LOCATION -> post.link)
+      adsResourceHandler.create(input).map { ads =>
+        Created(Json.toJson(ads)).withHeaders(LOCATION -> ads.link)
       }
     }
 

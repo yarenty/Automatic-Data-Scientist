@@ -21,7 +21,7 @@ object ADSId {
 }
 
 
-class ADSExecutionContext @Inject()(actorSystem: ActorSystem) extends CustomExecutionContext(actorSystem, "repository.dispatcher")
+class ADSExecutionContext @Inject()(actorSystem: ActorSystem) extends CustomExecutionContext(actorSystem, "ads.repository.dispatcher")
 
 /**
   * A pure non-blocking interface for the ADSRepository.
@@ -42,11 +42,11 @@ trait ADSRepository {
   * such as rendering.
   */
 @Singleton
-class ADSRepositoryImpl @Inject()()(implicit ec: ADSExecutionContext) extends ADSRepository {
+class ADSRepositoryImpl @Inject()()(implicit adsEC: ADSExecutionContext) extends ADSRepository {
 
   private val logger = Logger(this.getClass)
 
-  private val postList = List(
+  private val adsList = List(
     ADSData(ADSId("1"), "title 1", "blog post 1"),
     ADSData(ADSId("2"), "title 2", "blog post 2"),
     ADSData(ADSId("3"), "title 3", "blog post 3"),
@@ -57,14 +57,14 @@ class ADSRepositoryImpl @Inject()()(implicit ec: ADSExecutionContext) extends AD
   override def list()(implicit mc: MarkerContext): Future[Iterable[ADSData]] = {
     Future {
       logger.trace(s"list: ")
-      postList
+      adsList
     }
   }
 
   override def get(id: ADSId)(implicit mc: MarkerContext): Future[Option[ADSData]] = {
     Future {
       logger.trace(s"get: id = $id")
-      postList.find(post => post.id == id)
+      adsList.find(ads => ads.id == id)
     }
   }
 
