@@ -4,7 +4,7 @@ package com.yarenty.ml.api.types
 case class Metadata(
                      name: String,
                      field: String,
-                     value: String,
+                     value: String
                    )
 
 case class Operation(

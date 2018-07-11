@@ -12,7 +12,7 @@ class ADSService[F[_]: Effect] extends Http4sDsl[F] {
     HttpService[F] {
       case GET -> Root => //list
         Ok(Json.obj("message" -> Json.fromString(s"List of ADSes working")))
-      case GET -> Root / id  => //get
+      case GET -> Root / id => //get
         Ok(Json.obj("message" -> Json.fromString(s"Get,  ADS id ${id}")))
       case PUT -> Root => //create
         Ok(Json.obj("message" -> Json.fromString(s"Create,  PUT")))
