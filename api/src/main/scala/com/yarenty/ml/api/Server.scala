@@ -1,26 +1,41 @@
 package com.yarenty.ml.api
 
-import cats.effect.{Effect, IO}
-import fs2.StreamApp
+import cats.effect.IO
+import cats.syntax.semigroupk._
+import fs2.StreamApp.ExitCode
+import fs2.{Stream, StreamApp}
+import org.http4s.HttpService
+import org.http4s.rho.swagger.syntax.{io => ioSwagger}
+import org.http4s.rho.swagger.syntax.io._
 import org.http4s.server.blaze.BlazeBuilder
+import org.log4s.getLogger
+import scala.concurrent.ExecutionContext.Implicits.global
 
-import scala.concurrent.ExecutionContext
 
-object Server extends StreamApp[IO] {
-  import scala.concurrent.ExecutionContext.Implicits.global
 
-  def stream(args: List[String], requestShutdown: IO[Unit]) = ServerStream.stream[IO]
-}
+object Server   extends StreamApp[IO] {
+  private val logger = getLogger 
 
-object ServerStream {
+  
+  
+    val port: Int = Option(System.getenv("HTTP_PORT"))
+      .map(_.toInt)
+      .getOrElse(8080)
 
-  def adsService[F[_]: Effect] = new ADSService[F].service
-  def dsService[F[_]: Effect] = new DatasetService[F].service
+    logger.info(s"Starting Swagger example on '$port'")
 
-  def stream[F[_]: Effect](implicit ec: ExecutionContext) =
-    BlazeBuilder[F]
-      .bindHttp(8080, "0.0.0.0")
-      .mountService(adsService, "/v1/ads")
-      .mountService(dsService, "/v1/datasets")
-      .serve
-}
+    def stream(args: List[String], requestShutdown: IO[Unit]): Stream[IO, ExitCode] = {
+      val middleware = createRhoMiddleware()
+
+      val mlService: HttpService[IO] = new MLaaSService[IO](ioSwagger) {}.toService(middleware)
+
+      def adsService: HttpService[IO] = new ADSService[IO](ioSwagger) {}.toService(middleware)
+      def dsService: HttpService[IO] = new DatasetService[IO](ioSwagger) {}.toService(middleware)
+
+      BlazeBuilder[IO]
+        .mountService(StaticContentService.routes)
+        .mountService(mlService)
+        .bindLocal(port)
+        .serve
+    }
+  }

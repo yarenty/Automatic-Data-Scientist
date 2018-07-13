@@ -1,6 +1,6 @@
 package com.yarenty.ml.api.types
 
-
+import com.yarenty.ml.api.JsonEncoder.{AutoSerializable, _}
 /**
   * (C)2018 
   * @author yarenty
@@ -71,5 +71,8 @@ case class ADSFlow (
                    afe: AFE,
                    algorithms: Algorithms,
                    validation:String, //lime/loco
-                   error:Boolean
-                   )
+                   error:Option[Boolean] = None
+                   ) extends AutoSerializable
+
+
+
