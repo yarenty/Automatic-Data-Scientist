@@ -31,10 +31,13 @@ dependencies {
 
     compile project(":shared")
 
-
+//    compile group: 'org.typelevel', name: 'cats-core_2.11', version: '1.1.0'
     compile group: 'org.http4s', name: "http4s-blaze-server_$scalaBinaryVersion", version: "$Http4sVersion"
     compile group: 'org.http4s', name: "http4s-circe_$scalaBinaryVersion", version: "$Http4sVersion"
     compile group: 'org.http4s', name: "http4s-dsl_$scalaBinaryVersion", version: "$Http4sVersion"
+    compile group: 'org.http4s', name: 'rho-swagger_2.11', version: '0.18.0'
+    compile group: 'org.http4s', name: 'rho-core_2.11', version: '0.18.0'
+    compile group: 'org.http4s', name: 'rho-hal_2.11', version: '0.18.0'
     compile group: "ch.qos.logback", name: "logback-classic", version: "$LogbackVersion"
 
 
@@ -61,6 +64,8 @@ dependencies {
 //
 //    testCompile project(path: ":shared")
 }
+
+
 
 //
 //idea {
