@@ -39,7 +39,7 @@ plugins {
 //local definitions
 ext {
     scalaBinaryVersion = '2.11'
-    scalaVersion = '2.11.8'
+    scalaVersion = '2.11.9'
     junitVersion = '4.12'    
     
     sparkVersion = "2.2.1"
@@ -110,7 +110,11 @@ subprojects {
         apply plugin: 'scalaStyle'
 //        apply plugin: "org.scoverage"
 
-
+//
+//        tasks.withType(ScalaCompile) {
+//            scalaCompileOptions.additionalParameters = ["-Ypartial-unification"]
+//        }
+        
         dependencies {
             compile "org.scala-lang:scala-library:$scalaVersion"
 
