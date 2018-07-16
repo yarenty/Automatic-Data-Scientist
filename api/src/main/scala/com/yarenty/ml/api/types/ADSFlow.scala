@@ -67,6 +67,9 @@ case class Algorithms(
                      )
 
 case class ADSFlow (
+                   name:String,
+                   id:Int,
+                   status:String,
                    dataset: Dataset,
                    afe: AFE,
                    algorithms: Algorithms,

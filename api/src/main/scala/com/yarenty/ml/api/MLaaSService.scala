@@ -8,7 +8,6 @@ import cats.syntax.option._
 import com.yarenty.ml.api.JsonEncoder.{AutoSerializable, _}
 import com.yarenty.ml.api.MLaaSService._
 import com.yarenty.ml.api.repos.ADSMock
-import com.yarenty.ml.api.types._
 import org.http4s.rho.RhoService
 import org.http4s.rho.bits._
 import org.http4s.rho.swagger.SwaggerSyntax
@@ -18,6 +17,24 @@ import org.json4s.jackson.JsonMethods
 
 import scala.reflect.ClassTag
 
+
+/**
+  *
+  * The [[MLaaSService]] provides a convenient way to define routes in a style
+  * similar to scalatra etc by providing implicit conversions.
+  *
+  * {{{
+  *   val srvc = new MLaaSService {
+  *     POST / "foo" / pathVar[Int] +? param[String]("param") |>> { (p1: Int, param: String) =>
+  *       Ok("success")
+  *     }
+  *   }
+  *
+  * }}}
+  *
+  * C(2018) by yarenty.
+  *
+  */
 abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(implicit F: Monad[F])
   extends RhoService[F] {
 
@@ -34,6 +51,12 @@ abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(im
     status |>> Ok("MLaaS REST API status: OK !")
 
 
+  /*
+   Automatic Data Scientist
+     
+   */
+
+
   "Get list of ADS processes for the project." **
     GET / "v1" / "ads" |>> {
     Ok(JsonResult("List of ADSes working", 1))
@@ -46,19 +69,209 @@ abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(im
       Ok(ADSMock.adsFlow(id))
   }
 
+  "Create new ADS flow job." **
+    POST / "v1" / "ads" ^ EntityDecoder.text[F] |>> { body: String =>
+    "You posted: " + body
+  }
 
-  "Generates some JSON data from a route param, and a query Int" **
+  "Cancel running ADS flow job." **
+    DELETE / "v1" / "ads" / pathVar[Int]("id") |>> {
+    (id: Int) =>
+      println(s"CANCEL: $id")
+      Ok(ADSMock.adsFlow(id))
+  }
+
+
+  /*
+ Input datasets amnipulaitons
+   
+ */
+
+
+
+
+  "List of  available Datasets" **
     GET / "v1" / "datasets" |>> {
     Ok(JsonResult("List of datasets", 1))
   }
 
-  "Generates some JSON data from a route param, and a query Int" **
+  "Get data specification of dataset." **
     GET / "v1" / "datasets" / pathVar[Int]("id") |>> { (id: Int) => Ok(JsonResult(" DATA ", id)) }
 
 
-  "Generates some JSON data from a route param, and a query Int" **
+  "Create new dataset" **
     POST / "v1" / "datasets" ^ EntityDecoder.text[F] |>> { body: String =>
     "You posted: " + body
+  }
+
+  "DELETE dataset - only if is not used in any existing ADSFlow" **
+    DELETE / "v1" / "datasets" / pathVar[Int]("id") |>> {
+    (id: Int) =>
+      println(s"DELETE dataset: $id")
+      Ok("OK")
+  }
+
+  case class User(name: String)
+
+  "UPDATE dataset with new data" **
+    PATCH / "v1" / "datasets" / pathVar[Int]("id") |>> {
+    (id: Int) =>
+      println(s"UPDATE dataset: $id")
+      Ok("OK")
+  }
+
+  "GET slices of dataset - input for ADSFLow (JSON body - configuration!) " **
+    POST / "v1" / "datasets" / pathVar[Int]("id") / "getSlices" ^ EntityDecoder.text[F] |>> {
+    (id: Int, body: String) =>
+      println(s"get sLices of dataset: $id")
+      val user: User = User(body)
+      Ok(s"OK - here are slices $id: ${user.name}")
+  }
+
+
+  /*
+   MODELS
+     
+   */
+
+
+
+
+  "List of  available Models" **
+    GET / "v1" / "models" |>> {
+    Ok(JsonResult("List of models", 1))
+  }
+
+  "Get info about model." **
+    GET / "v1" / "models" / pathVar[Int]("id") |>> { (id: Int) => Ok(JsonResult(" MODEL ", id)) }
+
+
+  "Create new model (model is metadata- create version as well)" **
+    POST / "v1" / "models" ^ EntityDecoder.text[F] |>> { body: String =>
+    "You posted: " + body
+  }
+
+  "DELETE model - only if there are all versions deleted" **
+    DELETE / "v1" / "models" / pathVar[Int]("id") |>> {
+    (id: Int) =>
+      println(s"DELETE model: $id")
+      Ok("OK")
+  }
+
+  "UPDATE model resources" **
+    PATCH / "v1" / "models" / pathVar[Int]("id") |>> {
+    (id: Int) =>
+      println(s"UPDATE model: $id")
+      Ok("OK")
+  }
+
+
+  "*EXPERIMENTAL* Get Identity and Access Management Policy for resource." **
+    GET / "v1" / "models" / pathVar[Int]("id") / "getIAMPolicy" |>> { (id: Int) => Ok(JsonResult(" Policy for model  ", id)) }
+
+  "*EXPERIMENTAL* Get info about Identity and Access Management Policy." **
+    POST / "v1" / "models" / pathVar[Int]("id") / "setIAMPolicy" ^ EntityDecoder.text[F] |>> { (id: Int, body: String) => Ok(JsonResult(" Policy for model  ", id)) }
+
+  "*EXPERIMENTAL* Returns permissions that a caller has on a model." **
+    GET / "v1" / "models" / pathVar[Int]("id") / "testIAMPolicy" |>> { (id: Int) => Ok(JsonResult(" Policy for model  ", id)) }
+
+
+  /*
+ VERSIONS of MODELS
+   
+ */
+
+
+  "List of available versions  [for chosen model]" **
+    GET / "v1" / "models" / pathVar[Int]("id") / "versions" |>> {
+    (id: Int) =>
+      Ok(JsonResult("List of versions for model", id))
+  }
+
+  "Get particular model/version." **
+    GET / "v1" / "models" / pathVar[Int]("id") / "versions" / pathVar[Int]("verId") |>> { (id: Int, verId: Int) => Ok(JsonResult(" MODEL ", verId)) }
+
+
+  "Create new version of the model (model is metadata- create version as well)" **
+    POST / "v1" / "models" / pathVar[Int]("id") / "versions" ^ EntityDecoder.text[F] |>> { (id: Int, body: String) =>
+    "You posted: " + body + " for model" + id
+  }
+
+  "DELETE version of the model" **
+    DELETE / "v1" / "models" / pathVar[Int]("id") / "versions" / pathVar[Int]("verId") |>> {
+    (id: Int, verId: Int) =>
+      println(s"DELETE model: $id  version: $verId")
+      Ok("OK")
+  }
+
+
+  /*
+Prediction service
+   
+ */
+
+
+  "List of available working prediction services." **
+    GET / "v1" / "services" / "predictions" |>> {
+    Ok(JsonResult("List of predictions", 1))
+  }
+
+  "Get prediction info." **
+    GET / "v1" / "services" / "predictions" / pathVar[Int]("id") |>> {
+    (id: Int) => Ok(JsonResult(" MODEL ", id))
+  }
+
+
+  "Create new prediction service" **
+    POST / "v1" / "services" / "predictions" / pathVar[Int]("id") ^ EntityDecoder.text[F] |>> { (id: Int, body: String) =>
+    "You posted: " + body + " for pred" + id
+  }
+
+  "STOP prediction service " **
+    DELETE / "v1" / "services" / "predictions" / pathVar[Int]("id") |>> {
+    (id: Int) =>
+      println(s"STOP predictoin: $id  ")
+      Ok("OK")
+  }
+
+  "Predict!" **
+    PUT / "v1" / "services" / "predictions" / pathVar[Int]("id") ^ EntityDecoder.text[F] |>> { (id: Int, body: String) =>
+    "You want to predict on: " + body + " for model" + id
+  }
+
+
+  /*
+Anomaly service
+   
+ */
+
+
+  "List of available working anomaly detection services." **
+    GET / "v1" / "services" / "anomalies" |>> {
+    Ok(JsonResult("List of predictions", 1))
+  }
+
+  "Get anomaly detection service info." **
+    GET / "v1" / "services" / "anomalies" / pathVar[Int]("id") |>> {
+    (id: Int) => Ok(JsonResult(" MODEL ", id))
+  }
+
+
+  "Create new anomaly detection service" **
+    POST / "v1" / "services" / "anomalies" / pathVar[Int]("id") ^ EntityDecoder.text[F] |>> { (id: Int, body: String) =>
+    "You posted: " + body + " for AD" + id
+  }
+
+  "STOP anomaly detection service " **
+    DELETE / "v1" / "services" / "anomalies" / pathVar[Int]("id") |>> {
+    (id: Int) =>
+      println(s"STOP anomaly detection: $id  ")
+      Ok("OK")
+  }
+
+  "Predict!" **
+    PUT / "v1" / "services" / "anomalies" / pathVar[Int]("id") ^ EntityDecoder.text[F] |>> { (id: Int, body: String) =>
+    "You want to detect anomaly  on: " + body + " for model" + id
   }
 
 
