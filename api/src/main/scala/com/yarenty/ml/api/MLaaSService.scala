@@ -50,10 +50,12 @@ abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(im
   "Status of API" **
     status |>> Ok("MLaaS REST API status: OK !")
 
+  
+  
+  
 
   /*
    Automatic Data Scientist
-     
    */
 
 
@@ -81,14 +83,14 @@ abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(im
       Ok(ADSMock.adsFlow(id))
   }
 
+  
+  
+  
 
   /*
- Input datasets amnipulaitons
-   
+ Input datasets manipulaitons
  */
-
-
-
+  
 
   "List of  available Datasets" **
     GET / "v1" / "datasets" |>> {
@@ -129,13 +131,12 @@ abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(im
   }
 
 
+  
+  
+  
   /*
    MODELS
-     
    */
-
-
-
 
   "List of  available Models" **
     GET / "v1" / "models" |>> {
@@ -177,9 +178,8 @@ abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(im
 
 
   /*
- VERSIONS of MODELS
-   
- */
+  VERSIONS of MODELS
+  */
 
 
   "List of available versions  [for chosen model]" **
@@ -206,9 +206,8 @@ abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(im
 
 
   /*
-Prediction service
-   
- */
+  Prediction service 
+  */
 
 
   "List of available working prediction services." **
@@ -241,8 +240,7 @@ Prediction service
 
 
   /*
-Anomaly service
-   
+  Anomaly service 
  */
 
 

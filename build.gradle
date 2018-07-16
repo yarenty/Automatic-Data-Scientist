@@ -55,13 +55,14 @@ ext {
 
     LogbackVersion = '1.2.3'
     Specs2Version = '4.3.0'
+    JacksonVersion = '2.9.3'
     
     scalaProjects = [
             project(':shared'),
-            project(':api'),
             project(':ml_yarenty'),
             project(':ml_h2o'),
             project(':ml_tensorflow'),
+            project(':api'),
             project(':web')
     ]
 }
@@ -109,11 +110,7 @@ subprojects {
         apply plugin: 'scala'
         apply plugin: 'scalaStyle'
 //        apply plugin: "org.scoverage"
-
-//
-//        tasks.withType(ScalaCompile) {
-//            scalaCompileOptions.additionalParameters = ["-Ypartial-unification"]
-//        }
+        
         
         dependencies {
             compile "org.scala-lang:scala-library:$scalaVersion"
@@ -136,17 +133,10 @@ subprojects {
 }
 
 
-project(':api') {
+project(':ml_yarenty') {
     dependencies {
         compile project(':shared')
         testCompile project(':shared')
-    }
-}
-
-project(':ml_yarenty') {
-    dependencies {
-        compile project(':shared'), project(':api')
-        testCompile project(':shared'), project(':api')
     }
 }
 
@@ -154,26 +144,35 @@ project(':ml_yarenty') {
 
 project(':ml_h2o') {
     dependencies {
-        compile project(':ml_yarenty'), project(':shared'), project(':api')
-        testCompile project(':shared'), project(':api')
+        compile project(':ml_yarenty'), project(':shared')
+        testCompile project(':shared')
     }
 }
 
 
 project(':ml_tensorflow') {
     dependencies {
-        compile project(':ml_yarenty'), project(':shared'), project(':api')
-        testCompile project(':shared'), project(':api')
+        compile project(':ml_yarenty'), project(':shared')
+        testCompile project(':shared')
 
+    }
+}
+
+
+
+project(':api') {
+    dependencies {
+        compile project(':ml_h2o'), project(':ml_yarenty'), project(':shared')
+        testCompile project(':shared')
     }
 }
 
 
 project(':web') {
     dependencies {
-        compile project(':ml_h2o'), project(':ml_yarenty'), project(':shared'), project(':api')
-        testCompile project(':api'), project(':shared')
-        implementation project(':ml_yarenty'), project(':shared'), project(':api')
+        compile project(':api'), project(':ml_h2o'), project(':ml_yarenty'), project(':shared')
+        testCompile project(':shared')
+        implementation project(':api'), project(':ml_yarenty'), project(':shared')
     }
 
     build.dependsOn project(":shared").tasks.build

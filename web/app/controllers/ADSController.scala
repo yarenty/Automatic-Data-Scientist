@@ -3,7 +3,7 @@ package controllers
 import javax.inject._
 import play.api._
 import play.api.mvc._
-import com.yarenty.io.FileUtils
+//import com.yarenty.io.FileUtils
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -27,10 +27,11 @@ class ADSController @Inject()(cc: ControllerComponents) extends AbstractControll
     Ok("GOT Request: [" + request +"]")
     
     val d = if (request == null ) "/opt/data" else request
-    val dirs = FileUtils.getListofDirs(d)
-    val files = FileUtils.getListofFiles(d)
+//    val dirs = FileUtils.getListofDirs(d)
+//    val files = FileUtils.getListofFiles(d)
     
-    Ok(views.html.ads_data(dirs,files))
+//    Ok(views.html.ads_data(dirs,files))
+    Ok(views.html.files())
   }
 
   def afe() = Action { implicit request: Request[AnyContent] =>

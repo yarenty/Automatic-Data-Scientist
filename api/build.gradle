@@ -1,26 +1,22 @@
-description = "ADS API (Scala version ${scalaVersion})"
+description = "MLaaS REST API (Scala version ${scalaVersion})"
 
-//apply plugin: 'play'
-//apply plugin: 'idea'
-//apply plugin: 'application'
 
-//model {
-//    components {
-//        play {
-//            platform play: playVersion, scala: scalaBinaryVersion, java: '1.8'
-//            injectedRoutesGenerator = true
-//
-//            sources {
-//                twirlTemplates {
-//                    defaultImports = TwirlImports.SCALA
-//                }
-//            }
-//        }
-//    }
-//}
 
 dependencies {
     def withoutServlet = { exclude group: 'javax.servlet', module: 'servlet-api' }
+
+
+    def withoutJackson = {
+        exclude group:"com.fasterxml.jackson.core", module:"jackson-core"
+        exclude group:"com.fasterxml.jackson.core", module:"jackson-databind"
+        exclude group:"com.fasterxml.jackson.module", module: 'jackson-module-scala_2.11'
+    }
+
+    compile group: "com.fasterxml.jackson.core", name:"jackson-core", version: '2.8.4', {force = true}
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.4', {force = true}
+    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-scala_2.11', version: '2.8.4', {force = true}
+    
+    
     compile group: 'org.scalanlp', name: "breeze_$scalaBinaryVersion", version: '0.13.2'
 
     compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
@@ -28,59 +24,18 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
     compile group: 'io.argonaut', name: 'argonaut_2.10', version: '6.1'
 
-
     compile project(":shared")
 
-//    compile group: 'org.typelevel', name: 'cats-core_2.11', version: '1.1.0'
-    compile group: 'org.http4s', name: "http4s-blaze-server_$scalaBinaryVersion", version: "$Http4sVersion"
-    compile group: 'org.http4s', name: "http4s-circe_$scalaBinaryVersion", version: "$Http4sVersion"
-    compile group: 'org.http4s', name: "http4s-dsl_$scalaBinaryVersion", version: "$Http4sVersion"
-    compile group: 'org.http4s', name: 'rho-swagger_2.11', version: '0.18.0'
-    compile group: 'org.http4s', name: 'rho-core_2.11', version: '0.18.0'
-    compile group: 'org.http4s', name: 'rho-hal_2.11', version: '0.18.0'
+    compile group: 'org.http4s', name: "http4s-blaze-server_$scalaBinaryVersion", version: "$Http4sVersion", withoutJackson
+    compile group: 'org.http4s', name: "http4s-circe_$scalaBinaryVersion", version: "$Http4sVersion", withoutJackson
+    compile group: 'org.http4s', name: "http4s-dsl_$scalaBinaryVersion", version: "$Http4sVersion", withoutJackson
+    compile group: 'org.http4s', name: 'rho-swagger_2.11', version: '0.18.0', withoutJackson
+    compile group: 'org.http4s', name: 'rho-core_2.11', version: '0.18.0', withoutJackson
+    compile group: 'org.http4s', name: 'rho-hal_2.11', version: '0.18.0', withoutJackson
     compile group: "ch.qos.logback", name: "logback-classic", version: "$LogbackVersion"
 
 
     testCompile group: "org.specs2", name: "specs2-core_$scalaBinaryVersion", version: "$Specs2Version"
 
-//    play "com.typesafe.play:play-guice_$scalaBinaryVersion:$playVersion"
-//    play "com.typesafe.play:play-logback_$scalaBinaryVersion:$playVersion"
-//    play "com.typesafe.play:filters-helpers_$scalaBinaryVersion:$playVersion"
-//
-//    play "org.joda:joda-convert:1.9.2"
-//    play "net.logstash.logback:logstash-logback-encoder:4.11"
-//
-//    play "com.netaporter:scala-uri_$scalaBinaryVersion:0.4.16"
-//    play "net.codingwell:scala-guice_$scalaBinaryVersion:4.2.1"
-//
-////    play project(':shared')
-////    play project(':api')
-////    play project(':ml_yarenty')
-////    play project(':ml_h2o')
-//
-//    playRun project(':shared')
-//
-//    playTest "org.scalatestplus.play:scalatestplus-play_$scalaBinaryVersion:3.1.2"
-//
-//    testCompile project(path: ":shared")
+
 }
-
-
-
-//
-//idea {
-//    module {
-//        sourceDirs += file("app")
-//        testSourceDirs += file("test")
-//        scopes.COMPILE = [plus: [configurations.play], minus: []]
-//        scopes.RUNTIME = [plus: [configurations.playRun], minus:[configurations.play]]
-//        scopes.TEST = [plus: [configurations.playTest], minus: [configurations.playRun]]
-//    }
-//}
-//
-//configurations {
-//    compile.extendsFrom(play)
-//    testCompile.extendsFrom(playTest)
-//    implementation.extendsFrom(playRun)
-//    implementation.extendsFrom(playPlatform)
-//}

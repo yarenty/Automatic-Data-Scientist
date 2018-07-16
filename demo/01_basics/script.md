@@ -11,6 +11,9 @@ Since there is only week for preparation:
  - no security 
  - minimal validation 
  - only FMA functionality (no prediction servicing)
+ - no GPU access => no H2O GPU models [or priv. laptop]
+ - no GPU access => no H2O GPU model selection [or priv. laptop]
+ - no GPU access => no Tensorflow [or priv. laptop]
 
 
 

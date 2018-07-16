@@ -3,7 +3,7 @@
 ## Dependencies
 Spark
 SparklingWater
-Play Framewors
+Play Frameworks
 
 ## Status
 
