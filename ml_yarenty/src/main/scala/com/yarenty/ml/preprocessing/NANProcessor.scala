@@ -43,6 +43,7 @@ object NANProcessor {
       case LastGoodValue =>
         val mean = StatsUtils.mean(v)
         lastGoodNAN(v, mean)
+      case _ => nonNAN(v)
 
     }
   }
