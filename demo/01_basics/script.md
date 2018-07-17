@@ -31,7 +31,7 @@ GET http:\\localhost:8080\v1\datasets
 ## Choose dataset
 
 ```
-GET http:\\localhost:8080\v1\datasets\8
+GET http:\\localhost:8080\v1\datasets\name
 ```
 
 
@@ -53,16 +53,52 @@ POST http:\\localhost:8080\v1\ads
 
 JSON body:
 ```
-{
-    
-
+{  
+   "name":"kpi_AD",
+   "dataset":{  
+      "train":"ClusterKPI48",
+      "test":"",
+      "valid":""
+   },
+   "afe":{  
+      "levels":1,
+      "allTransformations":false,
+      "transformations":[  
+         {  
+            "algorithm":"DayOfWeek",
+            "params":null
+         },
+         {  
+            "algorithm":"HourOfDay",
+            "params":null
+         },
+         {  
+            "algorithm":"MinuteOfDay",
+            "params":null
+         }
+      ]
+   },
+   "algorithms":{  
+      "allAlgorithms":false,
+      "objective":"RMSE",
+      "algorithms":[  
+         {  
+            "name":"GBM",
+            "hyperParameters":[  
+               "ntrees=40",
+               "min_depth=3",
+               "max_depth=3",
+               "distribution=gaussian"
+            ]
+         }
+      ]
+   }
 }
 ```
 
 
 ## See response
 
-## Ask about status
 
 ## Check back server logs
 
