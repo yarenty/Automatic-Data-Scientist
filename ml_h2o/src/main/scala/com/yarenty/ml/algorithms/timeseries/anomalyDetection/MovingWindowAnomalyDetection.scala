@@ -18,8 +18,10 @@ class MovingWindowAnomalyDetection(data: H2OFrame, kpi: String, timeColumn: Stri
   val kpiVec: Vec = data.vec(kpi)
 
   def adName: String = "MovingWindow"
+  
+  var model:GBMModel = null
 
-  def process(): (Boolean, List[Int], Array[Int], Array[Double]) = {
+  def process(): (Boolean, List[Int], Array[Double], Array[Double]) = {
     val t = data.vec(timeColumn)
     val len = t.length.toInt - 1
     val period = (t.at(len) - t.at(0)) / (1000 * 60 * 60 * 24)
@@ -29,13 +31,13 @@ class MovingWindowAnomalyDetection(data: H2OFrame, kpi: String, timeColumn: Stri
 
     val inputData: Key[Frame] = Key.make(s"${kpi}_AD_input").asInstanceOf[Key[Frame]]
       val inputFrame = new Frame(inputData)
-      inputFrame.add(data.subframe(Array(timeColumn, Constants.HOUR_OF_DAY, Constants.DAY_OF_WEEK, Constants.HOUR_OF_DAY, kpi)))
+      inputFrame.add(data.subframe(Array(timeColumn, Constants.DAY_OF_WEEK, Constants.HOUR_OF_DAY, Constants.MINUTE_OF_DAY, kpi)))
     val toSplit = H2OFrame(inputFrame)
     val (toTrain, toPredict) = split(toSplit, dynamicSplitPoint)
 
     val diff = detectGBM(H2OFrame(toTrain), H2OFrame(toPredict))
 
-    val anomalies = getAnomalies(diff, toTrain.vec(kpi), toSplit.vec(kpi))
+    val anomalies = findAnomalies(diff, toTrain.vec(kpi), toSplit.vec(kpi))
     val isAnomaly = anomalies.length > 0
 
     val aDates: List[String] = (for (a <- anomalies) yield TSHelper.getDate(a, data, timeColumn)) toList
@@ -49,7 +51,7 @@ class MovingWindowAnomalyDetection(data: H2OFrame, kpi: String, timeColumn: Stri
     Log.info(s"AD:${kpi} (change:${kpiVec.sigma()}, thresh:${kpiVec.sigma()}) :: ${aDates.mkString(",")}")
 
 
-    ( isAnomaly, anomalies.toList, getAnomalies(diff, toPredict.vec(kpi), kpiVec), Helper.vecToArray(diff))
+    ( isAnomaly, anomalies.toList, Helper.vecToArray(getAnomalies(kpiVec, anomalies).vec("anomalies")),  Helper.vecToArray(diff))
   }
 
 
@@ -61,7 +63,7 @@ class MovingWindowAnomalyDetection(data: H2OFrame, kpi: String, timeColumn: Stri
     (frs(0), frs(1))
   }
 
-  def getAnomalies(diff: Vec, t: Vec, full: Vec): Array[Int] = {
+  def findAnomalies(diff: Vec, t: Vec, full: Vec): Array[Int] = {
     val min = diff.maxs().min
     //assumption:  values close to zero should be compared with max  - ie: drop rate / others with min
     val zeros =
@@ -92,13 +94,13 @@ class MovingWindowAnomalyDetection(data: H2OFrame, kpi: String, timeColumn: Stri
 
     val key: Key[GBMModel] = Key.make(s"${kpi}_AD").asInstanceOf[Key[GBMModel]]
     val gbm = new GBM(params, key)
-    val model = gbm.trainModel.get
+     model = gbm.trainModel.get
 
     //    val periodic = model._output._variable_importances.getRowHeaders()(0)
     params._ntrees = 40
     params._max_depth = 3
 
-    val predict = model.score(toPredict, s"__${kpi}_predonly__")
+    val predict = model.score(toPredict, s"__${kpi}_prediction_only__")
     val predicted = Helper.sum2Vecs(train.vec(kpi), predict.lastVec)
 
     val predFrame: Key[Frame] = Key.make(s"${kpi}_predicted").asInstanceOf[Key[Frame]]
@@ -125,4 +127,20 @@ class MovingWindowAnomalyDetection(data: H2OFrame, kpi: String, timeColumn: Stri
     diff
   }
 
+
+
+
+  def getAnomalies(vec: Vec, anomalies: Array[Int]): H2OFrame = {
+    val va = Vec.makeZero(vec.length)
+    val vaW = va.open()
+    for (i <- 0L until vec.length) {
+      if (anomalies.contains(i)) vaW.set(i, vec.at(i)) else vaW.setNA(i)
+    }
+    vaW.close()
+
+    val key = Key.make[Frame](s"AD_points_$kpi")
+    val out = new Frame(key, Array("anomalies"), Array(va))
+    new H2OFrame(out)
+  }
+  
 }
