@@ -43,7 +43,9 @@ object Server extends StreamApp[IO] with SparklingWaterApp with SparkContextSupp
       BlazeBuilder[IO]
         .mountService(StaticContentService.routes)
         .mountService(mlService)
-        .withBanner(List("Machine Learning as a Service"))
+        .withBanner(List("*********************************",
+                         "* Machine Learning as a Service *",
+                         "*********************************"))
         .bindLocal(port)
         .serve
     }

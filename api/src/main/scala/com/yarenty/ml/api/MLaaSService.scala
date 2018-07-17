@@ -1,5 +1,6 @@
 package com.yarenty.ml.api
 
+import java.util.concurrent.atomic.AtomicInteger
 
 import cats.Monad
 import cats.effect.Effect
@@ -46,36 +47,40 @@ abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(im
   
   var data:H2OFrame = null
   
-  
+  var ADSrun:Boolean = false
   
   "We don't want to have a real 'root' route anyway... " **
     GET |>> TemporaryRedirect(Uri(path = "/swagger-ui"))
 
-  // We want to define this chunk of the service as abstract for reuse below
-  val status = GET / "status"
+//  // We want to define this chunk of the service as abstract for reuse below
+//  val status = GET / "status"
 
   "Status of API" **
-    status |>> Ok("MLaaS REST API status: OK !")
+    GET / "status" |>> Ok("MLaaS REST API status: OK !")
 
   
-  
-  
-
   /*
    Automatic Data Scientist
    */
 
-
   "Get list of ADS processes for the project." **
     GET / "v1" / "ads" |>> {
-    Ok(JsonResult("List of ADSes working", 1))
+    if (ADSrun) {
+      Ok(JsonResult("kpi_AD", 1))
+    } else {
+      BadRequest("No ADSes working")
+    }
   }
 
   "The ADS methods performs transformations, trainings, model selection and model reasoning on the data in the request." **
     GET / "v1" / "ads" / pathVar[Int]("id") |>> {
     (id: Int) =>
-      println(s"it is there: $id")
-      Ok(ADSMock.adsFlow(id))
+      if (ADSrun && id==1) {
+
+        Ok(ADSMock.adsFlow("GBMModel"))
+      } else {
+        BadRequest(s"No ADS with id ${id} ")
+      }
   }
 
   "Create new ADS flow job." **
@@ -86,17 +91,19 @@ abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(im
     Log.info("Automatic Feature Engineering: Time Series")
     data = ADSService.calculateTimeKPIS(data)
     
-    Log.info("Aomaly Detection ...")
+    Log.info("Anomaly Detection ...")
     val ad = ADSService.AnomalyDetection(data)
     
-    Ok("You posted: " + body + ad._4.mkString("\n"))
+    ADSrun = true
+    
+    Ok(ADSMock.adsFlow("GBMModel") + "\n\n **DEMO OUTPUT**\n\n" + ad)
   }
 
   "Cancel running ADS flow job." **
     DELETE / "v1" / "ads" / pathVar[Int]("id") |>> {
     (id: Int) =>
       println(s"CANCEL: $id")
-      Ok(ADSMock.adsFlow(id))
+      Ok(s"Cancel ADS: $id")
   }
 
   
@@ -163,11 +170,23 @@ abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(im
 
   "List of  available Models" **
     GET / "v1" / "models" |>> {
-    Ok(JsonResult("List of models", 1))
+    Ok(JsonModel(List(("GBM", "kpi_AD"))))
   }
 
   "Get info about model." **
-    GET / "v1" / "models" / pathVar[Int]("id") |>> { (id: Int) => Ok(JsonResult(" MODEL ", id)) }
+    GET / "v1" / "models" / 'name |>> { (name: String) => 
+    if (name.equals("kpi_AD")) {
+      Ok(
+        s"""
+           | Model type GBM:
+           | ${ADSService.model}
+      """.stripMargin
+      )
+    } else {
+      BadRequest(s"Thare is no model in repository, named: ${name}")
+    }
+  
+  }
 
 
   "Create new model (model is metadata- create version as well)" **
@@ -176,17 +195,17 @@ abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(im
   }
 
   "DELETE model - only if there are all versions deleted" **
-    DELETE / "v1" / "models" / pathVar[Int]("id") |>> {
-    (id: Int) =>
-      println(s"DELETE model: $id")
-      Ok("OK")
+    DELETE / "v1" / "models" / 'name |>> {
+    (name: String) =>
+      println(s"DELETE model: $name")
+      Ok(s"DELETE model: $name")
   }
 
   "UPDATE model resources" **
-    PATCH / "v1" / "models" / pathVar[Int]("id") |>> {
-    (id: Int) =>
-      println(s"UPDATE model: $id")
-      Ok("OK")
+    PATCH / "v1" / "models" / 'name |>> {
+    (name: String) =>
+      println(s"UPDATE model: $name")
+      Ok(s"UPDATE model: $name")
   }
 
 
@@ -206,13 +225,37 @@ abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(im
 
 
   "List of available versions  [for chosen model]" **
-    GET / "v1" / "models" / pathVar[Int]("id") / "versions" |>> {
-    (id: Int) =>
-      Ok(JsonResult("List of versions for model", id))
+    GET / "v1" / "models" / 'name / "versions" |>> { (name: String) =>
+    if (name.equals("kpi_AD")) {
+      Ok(
+       JsonModel(List(("kpi_AD","1.0.0")))
+      )
+    } else {
+      BadRequest(s"Thare is no versions of model named: ${name} in the repository")
+    }
   }
 
   "Get particular model/version." **
-    GET / "v1" / "models" / pathVar[Int]("id") / "versions" / pathVar[Int]("verId") |>> { (id: Int, verId: Int) => Ok(JsonResult(" MODEL ", verId)) }
+    GET / "v1" / "models" / 'name / "versions" / 'version |>> 
+    { (name: String, version: String) =>
+
+      if (name.equals("kpi_AD")) {
+        
+        if (version.equals("1.0.0")) {
+          Ok(
+            s"""
+               | Model [$name], version:[$version] type [GBM]:
+               | ${ADSService.model}
+      """.stripMargin
+          )
+        } else {
+          BadRequest(s"There is no version ${version} of model named: ${name} in the repository")
+        }
+      } else {
+        BadRequest(s"There is no model in repository, named: ${name}")
+      }
+    
+    }
 
 
   "Create new version of the model (model is metadata- create version as well)" **
@@ -346,14 +389,15 @@ object MLaaSService {
 
   import scala.reflect.runtime.universe.TypeTag
 
-  case class JsonResult(name: String, number: Int) extends AutoSerializable
+  case class JsonResult(name: String, id: Int) extends AutoSerializable
 
   case class JsonError(error: String) extends AutoSerializable
 
   
   // datasets
   case class JsonDS(datasets:List[String]) extends AutoSerializable
-
+  case class JsonModel(models:List[(String,String)]) extends AutoSerializable
+  
   
   private implicit val format: DefaultFormats = DefaultFormats
 

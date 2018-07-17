@@ -4,36 +4,35 @@ import com.yarenty.ml.api.types._
 
 object ADSMock {
 
-  def adsFlow(id:Int) = ADSFlow(
-    "TEst ADS flow",
-    3, //id
-    "RUNING", //RUNING, STARTED, CANCELED, DONE
-    Dataset("train",
-      "test",
-      "valid"
+  def adsFlow(output:String) = ADSFlow(
+    "kpi_AD",
+    1, //id
+    "DONE", //RUNING, STARTED, CANCELED, DONE
+    Dataset("ClusterKPI48",
+      "",
+      ""
     ),
-    AFE(id,
+    AFE(1,
       true,
       List(
-        Transformation(
-          "aaa",
-          List("A", "B")
-        )
+        Transformation("DayOfWeek"),
+        Transformation("HourOfDay"),
+        Transformation("MinuteOfDay")
       )
     ),
     Algorithms(
       false,
-      "LogLoss",
+      "RMSE",
       List(
-
         Algorithm(
           "GBM",
-          List("A", "fsdvdf")
+          List("ntrees=40", "min_depth=3", "max_depth=3", "distribution=gaussian")
         )
       )
     ),
     "LOCO", //lime/loco
-    Some(false)
+    Some(false),
+    output
   )
   
   

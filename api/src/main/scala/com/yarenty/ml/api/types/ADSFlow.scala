@@ -26,7 +26,7 @@ case class Dataset(
   */
 case class Transformation(
                          algorithm:String,
-                         params:List[String]
+                         params:List[String] = null
                          )
 
 
@@ -74,7 +74,8 @@ case class ADSFlow (
                    afe: AFE,
                    algorithms: Algorithms,
                    validation:String, //lime/loco
-                   error:Option[Boolean] = None
+                   error:Option[Boolean] = None,
+                   output:String = null
                    ) extends AutoSerializable
 
 
