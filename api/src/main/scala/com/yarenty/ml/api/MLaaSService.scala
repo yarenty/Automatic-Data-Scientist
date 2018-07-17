@@ -7,6 +7,8 @@ import cats.syntax.either._
 import cats.syntax.option._
 import com.yarenty.ml.api.JsonEncoder.{AutoSerializable, _}
 import com.yarenty.ml.api.MLaaSService._
+import com.yarenty.ml.api.ads.ADSService
+import com.yarenty.ml.api.dataset.DatasetService
 import com.yarenty.ml.api.repos.ADSMock
 import org.http4s.rho.RhoService
 import org.http4s.rho.bits._
@@ -14,6 +16,8 @@ import org.http4s.rho.swagger.SwaggerSyntax
 import org.http4s.{EntityDecoder, Uri}
 import org.json4s.DefaultFormats
 import org.json4s.jackson.JsonMethods
+import water.fvec.H2OFrame
+import water.util.Log
 
 import scala.reflect.ClassTag
 
@@ -39,8 +43,11 @@ abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(im
   extends RhoService[F] {
 
   import swaggerSyntax._
-
-
+  
+  var data:H2OFrame = null
+  
+  
+  
   "We don't want to have a real 'root' route anyway... " **
     GET |>> TemporaryRedirect(Uri(path = "/swagger-ui"))
 
@@ -73,7 +80,16 @@ abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(im
 
   "Create new ADS flow job." **
     POST / "v1" / "ads" ^ EntityDecoder.text[F] |>> { body: String =>
-    "You posted: " + body
+    
+    Log.info("Calculate KPI")
+    data = ADSService.calculateKPI(data)
+    Log.info("Automatic Feature Engineering: Time Series")
+    data = ADSService.calculateTimeKPIS(data)
+    
+    Log.info("Aomaly Detection ...")
+    val ad = ADSService.AnomalyDetection(data)
+    
+    Ok("You posted: " + body + ad._4.mkString("\n"))
   }
 
   "Cancel running ADS flow job." **
@@ -94,11 +110,18 @@ abstract class MLaaSService[F[+ _] : Effect](swaggerSyntax: SwaggerSyntax[F])(im
 
   "List of  available Datasets" **
     GET / "v1" / "datasets" |>> {
-    Ok(JsonResult("List of datasets", 1))
+    Ok(JsonDS(DatasetService.getList()))
   }
 
-  "Get data specification of dataset." **
-    GET / "v1" / "datasets" / pathVar[Int]("id") |>> { (id: Int) => Ok(JsonResult(" DATA ", id)) }
+  "Load dataset." **
+    GET / "v1" / "datasets" / 'name |>> { (name: String) =>
+    data = DatasetService.loadData(name)
+    if (null==data) {
+      BadRequest(s"There is no dataset called: [$name] ")
+    } else {
+      Ok(data.toString() + "\n" + data.toTwoDimTable)
+    }
+  }
 
 
   "Create new dataset" **
@@ -323,16 +346,15 @@ object MLaaSService {
 
   import scala.reflect.runtime.universe.TypeTag
 
-
-  case class Foo(k: String, v: Int)
-
-  case class Bar(id: Long, foo: Foo)
-
   case class JsonResult(name: String, number: Int) extends AutoSerializable
 
   case class JsonError(error: String) extends AutoSerializable
 
+  
+  // datasets
+  case class JsonDS(datasets:List[String]) extends AutoSerializable
 
+  
   private implicit val format: DefaultFormats = DefaultFormats
 
   implicit def jsonParser[F[_], A: TypeTag : ClassTag]: StringParser[F, A] = new StringParser[F, A] with FailureResponseOps[F] {

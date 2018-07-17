@@ -18,7 +18,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 
 
-object Server  extends StreamApp[IO] with SparklingWaterApp with SparkContextSupport {
+object Server extends StreamApp[IO] with SparklingWaterApp with SparkContextSupport {
 
   implicit val sc = new SparkContext(configure("MLaaS"))
   implicit val sqlContext = SparkSession.builder().getOrCreate().sqlContext
